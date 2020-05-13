@@ -1,88 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>about me</title>
-    <url>/about-me.html</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>gg</title>
-    <url>/gg.html</url>
-    <content><![CDATA[<h2 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h2><blockquote>
-<p>博观而约取，厚积而薄发</p>
-</blockquote>
-<p>呦吼，很高兴能在这里看见你，感谢你打开这个网站。<br>本人目前为大学生，主修电子信息专业，励志成为一名软硬兼修的工程师，这是我的个人博客，记录学习生活日常，不定期发表对热门时事的看法，文章均为个人所见，欢迎批评指正。<br>以后，我们一起加油ヾ(◍°∇°◍)ﾉﾞ</p>
-<p><img src="https://s1.ax1x.com/2020/05/10/Y3H36A.jpg" alt="背景图"><br>如果有什么问题，欢迎大家关注我的公众号，给我留言，我回第一时间回复的，感谢大家的支持！</p>
-<p><img src="https://s1.ax1x.com/2020/05/10/Y3dt3j.jpg" alt="微信二维码"></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>keil 5 MDK版 开发STM32和51单片机</title>
-    <url>/keil-anzhuang.html</url>
-    <content><![CDATA[<h3 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h3><p>在安装keil之前，请下载安装工具包，我已全部整理好，链接如下：<br><a href="https://pan.baidu.com/s/12tpJrn7lesiHtG9Ok7jCvg" target="_blank" rel="noopener">安装工具包</a> 提取码: sfvn</p>
-<h3 id="2、安装MDK"><a href="#2、安装MDK" class="headerlink" title="2、安装MDK"></a>2、安装MDK</h3><p>双击安装包后如下图所示，选择Next即可<br><img src="https://i.loli.net/2020/05/13/2v1qJNYjab3wDf5.png" alt><br><img src="https://i.loli.net/2020/05/13/GPKoReNjE6t4nMx.png" alt></p>
-<p>勾选代表同意KEIL的协议，必须勾选，否则无法安装<br><img src="https://i.loli.net/2020/05/13/iMqrVvXKQeuT1BU.png" alt></p>
-<p>选择安装路径，建议装在D盘，方便管理<br><img src="https://i.loli.net/2020/05/13/vrWLCpAyMYb6fkG.png" alt></p>
-<p> 填写安装注册信息，随便填写即可<br><img src="https://i.loli.net/2020/05/13/aRpdtyWPZx35Y7w.png" alt></p>
-<p>等待安装完成即可<br><img src="https://i.loli.net/2020/05/13/ZUxuPzXwntpNkSF.png" alt></p>
-<p><img src="https://i.loli.net/2020/05/13/2kJUcZAmXjOHqir.png" alt></p>
-<p>注意：如果是第一次安装，可能会弹出界面让你安装下载器驱动，建议勾选并安装，这里因为我之前已经 安装了所以并没有提示安装下载器驱动<br>最后显示下图界面表示安装成功，点击 Finish 完成安装<br><img src="https://i.loli.net/2020/05/13/nhkdjMKQ43FGopz.png" alt></p>
-<h3 id="3、安装Keil4编译器"><a href="#3、安装Keil4编译器" class="headerlink" title="3、安装Keil4编译器"></a>3、安装Keil4编译器</h3><p>将我分享的文件夹里面的C51文件夹复制到安装路径目录下，如：我的安装路径为D:\Keil_v5<br><img src="https://i.loli.net/2020/05/13/sFeRzQfdx4lErG9.png" alt></p>
-<p>注意复制后C51的文件夹应该与ARM文件夹在同一目录下<br><img src="https://i.loli.net/2020/05/13/4jqmFQoA92BcVCM.png" alt></p>
-<p>然后还需修改配置文件，使其支持keil4<br>①用记事本打开安装目录下的 TOOLS.INI 配置文件，将我分享的文件夹里的 C51.txt 里的内容复制到 [ARM] 前面<br><img src="https://i.loli.net/2020/05/13/vkmsCdqcgUutpFi.png" alt><br><img src="https://i.loli.net/2020/05/13/BQskRHY2vfp8yTW.png" alt></p>
-<p>​ ②修改 [C51] 中的PATH为MDK安装目录下C51文件夹的路径，如：我的为D:\Keil_v5\C51<br>​ ③保存退出<br><img src="https://i.loli.net/2020/05/13/RPDpKicEm9lnYZh.png" alt></p>
-<h3 id="4、安装芯片“支持包”"><a href="#4、安装芯片“支持包”" class="headerlink" title="4、安装芯片“支持包”"></a>4、安装芯片“支持包”</h3><p>①安装STM32的支持包<br>我已经整理好在文件夹里面了，无需重复下载<br>如果想安装其他型号的单片机支持包，可以到官网下载</p>
-<p>​下载链接：<a href="http://www.keil.com/dd2/pack/" target="_blank" rel="noopener">http://www.keil.com/dd2/pack/</a><br><img src="https://i.loli.net/2020/05/13/JQtPzmLc6rGy798.png" alt><br><img src="https://i.loli.net/2020/05/13/o5wXd8kGrEJjLuH.png" alt><br><img src="https://i.loli.net/2020/05/13/15SpKPwt2NHbW7O.png" alt></p>
-<p>②安装STC51单片机的支持包</p>
-<p>在我上传的文件夹中有一个 stc-isp-15xx-v6.86r.exe 的软件，其实就是STC的51单片机的下载软件，不需要安装，直接双击打开即可<br><img src="https://i.loli.net/2020/05/13/bVdhRkHjXWCBzGo.png" alt></p>
-<p>​点击右边的 Keil仿真设置–&gt;添加型号和头文件到Keil中<br><img src="https://i.loli.net/2020/05/13/TID1B86a4MEr3Ow.png" alt></p>
-<p>​选择之前我们复制过去的C51文件夹<br><img src="https://i.loli.net/2020/05/13/cOKQnkdwjevUV9S.png" alt></p>
-<p>显示下图，STC的芯片支持包就导入成功了<br><img src="https://i.loli.net/2020/05/13/Lg1BtVODf7s5okp.png" alt></p>
-<h3 id="5、破解MDK"><a href="#5、破解MDK" class="headerlink" title="5、破解MDK"></a>5、破解MDK</h3><p>keil5 MDK版 不破解，会有代码大小限制，非常不利于后续学习开发，我们这里破解一下，一劳永逸。</p>
-<p>首先回到桌面，已经创建了keil5的快捷方式，鼠标右键单击Keil5，以管理员身份运行，记住，一定要以管理员身份运行，不然会破解失败<br><img src="https://s1.ax1x.com/2020/05/13/YanB0U.png" alt></p>
-<p>​ 依次点击 File–&gt;License Management…<br><img src="https://s1.ax1x.com/2020/05/13/YanR6x.png" alt></p>
-<p>复制CID码<br><img src="https://s1.ax1x.com/2020/05/13/Yan0mT.png" alt></p>
-<p>下一步操作前，请先将禁音电脑，相信我！！！因为破解软件打开后会有噪音，禁音就完事了</p>
-<p>然后打开我分享的文件夹，解压keygen.zip<br><img src="https://s1.ax1x.com/2020/05/13/YanD7F.png" alt></p>
-<p>打开里面的软件（可能报毒，关掉杀毒软件重新解压打开即可）<br>按下图示操作<br><img src="https://s1.ax1x.com/2020/05/13/YanytJ.png" alt></p>
-<p>复制生成的注册码<br><img src="https://s1.ax1x.com/2020/05/13/YangpR.png" alt></p>
-<p>粘贴到选中框<br><img src="https://s1.ax1x.com/2020/05/13/Yan6h9.png" alt></p>
-<p>点击 Add LIC 注册成功<br><img src="https://s1.ax1x.com/2020/05/13/Yan211.png" alt></p>
-<p>这样就注册了C51的编译器，还有STM32的编译器需要注册，重复刚才的操作，只需要将 Target 改成 ARM ，在此不再赘述</p>
-<h3 id="6、检查功能"><a href="#6、检查功能" class="headerlink" title="6、检查功能"></a>6、检查功能</h3><p>​<br> 打开keil 5检查功能，选择 Project–&gt; New uVision Project…<br><img src="https://s1.ax1x.com/2020/05/13/YanR6x.png" alt></p>
-<p>随便找个地方放工程文件<br><img src="https://s1.ax1x.com/2020/05/13/YanWX6.png" alt></p>
-<p>看到这三个芯片“支持包”数据库就OK了<br><img src="https://s1.ax1x.com/2020/05/13/Yan57D.png" alt></p>
-<p>从上到下分别为STM32的支持包数据库、keil4自带的一些芯片支持、STC的支持包数据库</p>
-<p>STC89C51单片机<br><img src="https://s1.ax1x.com/2020/05/13/Yan40O.png" alt></p>
-<p>STM32单片机<br><img src="https://s1.ax1x.com/2020/05/13/YanhnK.png" alt></p>
-<h3 id="7、软件汉化"><a href="#7、软件汉化" class="headerlink" title="7、软件汉化"></a>7、软件汉化</h3><p>将我分享的文件夹里的UV4.exe移动到安装路径<br><img src="https://s1.ax1x.com/2020/05/13/YanTtH.png" alt></p>
-<p>替换目标中的文件即可<br><img src="https://s1.ax1x.com/2020/05/13/Yan7hd.png" alt></p>
-<h3 id="8、完成安装"><a href="#8、完成安装" class="headerlink" title="8、完成安装"></a>8、完成安装</h3><p><img src="https://s1.ax1x.com/2020/05/13/Yanb9A.png" alt></p>
-]]></content>
-      <categories>
-        <category>教程</category>
-      </categories>
-      <tags>
-        <tag>keil</tag>
-        <tag>软件</tag>
-        <tag>安装</tag>
-        <tag>开发</tag>
-        <tag>uVision</tag>
-        <tag>嵌入式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mg</title>
-    <url>/mg.html</url>
-    <content><![CDATA[<h2 id="关于"><a href="#关于" class="headerlink" title="关于"></a>关于</h2><blockquote>
-<p>博观而约取，厚积而薄发</p>
-</blockquote>
-<p>呦吼，很高兴能在这里看见你，感谢你打开这个网站。<br>本人目前为大学生，主修电子信息专业，励志成为一名软硬兼修的工程师，这是我的个人博客，记录学习生活日常，不定期发表对热门时事的看法，文章均为个人所见，欢迎批评指正。<br>以后，我们一起加油ヾ(◍°∇°◍)ﾉﾞ</p>
-<p><img src="/mg.htm/1.jpg" alt="背景图"><br>如果有什么问题，欢迎大家关注我的公众号，给我留言，我回第一时间回复的，感谢大家的支持！</p>
-<p><img src="/mg.htm/2.jpg" alt="微信二维码"></p>
-]]></content>
-  </entry>
-  <entry>
     <title>Hello World</title>
     <url>/hello-world.html</url>
     <content><![CDATA[<h1 id="Welcome-to-Marxico"><a href="#Welcome-to-Marxico" class="headerlink" title="Welcome to Marxico"></a>Welcome to Marxico</h1><p>@(Sample notebook)[Marxico|Manual|Markdown]</p>
@@ -169,7 +87,7 @@
 <h2 id="Credits"><a href="#Credits" class="headerlink" title="Credits"></a>Credits</h2><p><strong>Marxico</strong> was first built upon <a href="http://dillinger.io" target="_blank" rel="noopener">Dillinger</a>, and the newest version is almost based on the awesome <a href="http://stackedit.io" target="_blank" rel="noopener">StackEdit</a>. Acknowledgments to them and other incredible open source projects!</p>
 <h2 id="Feedback-amp-Bug-Report"><a href="#Feedback-amp-Bug-Report" class="headerlink" title="Feedback &amp; Bug Report"></a>Feedback &amp; Bug Report</h2><ul>
 <li>Twitter: <a href="https://twitter.com/gock2" target="_blank" rel="noopener">@gock2</a></li>
-<li>Email: <a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#104;&#x75;&#115;&#x74;&#x67;&#x6f;&#x63;&#107;&#64;&#103;&#x6d;&#97;&#105;&#x6c;&#46;&#99;&#111;&#x6d;">&#104;&#x75;&#115;&#x74;&#x67;&#x6f;&#x63;&#107;&#64;&#103;&#x6d;&#97;&#105;&#x6c;&#46;&#99;&#111;&#x6d;</a></li>
+<li>Email: <a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x68;&#x75;&#x73;&#x74;&#x67;&#x6f;&#x63;&#x6b;&#64;&#x67;&#109;&#x61;&#105;&#x6c;&#46;&#x63;&#x6f;&#109;">&#x68;&#x75;&#x73;&#x74;&#x67;&#x6f;&#x63;&#x6b;&#64;&#x67;&#109;&#x61;&#105;&#x6c;&#46;&#x63;&#x6f;&#109;</a></li>
 </ul>
 <hr>
 <p>Thank you for reading this manual. Now please press <code>Ctrl + M</code> and click <code>Link with Evernote</code>. Enjoy your <strong>Marxico</strong> journey!</p>
@@ -177,5 +95,60 @@
 <sup>demo</sup>. This is a demo footnote. Read the <a href="https://github.com/fletcher/MultiMarkdown/wiki/MultiMarkdown-Syntax-Guide#footnotes" target="_blank" rel="noopener">MultiMarkdown Syntax Guide</a> to learn more. Note that Evernote disables ID attributes in its notes , so <code>footnote</code> and <code>TOC</code> are not actually working. <a href="#reffn_demo" title="Jump back to footnote [demo] in the text."> &#8617;</a>
 </blockquote>
 ]]></content>
+  </entry>
+  <entry>
+    <title>keil 5 MDK版 开发STM32和51单片机</title>
+    <url>/keil-anzhuang.html</url>
+    <content><![CDATA[<h3 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h3><p>在安装keil之前，请下载安装工具包，我已全部整理好，链接如下：<br><a href="https://pan.baidu.com/s/1g3CVmU_jkbZVSMSAcNg0PQ" target="_blank" rel="noopener">安装工具包</a>提取码: ttbt</p>
+<h3 id="2、安装MDK"><a href="#2、安装MDK" class="headerlink" title="2、安装MDK"></a>2、安装MDK</h3><p>双击安装包后如下图所示，选择Next即可<br><img src="https://i.loli.net/2020/05/13/2v1qJNYjab3wDf5.png" alt><br><img src="https://i.loli.net/2020/05/13/GPKoReNjE6t4nMx.png" alt></p>
+<p>勾选代表同意KEIL的协议，必须勾选，否则无法安装<br><img src="https://i.loli.net/2020/05/13/iMqrVvXKQeuT1BU.png" alt></p>
+<p>选择安装路径，建议装在D盘，方便管理<br><img src="https://i.loli.net/2020/05/13/vrWLCpAyMYb6fkG.png" alt></p>
+<p> 填写安装注册信息，随便填写即可<br><img src="https://i.loli.net/2020/05/13/aRpdtyWPZx35Y7w.png" alt></p>
+<p>等待安装完成即可<br><img src="https://i.loli.net/2020/05/13/ZUxuPzXwntpNkSF.png" alt></p>
+<p><img src="https://i.loli.net/2020/05/13/2kJUcZAmXjOHqir.png" alt></p>
+<p>注意：如果是第一次安装，可能会弹出界面让你安装下载器驱动，建议勾选并安装，这里因为我之前已经 安装了所以并没有提示安装下载器驱动<br>最后显示下图界面表示安装成功，点击 Finish 完成安装<br><img src="https://i.loli.net/2020/05/13/nhkdjMKQ43FGopz.png" alt></p>
+<h3 id="3、安装Keil4编译器"><a href="#3、安装Keil4编译器" class="headerlink" title="3、安装Keil4编译器"></a>3、安装Keil4编译器</h3><p>将我分享的文件夹里面的C51文件夹复制到安装路径目录下，如：我的安装路径为D:\Keil_v5<br><img src="https://i.loli.net/2020/05/13/sFeRzQfdx4lErG9.png" alt></p>
+<p>注意复制后C51的文件夹应该与ARM文件夹在同一目录下<br><img src="https://i.loli.net/2020/05/13/4jqmFQoA92BcVCM.png" alt></p>
+<p>然后还需修改配置文件，使其支持keil4<br>①用记事本打开安装目录下的 TOOLS.INI 配置文件，将我分享的文件夹里的 C51.txt 里的内容复制到 [ARM] 前面<br><img src="https://i.loli.net/2020/05/13/vkmsCdqcgUutpFi.png" alt><br><img src="https://i.loli.net/2020/05/13/BQskRHY2vfp8yTW.png" alt></p>
+<p>​ ②修改 [C51] 中的PATH为MDK安装目录下C51文件夹的路径，如：我的为D:\Keil_v5\C51<br>​ ③保存退出<br><img src="https://i.loli.net/2020/05/13/RPDpKicEm9lnYZh.png" alt></p>
+<h3 id="4、安装芯片“支持包”"><a href="#4、安装芯片“支持包”" class="headerlink" title="4、安装芯片“支持包”"></a>4、安装芯片“支持包”</h3><p>①安装STM32的支持包<br>我已经整理好在文件夹里面了，无需重复下载<br>如果想安装其他型号的单片机支持包，可以到官网下载</p>
+<p>​下载链接：<a href="http://www.keil.com/dd2/pack/" target="_blank" rel="noopener">http://www.keil.com/dd2/pack/</a><br><img src="https://i.loli.net/2020/05/13/JQtPzmLc6rGy798.png" alt><br><img src="https://i.loli.net/2020/05/13/o5wXd8kGrEJjLuH.png" alt><br><img src="https://i.loli.net/2020/05/13/15SpKPwt2NHbW7O.png" alt></p>
+<p>②安装STC51单片机的支持包</p>
+<p>在我上传的文件夹中有一个 stc-isp-15xx-v6.86r.exe 的软件，其实就是STC的51单片机的下载软件，不需要安装，直接双击打开即可<br><img src="https://i.loli.net/2020/05/13/bVdhRkHjXWCBzGo.png" alt></p>
+<p>​点击右边的 Keil仿真设置–&gt;添加型号和头文件到Keil中<br><img src="https://i.loli.net/2020/05/13/TID1B86a4MEr3Ow.png" alt></p>
+<p>​选择之前我们复制过去的C51文件夹<br><img src="https://i.loli.net/2020/05/13/cOKQnkdwjevUV9S.png" alt></p>
+<p>显示下图，STC的芯片支持包就导入成功了<br><img src="https://i.loli.net/2020/05/13/Lg1BtVODf7s5okp.png" alt></p>
+<h3 id="5、破解MDK"><a href="#5、破解MDK" class="headerlink" title="5、破解MDK"></a>5、破解MDK</h3><p>keil5 MDK版 不破解，会有代码大小限制，非常不利于后续学习开发，我们这里破解一下，一劳永逸。</p>
+<p>首先回到桌面，已经创建了keil5的快捷方式，鼠标右键单击Keil5，以管理员身份运行，记住，一定要以管理员身份运行，不然会破解失败<br><img src="https://s1.ax1x.com/2020/05/13/YanB0U.png" alt></p>
+<p>​ 依次点击 File–&gt;License Management…<br><img src="https://s1.ax1x.com/2020/05/13/YanR6x.png" alt></p>
+<p>复制CID码<br><img src="https://s1.ax1x.com/2020/05/13/Yan0mT.png" alt></p>
+<p>下一步操作前，请先将禁音电脑，相信我！！！因为破解软件打开后会有噪音，禁音就完事了</p>
+<p>然后打开我分享的文件夹，解压keygen.zip<br><img src="https://s1.ax1x.com/2020/05/13/YanD7F.png" alt></p>
+<p>打开里面的软件（可能报毒，关掉杀毒软件重新解压打开即可）<br>按下图示操作<br><img src="https://s1.ax1x.com/2020/05/13/YanytJ.png" alt></p>
+<p>复制生成的注册码<br><img src="https://s1.ax1x.com/2020/05/13/YangpR.png" alt></p>
+<p>粘贴到选中框<br><img src="https://s1.ax1x.com/2020/05/13/Yan6h9.png" alt></p>
+<p>点击 Add LIC 注册成功<br><img src="https://s1.ax1x.com/2020/05/13/Yan211.png" alt></p>
+<p>这样就注册了C51的编译器，还有STM32的编译器需要注册，重复刚才的操作，只需要将 Target 改成 ARM ，在此不再赘述</p>
+<h3 id="6、检查功能"><a href="#6、检查功能" class="headerlink" title="6、检查功能"></a>6、检查功能</h3><p>​<br> 打开keil 5检查功能，选择 Project–&gt; New uVision Project…<br><img src="https://s1.ax1x.com/2020/05/13/YanR6x.png" alt></p>
+<p>随便找个地方放工程文件<br><img src="https://s1.ax1x.com/2020/05/13/YanWX6.png" alt></p>
+<p>看到这三个芯片“支持包”数据库就OK了<br><img src="https://s1.ax1x.com/2020/05/13/Yan57D.png" alt></p>
+<p>从上到下分别为STM32的支持包数据库、keil4自带的一些芯片支持、STC的支持包数据库</p>
+<p>STC89C51单片机<br><img src="https://s1.ax1x.com/2020/05/13/Yan40O.png" alt></p>
+<p>STM32单片机<br><img src="https://s1.ax1x.com/2020/05/13/YanhnK.png" alt></p>
+<h3 id="7、软件汉化"><a href="#7、软件汉化" class="headerlink" title="7、软件汉化"></a>7、软件汉化</h3><p>将我分享的文件夹里的UV4.exe移动到安装路径<br><img src="https://s1.ax1x.com/2020/05/13/YanTtH.png" alt></p>
+<p>替换目标中的文件即可<br><img src="https://s1.ax1x.com/2020/05/13/Yan7hd.png" alt></p>
+<h3 id="8、完成安装"><a href="#8、完成安装" class="headerlink" title="8、完成安装"></a>8、完成安装</h3><p><img src="https://s1.ax1x.com/2020/05/13/Yanb9A.png" alt></p>
+]]></content>
+      <categories>
+        <category>教程</category>
+      </categories>
+      <tags>
+        <tag>keil</tag>
+        <tag>软件</tag>
+        <tag>安装</tag>
+        <tag>开发</tag>
+        <tag>uVision</tag>
+        <tag>嵌入式</tag>
+      </tags>
   </entry>
 </search>
