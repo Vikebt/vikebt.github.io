@@ -3,7 +3,7 @@
   <entry>
     <title>keil 5 MDK版 开发STM32和51单片机</title>
     <url>/keil-anzhuang.html</url>
-    <content><![CDATA[<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>在安装keil之前，请下载安装工具包，我已全部整理好，链接如下：<br><a href="https://pan.baidu.com/s/1g3CVmU_jkbZVSMSAcNg0PQ" target="_blank" rel="noopener">安装工具包</a>提取码: ttbt</p>
+    <content><![CDATA[<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>在安装keil之前，请下载安装工具包，我已全部整理好，链接如下：<br><a href="https://pan.baidu.com/s/1g3CVmU_jkbZVSMSAcNg0PQ" target="_blank" rel="noopener">安装工具包</a> 提取码: ttbt</p>
 <h3 id="安装MDK"><a href="#安装MDK" class="headerlink" title="安装MDK"></a>安装MDK</h3><p>双击安装包后如下图所示，选择Next即可<br><img src="https://i.loli.net/2020/05/13/2v1qJNYjab3wDf5.png" alt><br><img src="https://i.loli.net/2020/05/13/GPKoReNjE6t4nMx.png" alt></p>
 <p>勾选代表同意KEIL的协议，必须勾选，否则无法安装<br><img src="https://i.loli.net/2020/05/13/iMqrVvXKQeuT1BU.png" alt></p>
 <p>选择安装路径，建议装在D盘，方便管理<br><img src="https://i.loli.net/2020/05/13/vrWLCpAyMYb6fkG.png" alt></p>
@@ -42,6 +42,9 @@
 <h3 id="软件汉化"><a href="#软件汉化" class="headerlink" title="软件汉化"></a>软件汉化</h3><p>将我分享的文件夹里的UV4.exe移动到安装路径<br><img src="https://s1.ax1x.com/2020/05/13/YanTtH.png" alt></p>
 <p>替换目标中的文件即可<br><img src="https://s1.ax1x.com/2020/05/13/Yan7hd.png" alt></p>
 <h3 id="完成安装"><a href="#完成安装" class="headerlink" title="完成安装"></a>完成安装</h3><p><img src="https://s1.ax1x.com/2020/05/13/Yanb9A.png" alt></p>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><pre><code>最新版本的KEIL5，并不是像原来的KEIL4一样，将89C51系列芯片放在Atmel里面，而是放在Microchip里面：
+</code></pre><p><img src="https://s1.ax1x.com/2020/05/14/Ywq0p9.png" alt></p>
+<p><img src="https://s1.ax1x.com/2020/05/14/YwqBlR.png" alt></p>
 ]]></content>
       <categories>
         <category>教程</category>
@@ -145,7 +148,7 @@
 <h2 id="Credits"><a href="#Credits" class="headerlink" title="Credits"></a>Credits</h2><p><strong>Marxico</strong> was first built upon <a href="http://dillinger.io" target="_blank" rel="noopener">Dillinger</a>, and the newest version is almost based on the awesome <a href="http://stackedit.io" target="_blank" rel="noopener">StackEdit</a>. Acknowledgments to them and other incredible open source projects!</p>
 <h2 id="Feedback-amp-Bug-Report"><a href="#Feedback-amp-Bug-Report" class="headerlink" title="Feedback &amp; Bug Report"></a>Feedback &amp; Bug Report</h2><ul>
 <li>Twitter: <a href="https://twitter.com/gock2" target="_blank" rel="noopener">@gock2</a></li>
-<li>Email: <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x68;&#117;&#115;&#x74;&#103;&#x6f;&#x63;&#107;&#x40;&#103;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#111;&#x6d;">&#x68;&#117;&#115;&#x74;&#103;&#x6f;&#x63;&#107;&#x40;&#103;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#111;&#x6d;</a></li>
+<li>Email: <a href="&#109;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#x68;&#x75;&#115;&#116;&#103;&#111;&#x63;&#107;&#x40;&#103;&#109;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;">&#x68;&#x75;&#115;&#116;&#103;&#111;&#x63;&#107;&#x40;&#103;&#109;&#97;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;</a></li>
 </ul>
 <hr>
 <p>Thank you for reading this manual. Now please press <code>Ctrl + M</code> and click <code>Link with Evernote</code>. Enjoy your <strong>Marxico</strong> journey!</p>
