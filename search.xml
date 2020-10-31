@@ -146,7 +146,7 @@
 <h2 id="Credits"><a href="#Credits" class="headerlink" title="Credits"></a>Credits</h2><p><strong>Marxico</strong> was first built upon <a href="http://dillinger.io" target="_blank" rel="noopener">Dillinger</a>, and the newest version is almost based on the awesome <a href="http://stackedit.io" target="_blank" rel="noopener">StackEdit</a>. Acknowledgments to them and other incredible open source projects!</p>
 <h2 id="Feedback-amp-Bug-Report"><a href="#Feedback-amp-Bug-Report" class="headerlink" title="Feedback &amp; Bug Report"></a>Feedback &amp; Bug Report</h2><ul>
 <li>Twitter: <a href="https://twitter.com/gock2" target="_blank" rel="noopener">@gock2</a></li>
-<li>Email: <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#111;&#58;&#104;&#x75;&#x73;&#x74;&#103;&#111;&#99;&#x6b;&#64;&#x67;&#x6d;&#97;&#x69;&#x6c;&#46;&#99;&#111;&#x6d;">&#104;&#x75;&#x73;&#x74;&#103;&#111;&#99;&#x6b;&#64;&#x67;&#x6d;&#97;&#x69;&#x6c;&#46;&#99;&#111;&#x6d;</a></li>
+<li>Email: <a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;&#58;&#x68;&#117;&#x73;&#x74;&#x67;&#111;&#x63;&#107;&#64;&#103;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#x63;&#111;&#109;">&#x68;&#117;&#x73;&#x74;&#x67;&#111;&#x63;&#107;&#64;&#103;&#x6d;&#97;&#x69;&#x6c;&#x2e;&#x63;&#111;&#109;</a></li>
 </ul>
 <hr>
 <p>Thank you for reading this manual. Now please press <code>Ctrl + M</code> and click <code>Link with Evernote</code>. Enjoy your <strong>Marxico</strong> journey!</p>
@@ -217,7 +217,7 @@
       </tags>
   </entry>
   <entry>
-    <title>OLED显示MLX90614的数据</title>
+    <title>初识STM32</title>
     <url>/%E5%88%9D%E8%AF%8632%E5%8D%95%E7%89%87%E6%9C%BA.html</url>
     <content><![CDATA[<h2 id="什么是STM32"><a href="#什么是STM32" class="headerlink" title="什么是STM32"></a>什么是STM32</h2><h3 id="STM32的字面含义"><a href="#STM32的字面含义" class="headerlink" title="STM32的字面含义"></a>STM32的字面含义</h3><p>1、ST——意法半导体，是一个公司名，即SOC厂商。STM32等系列芯片的内核由ARM公司生产（ARM是一个IP厂商，本身生产芯片，将内核授权给各大SOC厂商使用而盈利），ST公司则负责STM32外围电路的设计。</p>
 <p>2、M— Microelectronics的缩写，表示微控制器，大家注意微控制器（无<em>MMU，主频较低，速度较慢）和微处理器（有 </em>MMU,主频较高，可跑Linux）的区别。</p>
@@ -234,5 +234,14 @@
 <h3 id="数据手册中对引脚的功能定义"><a href="#数据手册中对引脚的功能定义" class="headerlink" title="数据手册中对引脚的功能定义"></a>数据手册中对引脚的功能定义</h3><p><img src="https://i.loli.net/2020/10/31/ex1uyaGVtIjsCJ3.png" alt="6.png"></p>
 <h3 id="引脚的功能定义解读"><a href="#引脚的功能定义解读" class="headerlink" title="引脚的功能定义解读"></a>引脚的功能定义解读</h3><p><img src="https://i.loli.net/2020/10/31/zPxakTuUyVeF3ol.png" alt="7.png"></p>
 ]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>开发</tag>
+        <tag>嵌入式</tag>
+        <tag>单片机</tag>
+        <tag>STM32</tag>
+      </tags>
   </entry>
 </search>
