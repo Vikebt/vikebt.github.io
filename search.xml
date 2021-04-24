@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>PN结的特性</title>
+    <url>/PN%E7%BB%93%E7%9A%84%E7%89%B9%E6%80%A7.html</url>
+    <content><![CDATA[<h3 id="PN结的反向击穿"><a href="#PN结的反向击穿" class="headerlink" title="PN结的反向击穿"></a>PN结的反向击穿</h3><h4 id="雪崩击穿和齐纳击穿"><a href="#雪崩击穿和齐纳击穿" class="headerlink" title="雪崩击穿和齐纳击穿"></a>雪崩击穿和齐纳击穿</h4><p>雪崩击穿：当二极管掺杂浓度较低时，外加反向电压，PN结宽， PN结变成“粒子加速器”，一旦P端或N端有粒子通过漂移运动进入PN结时，瞬间被加速，撞到PN结中的共价键上，价电子变成自由电子，开始在PN结中四处碰撞，引起“雪崩反应”，导致PN结击穿。<br>前提：PN结宽度足够宽，能使粒子加速。<br>温度越高，雪崩击穿所需要的击穿电压越高。<br>齐纳击穿：当二极管掺杂浓度较高时，外加反向电压，PN结窄，距离短，场强大，共价键断裂，价电子变成自由电子，导致PN结击穿。<br>温度越高，齐纳击穿所需要的击穿电压越低。<br>上述两种电击穿过程都是可逆的。</p>
+<h3 id="PN结的电容效应"><a href="#PN结的电容效应" class="headerlink" title="PN结的电容效应"></a>PN结的电容效应</h3><h4 id="势垒电容和扩散电容"><a href="#势垒电容和扩散电容" class="headerlink" title="势垒电容和扩散电容"></a>势垒电容和扩散电容</h4><p>势垒电容：当PN结处于反向偏置时，当外加电压增加时，势垒电场增强，多数载流子被拉出而远离PN结，势垒区将增宽，反之，当外加电压减小时，势垒区变窄。势垒区的变化意味着区间存储的正、负离子电荷数的增减，类似于平行板电容器两极板上电荷的变化。此时PN结呈现出的电容效应称为势垒电容,所不同的是，势垒电容是非线性的。<br>扩散电容：当PN结处于正向偏置时，P区的空穴将向N区扩散，其结果导致到达N区的空穴在靠近结边缘的浓度高于距结稍远处的浓度。离结越近，空穴浓度越低，这是因为空穴在N区与多数载流子复合所致。N区的电子向P区扩散的情况与上述情况类似。若外加正向电压有一增量ΔV，则相应的空穴（电子）扩散运动在结的附近产生一电荷增量ΔQ，二者之比ΔQ/ΔV为扩散电容。PN结在正向偏置时，积累在P区的电子和N区的空穴随正向电压的增加而很快增加，扩散电容较大。反向偏置时，因为载流子数目很少，所以扩散电容数值很小，一般可以忽略。</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>PN结</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>OLED显示1602HWTW的数据</title>
     <url>/OLED%E6%98%BE%E7%A4%BA1602HWTW%E7%9A%84%E6%95%B0%E6%8D%AE.html</url>
     <content><![CDATA[<h2 id="OLED显示1602HWTW的数据"><a href="#OLED显示1602HWTW的数据" class="headerlink" title="OLED显示1602HWTW的数据"></a>OLED显示1602HWTW的数据</h2><h3 id="开发背景"><a href="#开发背景" class="headerlink" title="开发背景"></a>开发背景</h3><p>​        2020年前夕突发疫情，病毒的广泛传播，人们口口相传的危害性，导致体温计、口罩等医用设备供不应求，在此大环境下，我萌发出用自己的能力去测体温的想法。在接触51单片机后，然后学习了相关串口通信知识和OLED显示原理，凭借自己对知识的理解，从工程的构建到最后构想的实现，最后OLED亮起那一瞬间，我感受到了知识的力量。在此期间，学到了很多知识，对涉及这一块的知识更加了解，对自己的未来更加充满希望。</p>
@@ -39,19 +52,6 @@
         <tag>嵌入式</tag>
         <tag>单片机</tag>
         <tag>STC89C52</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PN结的特性</title>
-    <url>/PN%E7%BB%93%E7%9A%84%E7%89%B9%E6%80%A7.html</url>
-    <content><![CDATA[<h3 id="PN结的反向击穿"><a href="#PN结的反向击穿" class="headerlink" title="PN结的反向击穿"></a>PN结的反向击穿</h3><h4 id="雪崩击穿和齐纳击穿"><a href="#雪崩击穿和齐纳击穿" class="headerlink" title="雪崩击穿和齐纳击穿"></a>雪崩击穿和齐纳击穿</h4><p>雪崩击穿：当二极管掺杂浓度较低时，外加反向电压，PN结宽， PN结变成“粒子加速器”，一旦P端或N端有粒子通过漂移运动进入PN结时，瞬间被加速，撞到PN结中的共价键上，价电子变成自由电子，开始在PN结中四处碰撞，引起“雪崩反应”，导致PN结击穿。<br>前提：PN结宽度足够宽，能使粒子加速。<br>温度越高，雪崩击穿所需要的击穿电压越高。<br>齐纳击穿：当二极管掺杂浓度较高时，外加反向电压，PN结窄，距离短，场强大，共价键断裂，价电子变成自由电子，导致PN结击穿。<br>温度越高，齐纳击穿所需要的击穿电压越低。<br>上述两种电击穿过程都是可逆的。</p>
-<h3 id="PN结的电容效应"><a href="#PN结的电容效应" class="headerlink" title="PN结的电容效应"></a>PN结的电容效应</h3><h4 id="势垒电容和扩散电容"><a href="#势垒电容和扩散电容" class="headerlink" title="势垒电容和扩散电容"></a>势垒电容和扩散电容</h4><p>势垒电容：当PN结处于反向偏置时，当外加电压增加时，势垒电场增强，多数载流子被拉出而远离PN结，势垒区将增宽，反之，当外加电压减小时，势垒区变窄。势垒区的变化意味着区间存储的正、负离子电荷数的增减，类似于平行板电容器两极板上电荷的变化。此时PN结呈现出的电容效应称为势垒电容,所不同的是，势垒电容是非线性的。<br>扩散电容：当PN结处于正向偏置时，P区的空穴将向N区扩散，其结果导致到达N区的空穴在靠近结边缘的浓度高于距结稍远处的浓度。离结越近，空穴浓度越低，这是因为空穴在N区与多数载流子复合所致。N区的电子向P区扩散的情况与上述情况类似。若外加正向电压有一增量ΔV，则相应的空穴（电子）扩散运动在结的附近产生一电荷增量ΔQ，二者之比ΔQ/ΔV为扩散电容。PN结在正向偏置时，积累在P区的电子和N区的空穴随正向电压的增加而很快增加，扩散电容较大。反向偏置时，因为载流子数目很少，所以扩散电容数值很小，一般可以忽略。</p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>PN结</tag>
       </tags>
   </entry>
   <entry>
@@ -183,7 +183,7 @@
 <h2 id="Credits"><a href="#Credits" class="headerlink" title="Credits"></a>Credits</h2><p><strong>Marxico</strong> was first built upon <a href="http://dillinger.io" target="_blank" rel="noopener">Dillinger</a>, and the newest version is almost based on the awesome <a href="http://stackedit.io" target="_blank" rel="noopener">StackEdit</a>. Acknowledgments to them and other incredible open source projects!</p>
 <h2 id="Feedback-amp-Bug-Report"><a href="#Feedback-amp-Bug-Report" class="headerlink" title="Feedback &amp; Bug Report"></a>Feedback &amp; Bug Report</h2><ul>
 <li>Twitter: <a href="https://twitter.com/gock2" target="_blank" rel="noopener">@gock2</a></li>
-<li>Email: <a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#104;&#x75;&#x73;&#116;&#103;&#111;&#x63;&#x6b;&#x40;&#x67;&#x6d;&#x61;&#105;&#x6c;&#46;&#99;&#x6f;&#109;">&#104;&#x75;&#x73;&#116;&#103;&#111;&#x63;&#x6b;&#x40;&#x67;&#x6d;&#x61;&#105;&#x6c;&#46;&#99;&#x6f;&#109;</a></li>
+<li>Email: <a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#x68;&#x75;&#115;&#116;&#103;&#x6f;&#x63;&#x6b;&#64;&#103;&#x6d;&#x61;&#105;&#108;&#x2e;&#x63;&#111;&#x6d;">&#x68;&#x75;&#115;&#116;&#103;&#x6f;&#x63;&#x6b;&#64;&#103;&#x6d;&#x61;&#105;&#108;&#x2e;&#x63;&#111;&#x6d;</a></li>
 </ul>
 <hr>
 <p>Thank you for reading this manual. Now please press <code>Ctrl + M</code> and click <code>Link with Evernote</code>. Enjoy your <strong>Marxico</strong> journey!</p>
