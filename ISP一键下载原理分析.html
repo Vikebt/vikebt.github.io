@@ -112,7 +112,7 @@
 <meta property="og:image" content="https://i.loli.net/2021/07/04/uIzJqgPrpychOiW.png">
 <meta property="og:image" content="https://i.loli.net/2021/07/04/WOLamyzgpdkj45P.png">
 <meta property="article:published_time" content="2021-07-04T11:19:43.903Z">
-<meta property="article:modified_time" content="2021-07-04T11:26:26.683Z">
+<meta property="article:modified_time" content="2021-07-04T11:32:31.118Z">
 <meta property="article:author" content="Vikebt">
 <meta property="article:tag" content="开发">
 <meta property="article:tag" content="嵌入式">
@@ -373,7 +373,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2021-07-04T19:26:26+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2021-07-04T19:32:31+08:00">
                 2021-07-04
               </time>
             
@@ -438,7 +438,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.1k
+                  1.2k
                 </span>
               
 
@@ -454,7 +454,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  4
                 </span>
               
             </div>
@@ -480,7 +480,7 @@
 <p><img src="https://i.loli.net/2021/07/04/uIzJqgPrpychOiW.png" alt="image.png"></p>
 <h3 id="BOOT配置"><a href="#BOOT配置" class="headerlink" title="BOOT配置"></a>BOOT配置</h3><p>在ISP下载电路中， 需要配置BOOT引脚， BOOT引脚不同的配置会产生不同的启动方式， 具体见下表。 </p>
 <p><img src="https://i.loli.net/2021/07/04/WOLamyzgpdkj45P.png" alt="image.png"></p>
-<h3 id="ISP一键下载"><a href="#ISP一键下载" class="headerlink" title="ISP一键下载"></a>ISP一键下载</h3><p>USB转串口大家都很熟悉， 一般是用RXD和TXD这两个引脚。 在一键ISP电路中， 我们需要用USB转串口的芯片的DTR引脚和RTS引脚来控制单片机的BOOT0和NRST， 原理如下：<br>1） 通过上位机控制U6（CH340G） 的RTS引脚为低电平， Q1导通， BOOT0的电平上拉为高电平。<br>2） 通过上位机控制U6（CH340G） 的DTR引脚为高电平， 由于RTS为低电平， Q2导通， U18的2引脚为低电平， U18为一个模拟开关， 使能端由4引脚控制， 默认为高电平， U18的1引脚和2引脚导通， 所以NRST为低电平， 系统复位。<br>3） 单片机进入ISP模式， 此时可以将DTR引脚设置为低电平， RTS设置为高电平。 Q1和Q2处于截止状态， BOOT0和NRST还原默认电平。<br>4） 上位机将程序下载到单片机， 下载完毕之后， 程序自动运行。<br>5） 有人认为U18、 Q1、 Q2是多余的， 用U6的RTS和DTR直接控制也可以。 正常情况下， 这样理解没有问题， 但是他们忽略了一点， 就是在单片机上电瞬间， 如果USB转串口连接了电脑， DTR和RTS的电平是变化的， 如果处理不好， 单片机会一直进入ISP模式， 或者系统会复位多次， 这种情况是不允许的。<br>6） 于是， 就有了全新的一键ISP电路。 我们主要是分析上电瞬间的逻辑关系， 单片机上电时通过示波器观察波形得知DTR和RTS的电平是变化的， 但是也有一个规律就是： 当RTS为低电平的时候，DTR也是低电平， 因此一般情况下Q2不会导通， 但由于这两个IO口的电平存在“竞争冒险”， 会出现RTS的下降沿刚好遇到DTR的上升沿， 这个时候Q2导通， 导致系统复位， 而BOOT0此时有可能也为高电平， 就会进入ISP模式。 这个是不受我们控制的， 而我们不想系统出现这样的情况， 因此加入了模拟开关来切断这种干扰。<br>7） 加入模拟开关U18， 通过控制U18的4引脚的开关来达到隔离干扰电平的目的。 下面我们分析一下延时开关电路， 上电瞬间， 电容C65通过电阻R18来充电， 由于电阻100kΩ 很大， 电容的充电电流很小， 电容充电达到U18的4引脚的有效电平2V大概耗时1秒， 在这个1秒时间内U18的模拟开关是断开的， 因此RTS和DTR的干扰电平不会影响到系统复位。 这样就保证了系统正常运行。  </p>
+<h3 id="ISP一键下载"><a href="#ISP一键下载" class="headerlink" title="ISP一键下载"></a>ISP一键下载</h3><p>USB转串口大家都很熟悉， 一般是用RXD和TXD这两个引脚。 在一键ISP电路中， 我们需要用USB转串口的芯片的DTR引脚和RTS引脚来控制单片机的BOOT0和NRST， 原理如下：<br>1） 通过上位机控制U6（CH340G） 的RTS引脚为低电平， Q1导通， BOOT0的电平上拉为高电平（1K电阻直接接在3V3，接地的时候10k电阻直接接地）。<br>2） 通过上位机控制U6（CH340G） 的DTR引脚为高电平， 由于RTS为低电平， Q2导通， U18的2引脚为低电平， U18为一个模拟开关， 使能端由4引脚控制， 默认为高电平， U18的1引脚和2引脚导通， 所以NRST为低电平， 系统复位。<br>3） 单片机进入ISP模式（即BOOT0和BOOT1引脚电平被锁存之后，改变他们的引脚也不影响）， 此时可以将DTR引脚设置为低电平， RTS设置为高电平。 Q1和Q2处于截止状态， BOOT0（原接地）和NRST（被拉高）还原到初始状态。<br>4） 上位机将程序下载到单片机， 下载完毕之后， 程序自动运行。<br>5） 有人认为U18、 Q1、 Q2是多余的， 用U6的RTS和DTR直接控制也可以。 正常情况下， 这样理解没有问题， 但是他们忽略了一点， 就是在单片机上电瞬间， 如果USB转串口连接了电脑， DTR和RTS的电平是变化的， 如果处理不好， 单片机会一直进入ISP模式， 或者系统会复位多次， 这种情况是不允许的。<br>6） 于是， 就有了全新的一键ISP电路。 我们主要是分析上电瞬间的逻辑关系， 单片机上电时通过示波器观察波形得知DTR和RTS的电平是变化的， 但是也有一个规律就是： 当RTS为低电平的时候，DTR也是低电平， 因此一般情况下Q2不会导通， 但由于这两个IO口的电平存在“竞争冒险”， 会出现RTS的下降沿刚好遇到DTR的上升沿， 这个时候Q2导通， 导致系统复位， 而BOOT0此时有可能也为高电平， 就会进入ISP模式。 这个是不受我们控制的， 而我们不想系统出现这样的情况， 因此加入了模拟开关来切断这种干扰。<br>7） 加入模拟开关U18， 通过控制U18的4引脚的开关来达到隔离干扰电平的目的。 下面我们分析一下延时开关电路， 上电瞬间， 电容C65通过电阻R18来充电， 由于电阻100kΩ 很大， 电容的充电电流很小， 电容充电达到U18的4引脚的有效电平2V大概耗时1秒， 在这个1秒时间内U18的模拟开关是断开的， 因此RTS和DTR的干扰电平不会影响到系统复位。 这样就保证了系统正常运行。  </p>
 
       
     </div>
