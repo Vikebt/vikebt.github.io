@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="开发,嵌入式,单片机,STM32," />
 
 
 
@@ -102,13 +102,24 @@
     })();
 </script>
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Vikebt&#39;s blog">
-<meta property="og:url" content="http://baichufan.club/archives/2020/05/index.html">
+<meta name="description" content="最近在学习STM32，在参考手册上了解到关于“复用”和“重映射”这些概念，刚开始没搞懂，通过这几天在网上查找资料和看手册，弄清楚了，先与大家分享，希望能对跟我一样的新手有所帮助吧。 为了优化64脚或100脚封装的外设数目，可以把一些复用功能重新映射到其他引脚上。设置复用重映射和调试I&#x2F;O配置寄存器(AFIO_MAPR)实现引脚的重新映射。这时，复用功能不再映射到它们的原始分配上。   STM32上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STM32的复用时钟的开启和重映射功能">
+<meta property="og:url" content="http://baichufan.club/STM32%E7%9A%84%E5%A4%8D%E7%94%A8%E6%97%B6%E9%92%9F%E7%9A%84%E5%BC%80%E5%90%AF%E5%92%8C%E9%87%8D%E6%98%A0%E5%B0%84%E5%8A%9F%E8%83%BD.html">
 <meta property="og:site_name" content="Vikebt&#39;s blog">
+<meta property="og:description" content="最近在学习STM32，在参考手册上了解到关于“复用”和“重映射”这些概念，刚开始没搞懂，通过这几天在网上查找资料和看手册，弄清楚了，先与大家分享，希望能对跟我一样的新手有所帮助吧。 为了优化64脚或100脚封装的外设数目，可以把一些复用功能重新映射到其他引脚上。设置复用重映射和调试I&#x2F;O配置寄存器(AFIO_MAPR)实现引脚的重新映射。这时，复用功能不再映射到它们的原始分配上。   STM32上">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/07/04/fwdWRCnV3kMA2um.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/04/RfU7oF.png">
+<meta property="article:published_time" content="2021-07-04T12:48:42.015Z">
+<meta property="article:modified_time" content="2021-07-04T12:49:20.884Z">
 <meta property="article:author" content="Vikebt">
+<meta property="article:tag" content="开发">
+<meta property="article:tag" content="嵌入式">
+<meta property="article:tag" content="单片机">
+<meta property="article:tag" content="STM32">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/07/04/fwdWRCnV3kMA2um.png">
 
 
 
@@ -138,13 +149,13 @@
 
 
 
-  <link rel="canonical" href="http://baichufan.club/archives/2020/05/"/>
+  <link rel="canonical" href="http://baichufan.club/STM32的复用时钟的开启和重映射功能.html"/>
 
 
 
 
 
-  <title>归档 | Vikebt's blog</title>
+  <title>STM32的复用时钟的开启和重映射功能 | Vikebt's blog</title>
   
 
 
@@ -163,7 +174,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
     
     <a href="https://github.com/vikebt" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
@@ -303,74 +314,301 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-        
-          
-        
-        嗯..! 目前共计 9 篇日志。 继续努力。
-      </span>
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2020">2020</h1>
-          </div>
-        
-        
-
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://baichufan.club/STM32%E7%9A%84%E5%A4%8D%E7%94%A8%E6%97%B6%E9%92%9F%E7%9A%84%E5%BC%80%E5%90%AF%E5%92%8C%E9%87%8D%E6%98%A0%E5%B0%84%E5%8A%9F%E8%83%BD.html">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vikebt">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vikebt's blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/keil-anzhuang.html" itemprop="url">
-              
-                <span itemprop="name">keil5(MDK版)开发STM32和STC89C52</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">STM32的复用时钟的开启和重映射功能</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-05-13T13:23:20+08:00"
-              content="2020-05-13" >
-          05-13
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-07-04T20:48:42+08:00">
+                2021-07-04
+              </time>
+            
 
-    </header>
-  </article>
+            
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-07-04T20:49:20+08:00">
+                2021-07-04
+              </time>
+            
+          </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91/" itemprop="url" rel="index">
+                    <span itemprop="name">开发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/STM32%E7%9A%84%E5%A4%8D%E7%94%A8%E6%97%B6%E9%92%9F%E7%9A%84%E5%BC%80%E5%90%AF%E5%92%8C%E9%87%8D%E6%98%A0%E5%B0%84%E5%8A%9F%E8%83%BD.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/STM32%E7%9A%84%E5%A4%8D%E7%94%A8%E6%97%B6%E9%92%9F%E7%9A%84%E5%BC%80%E5%90%AF%E5%92%8C%E9%87%8D%E6%98%A0%E5%B0%84%E5%8A%9F%E8%83%BD.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读数 <i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  855
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
+      
 
+      
+        <p>最近在学习STM32，在参考手册上了解到关于“复用”和“重映射”这些概念，刚开始没搞懂，通过这几天在网上查找资料和看手册，弄清楚了，先与大家分享，希望能对跟我一样的新手有所帮助吧。</p>
+<p>为了优化64脚或100脚封装的外设数目，可以把一些复用功能重新映射到其他引脚上。设置复用<br>重映射和调试I/O配置寄存器(AFIO_MAPR)实现引脚的重新映射。这时，复用功能不再映射到它<br>们的原始分配上。  </p>
+<p>STM32上有很多I/O口，也有很多的内置外设，像I2C,ADC,ISP,USART等 ，为了节省引出管脚，这些内置外设基本上是与I/O口共用管脚的，也就是I/O管脚的复用功能。但是STM32还有一特别之处就是：很多内置外设的I/O复用引脚可以通过重映射功能，从不同的I/O管脚引出，即使用了复用功能的引脚是可通过程序改变的。 知道了这些我们就不难理解上面代码的意思了，程序中用到的USART2外设的TX，RX分别对应PA2，PA3，但是我的学习板上的PA2,PA3引脚接了其他设备，但是为了还要用USART2， “RCC_APB2Periph_GPIOD |RCC_APB2Periph_AFIO”就打开了GPIOD重映射功能，把USART2设备的TX，RX映射到PD5,PD6上，我们在这两个引脚上接上MAX232串口芯片就可以使用USART2串口通信了。 </p>
+<p>那各位各位该问：“USART2是不是可以映射到任意管脚呢？” 答案是否定的，它只能映射到固定的管脚，下图是USART2重映射表。</p>
+<p><img src="https://i.loli.net/2021/07/04/fwdWRCnV3kMA2um.png" alt="5PFEFD_5JJZ196ZHQTWG__9.png"></p>
+<p>其他外设的重映射可以参考STM3210x手册8.3节。</p>
+<p>不是说使用了IO的复用功能就一定要启动RCC_APB2Periph_AFIO的Clock的，只有使用了AFIO的事件控制寄存器（AFIO_EVCR）、AFIO的重映射功能(AFIO_MAPR)以及外部中断(AFIO_EXTICRx)控制寄存器才需要开启AFIO的时钟，STM32参考手册从来没说过使用IO的复用功能就一定要开启AFIO时钟。例如下面的，最常用的USART1，如果你的板子上，默认用的就是PA9和PA10这两个IO作为USART1的TX和RX，那么也就是没有重映射（No Remap）这种情况下根本不需要开启AFIO时钟，只要开启USART1的外设时钟并开启对应GPIO复用功能就行了。</p>
+<p>举例说明，默认复用功能只需开始对应外设时钟和对应GPIO复用功能即可，重映射功能除了上述之外，还需开启对应AFIO时钟。</p>
+<p><a href="https://imgtu.com/i/RfU7oF" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/04/RfU7oF.png" alt="RfU7oF.png"></a></p>
+<p>重映射步骤为:</p>
+<p> 1.打开重映射时钟和USART重映射后的I/O口引脚时钟,</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB|RCC_APB2Periph_AFIO,ENABLE); <span class="comment">//使能对应IO口的时钟，因为是复用功能所以还要使能AFIO时钟</span></span><br></pre></td></tr></table></figure>
+<p>2.I/O口重映射开启. </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GPIO_PinRemapConfig(GPIO_Remap_USART1,ENABLE);</span><br></pre></td></tr></table></figure>
+<p>3.配制重映射后的引脚： 这里只需配置重映射后的I/O（PB6,PB7）,原来的不需要去配置（PA9，PA10）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6; </span><br><span class="line">GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;</span><br><span class="line">GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; </span><br><span class="line">GPIO_Init(GPIOB, &amp;GPIO_InitStructure); </span><br><span class="line"></span><br><span class="line">GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;</span><br><span class="line">GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; </span><br><span class="line">GPIO_Init(GPIOB, &amp;GPIO_InitStructure);</span><br></pre></td></tr></table></figure>
+<p>简言之，若GPIO口使用了重映射栏中的外设功能，则需要开启AFIO时钟；只使用默认复用功能时，只开启相应外设时钟无需开启AFIO时钟。</p>
+
+      
     </div>
+    
+    
+    
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="https://s1.ax1x.com/2020/05/10/Y3dt3j.jpg" alt="Vikebt wechat" style="width: 200px; max-width: 100%;"/>
+    <div>subscribe to my blog by scanning my public wechat account</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+<div>
+      
+        
+      
+</div>
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束 感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%BC%80%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 开发</a>
+          
+            <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 嵌入式</a>
+          
+            <a href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag"><i class="fa fa-tag"></i> 单片机</a>
+          
+            <a href="/tags/STM32/" rel="tag"><i class="fa fa-tag"></i> STM32</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/ISP%E4%B8%80%E9%94%AE%E4%B8%8B%E8%BD%BD%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90.html" rel="next" title="ISP一键下载原理分析">
+                <i class="fa fa-chevron-left"></i> ISP一键下载原理分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
 
 
           </div>
@@ -378,6 +616,13 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -679,6 +924,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
