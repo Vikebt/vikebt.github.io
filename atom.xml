@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://baichufan.club/"/>
-  <updated>2021-07-04T12:59:00.101Z</updated>
+  <updated>2021-07-04T13:12:16.840Z</updated>
   <id>http://baichufan.club/</id>
   
   <author>
@@ -15,6 +15,40 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>常用数据传输方式是高低位顺序</title>
+    <link href="http://baichufan.club/%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F%E6%98%AF%E9%AB%98%E4%BD%8E%E4%BD%8D%E9%A1%BA%E5%BA%8F.html"/>
+    <id>http://baichufan.club/%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F%E6%98%AF%E9%AB%98%E4%BD%8E%E4%BD%8D%E9%A1%BA%E5%BA%8F.html</id>
+    <published>2021-07-04T13:04:11.384Z</published>
+    <updated>2021-07-04T13:12:16.840Z</updated>
+    
+    <content type="html"><![CDATA[<p>串口、IIC总线、AD转换、DS18B20他们工作中或者时序中是先传高位还是低位？</p><p>串口传输数据时先传送字符的低位，后传送字符的高位。即低位（LSB）在前，高位（MSB）在后。</p><p>IIC总线传输数据时先传送字符的高位，后传送字符的低位。即高位（MSB）在前，低位（LSB）在后。</p><p>AD转换先传送字符的高位，后传送字符的低位。即高位（MSB）在前，低位（LSB）在后。</p><p>DS18B20传输数据时先传送字符的低位，后传送字符的高位。即低位（LSB）在前，高位（MSB）在后。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;串口、IIC总线、AD转换、DS18B20他们工作中或者时序中是先传高位还是低位？&lt;/p&gt;
+&lt;p&gt;串口传输数据时先传送字符的低位，后传送字符的高位。即低位（LSB）在前，高位（MSB）在后。&lt;/p&gt;
+&lt;p&gt;IIC总线传输数据时先传送字符的高位，后传送字符的低位。即高位（MS
+      
+    
+    </summary>
+    
+    
+      <category term="开发" scheme="http://baichufan.club/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="开发" scheme="http://baichufan.club/tags/%E5%BC%80%E5%8F%91/"/>
+    
+      <category term="嵌入式" scheme="http://baichufan.club/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/"/>
+    
+      <category term="单片机" scheme="http://baichufan.club/tags/%E5%8D%95%E7%89%87%E6%9C%BA/"/>
+    
+      <category term="STM32" scheme="http://baichufan.club/tags/STM32/"/>
+    
+  </entry>
   
   <entry>
     <title>STM32基于FSMC的SRAM扩展</title>
