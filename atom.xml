@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://baichufan.club/"/>
-  <updated>2021-07-04T12:49:20.884Z</updated>
+  <updated>2021-07-04T12:59:00.101Z</updated>
   <id>http://baichufan.club/</id>
   
   <author>
@@ -15,6 +15,38 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>STM32基于FSMC的SRAM扩展</title>
+    <link href="http://baichufan.club/STM32%E5%9F%BA%E4%BA%8EFSMC%E7%9A%84SRAM%E6%89%A9%E5%B1%95.html"/>
+    <id>http://baichufan.club/STM32%E5%9F%BA%E4%BA%8EFSMC%E7%9A%84SRAM%E6%89%A9%E5%B1%95.html</id>
+    <published>2021-07-04T12:55:52.622Z</published>
+    <updated>2021-07-04T12:59:00.101Z</updated>
+    
+    <content type="html"><![CDATA[<p>STM32F103ZET6属于STM32F103xE增强型系列,工作频率为72MHz,内置高速存储器(高达512K字节的闪存和64K字节的SRAM) ,丰富的外设资源足以满足大部分的一般应用,但对于一些需要采集处理较多数据.应用算法或使用GUI等场合,内置的SRAM就显得捉襟见肘了,这时就需要扩展SRAM了。</p><p>IS61LV51216是ISSI公司生产的常用16位SRAM异步存储芯片,内部512k存储容量足以满足多数场合应用需求,存取时间8~12ns ,全静态操作,不需时钟或刷新,兼容TTL标准接口,具有高速,可靠、易操作.低功耗等优点。</p><p>FSMC(灵活的静态存储器控制器)是STM32采用的一种新型存储器控制技术,包含四个主要模块:AHB接口.NOR闪存和PSRAM控制器、NAND闪存和PC卡控制器、外部设备接口。</p><p>STM32F103系列中的64脚的STM32F103Rx系列没有FSMC功能,无法扩展SRAM;100脚的STM32F103Vx系列的FSMC在使用时需要管脚复用,不仅设置起来更复杂一些,而且还需增加锁存器,FSMC本身也占用大量管脚,在许多应用场合中造成管脚分配困难，但成本却与144脚的STM32F103Zx系列相差不大,因此在需要扩展SRAM时除非对成本要求特别严格或有其他要求,一般较少选用STM32F103Vx系列。</p><p>硬件电路设计<br>STM32F103ZET6与IS61LV51216的硬件电路连接:管脚接法同时兼容容量较小但成本更低的IS61LV25616。由于篇幅原因,IS61LV51216芯片的A18-AO为地址线,在此没有用到的FSMC_A可以作为通用IO使用,I/O15-I/O0为数据线,CE为片选引脚,本例选择使用地址为bank1的第三个子区域,片选脚为FSMC_NE3,WE为写入使能引脚,控制存储器的写入和读取,DE为输出使能引脚。LB为低位控制脚,UB为高位控制脚,用于将32位数据分割为连续的16位数据进行操作。</p><p>————————————————<br>版权声明：本文为CSDN博主「EVERSPIN」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br><a href="https://blog.csdn.net/EVERSPIN/article/details/110480180" target="_blank" rel="noopener">原文链接</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;STM32F103ZET6属于STM32F103xE增强型系列,工作频率为72MHz,内置高速存储器(高达512K字节的闪存和64K字节的SRAM) ,丰富的外设资源足以满足大部分的一般应用,但对于一些需要采集处理较多数据.应用算法或使用GUI等场合,内置的SRAM就显得捉
+      
+    
+    </summary>
+    
+    
+      <category term="开发" scheme="http://baichufan.club/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="开发" scheme="http://baichufan.club/tags/%E5%BC%80%E5%8F%91/"/>
+    
+      <category term="嵌入式" scheme="http://baichufan.club/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/"/>
+    
+      <category term="单片机" scheme="http://baichufan.club/tags/%E5%8D%95%E7%89%87%E6%9C%BA/"/>
+    
+      <category term="STM32" scheme="http://baichufan.club/tags/STM32/"/>
+    
+  </entry>
   
   <entry>
     <title>STM32的复用时钟的开启和重映射功能</title>

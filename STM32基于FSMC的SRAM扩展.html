@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="开发,嵌入式,单片机,STM32," />
 
 
 
@@ -102,12 +102,20 @@
     })();
 </script>
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Vikebt&#39;s blog">
-<meta property="og:url" content="http://baichufan.club/tags/%E5%AE%89%E8%A3%85/index.html">
+<meta name="description" content="STM32F103ZET6属于STM32F103xE增强型系列,工作频率为72MHz,内置高速存储器(高达512K字节的闪存和64K字节的SRAM) ,丰富的外设资源足以满足大部分的一般应用,但对于一些需要采集处理较多数据.应用算法或使用GUI等场合,内置的SRAM就显得捉襟见肘了,这时就需要扩展SRAM了。 IS61LV51216是ISSI公司生产的常用16位SRAM异步存储芯片,内部512k存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STM32基于FSMC的SRAM扩展">
+<meta property="og:url" content="http://baichufan.club/STM32%E5%9F%BA%E4%BA%8EFSMC%E7%9A%84SRAM%E6%89%A9%E5%B1%95.html">
 <meta property="og:site_name" content="Vikebt&#39;s blog">
+<meta property="og:description" content="STM32F103ZET6属于STM32F103xE增强型系列,工作频率为72MHz,内置高速存储器(高达512K字节的闪存和64K字节的SRAM) ,丰富的外设资源足以满足大部分的一般应用,但对于一些需要采集处理较多数据.应用算法或使用GUI等场合,内置的SRAM就显得捉襟见肘了,这时就需要扩展SRAM了。 IS61LV51216是ISSI公司生产的常用16位SRAM异步存储芯片,内部512k存">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-04T12:55:52.622Z">
+<meta property="article:modified_time" content="2021-07-04T12:59:00.101Z">
 <meta property="article:author" content="Vikebt">
+<meta property="article:tag" content="开发">
+<meta property="article:tag" content="嵌入式">
+<meta property="article:tag" content="单片机">
+<meta property="article:tag" content="STM32">
 <meta name="twitter:card" content="summary">
 
 
@@ -138,13 +146,13 @@
 
 
 
-  <link rel="canonical" href="http://baichufan.club/tags/安装/"/>
+  <link rel="canonical" href="http://baichufan.club/STM32基于FSMC的SRAM扩展.html"/>
 
 
 
 
 
-  <title>标签: 安装 | Vikebt's blog</title>
+  <title>STM32基于FSMC的SRAM扩展 | Vikebt's blog</title>
   
 
 
@@ -163,7 +171,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
     
     <a href="https://github.com/vikebt" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
@@ -303,54 +311,290 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>安装<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://baichufan.club/STM32%E5%9F%BA%E4%BA%8EFSMC%E7%9A%84SRAM%E6%89%A9%E5%B1%95.html">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Vikebt">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vikebt's blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/keil-anzhuang.html" itemprop="url">
-              
-                <span itemprop="name">keil5(MDK版)开发STM32和STC89C52</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">STM32基于FSMC的SRAM扩展</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-05-13T13:23:20+08:00"
-              content="2020-05-13" >
-          05-13
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-07-04T20:55:52+08:00">
+                2021-07-04
+              </time>
+            
 
-    </header>
-  </article>
+            
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2021-07-04T20:59:00+08:00">
+                2021-07-04
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91/" itemprop="url" rel="index">
+                    <span itemprop="name">开发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/STM32%E5%9F%BA%E4%BA%8EFSMC%E7%9A%84SRAM%E6%89%A9%E5%B1%95.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/STM32%E5%9F%BA%E4%BA%8EFSMC%E7%9A%84SRAM%E6%89%A9%E5%B1%95.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">本文总阅读数 <i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  571
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>STM32F103ZET6属于STM32F103xE增强型系列,工作频率为72MHz,内置高速存储器(高达512K字节的闪存和64K字节的SRAM) ,丰富的外设资源足以满足大部分的一般应用,但对于一些需要采集处理较多数据.应用算法或使用GUI等场合,内置的SRAM就显得捉襟见肘了,这时就需要扩展SRAM了。</p>
+<p>IS61LV51216是ISSI公司生产的常用16位SRAM异步存储芯片,内部512k存储容量足以满足多数场合应用需求,存取时间8~12ns ,全静态操作,不需时钟或刷新,兼容TTL标准接口,具有高速,可靠、易操作.低功耗等优点。</p>
+<p>FSMC(灵活的静态存储器控制器)是STM32采用的一种新型存储器控制技术,包含四个主要模块:AHB接口.NOR闪存和PSRAM控制器、NAND闪存和PC卡控制器、外部设备接口。</p>
+<p>STM32F103系列中的64脚的STM32F103Rx系列没有FSMC功能,无法扩展SRAM;100脚的STM32F103Vx系列的FSMC在使用时需要管脚复用,不仅设置起来更复杂一些,而且还需增加锁存器,FSMC本身也占用大量管脚,在许多应用场合中造成管脚分配困难，但成本却与144脚的STM32F103Zx系列相差不大,因此在需要扩展SRAM时除非对成本要求特别严格或有其他要求,一般较少选用STM32F103Vx系列。</p>
+<p>硬件电路设计<br>STM32F103ZET6与IS61LV51216的硬件电路连接:管脚接法同时兼容容量较小但成本更低的IS61LV25616。由于篇幅原因,IS61LV51216芯片的A18-AO为地址线,在此没有用到的FSMC_A可以作为通用IO使用,I/O15-I/O0为数据线,CE为片选引脚,本例选择使用地址为bank1的第三个子区域,片选脚为FSMC_NE3,WE为写入使能引脚,控制存储器的写入和读取,DE为输出使能引脚。LB为低位控制脚,UB为高位控制脚,用于将32位数据分割为连续的16位数据进行操作。</p>
+<p>————————————————<br>版权声明：本文为CSDN博主「EVERSPIN」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br><a href="https://blog.csdn.net/EVERSPIN/article/details/110480180" target="_blank" rel="noopener">原文链接</a></p>
 
       
     </div>
+    
+    
+    
 
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="https://s1.ax1x.com/2020/05/10/Y3dt3j.jpg" alt="Vikebt wechat" style="width: 200px; max-width: 100%;"/>
+    <div>subscribe to my blog by scanning my public wechat account</div>
+</div>
+
+      </div>
+    
+
+    
+
+    
+
+<div>
+      
+        
+      
+</div>
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束 感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%BC%80%E5%8F%91/" rel="tag"><i class="fa fa-tag"></i> 开发</a>
+          
+            <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 嵌入式</a>
+          
+            <a href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag"><i class="fa fa-tag"></i> 单片机</a>
+          
+            <a href="/tags/STM32/" rel="tag"><i class="fa fa-tag"></i> STM32</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/STM32%E7%9A%84%E5%A4%8D%E7%94%A8%E6%97%B6%E9%92%9F%E7%9A%84%E5%BC%80%E5%90%AF%E5%92%8C%E9%87%8D%E6%98%A0%E5%B0%84%E5%8A%9F%E8%83%BD.html" rel="next" title="STM32的复用时钟的开启和重映射功能">
+                <i class="fa fa-chevron-left"></i> STM32的复用时钟的开启和重映射功能
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
 
 
           </div>
@@ -358,6 +602,13 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -659,6 +910,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

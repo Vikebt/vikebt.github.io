@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>PN结的特性</title>
-    <url>/PN%E7%BB%93%E7%9A%84%E7%89%B9%E6%80%A7.html</url>
-    <content><![CDATA[<h3 id="PN结的反向击穿"><a href="#PN结的反向击穿" class="headerlink" title="PN结的反向击穿"></a>PN结的反向击穿</h3><h4 id="雪崩击穿和齐纳击穿"><a href="#雪崩击穿和齐纳击穿" class="headerlink" title="雪崩击穿和齐纳击穿"></a>雪崩击穿和齐纳击穿</h4><p>雪崩击穿：当二极管掺杂浓度较低时，外加反向电压，PN结宽， PN结变成“粒子加速器”，一旦P端或N端有粒子通过漂移运动进入PN结时，瞬间被加速，撞到PN结中的共价键上，价电子变成自由电子，开始在PN结中四处碰撞，引起“雪崩反应”，导致PN结击穿。<br>前提：PN结宽度足够宽，能使粒子加速。<br>温度越高，雪崩击穿所需要的击穿电压越高。<br>齐纳击穿：当二极管掺杂浓度较高时，外加反向电压，PN结窄，距离短，场强大，共价键断裂，价电子变成自由电子，导致PN结击穿。<br>温度越高，齐纳击穿所需要的击穿电压越低。<br>上述两种电击穿过程都是可逆的。</p>
-<h3 id="PN结的电容效应"><a href="#PN结的电容效应" class="headerlink" title="PN结的电容效应"></a>PN结的电容效应</h3><h4 id="势垒电容和扩散电容"><a href="#势垒电容和扩散电容" class="headerlink" title="势垒电容和扩散电容"></a>势垒电容和扩散电容</h4><p>势垒电容：当PN结处于反向偏置时，当外加电压增加时，势垒电场增强，多数载流子被拉出而远离PN结，势垒区将增宽，反之，当外加电压减小时，势垒区变窄。势垒区的变化意味着区间存储的正、负离子电荷数的增减，类似于平行板电容器两极板上电荷的变化。此时PN结呈现出的电容效应称为势垒电容,所不同的是，势垒电容是非线性的。<br>扩散电容：当PN结处于正向偏置时，P区的空穴将向N区扩散，其结果导致到达N区的空穴在靠近结边缘的浓度高于距结稍远处的浓度。离结越近，空穴浓度越低，这是因为空穴在N区与多数载流子复合所致。N区的电子向P区扩散的情况与上述情况类似。若外加正向电压有一增量ΔV，则相应的空穴（电子）扩散运动在结的附近产生一电荷增量ΔQ，二者之比ΔQ/ΔV为扩散电容。PN结在正向偏置时，积累在P区的电子和N区的空穴随正向电压的增加而很快增加，扩散电容较大。反向偏置时，因为载流子数目很少，所以扩散电容数值很小，一般可以忽略。</p>
-]]></content>
-      <categories>
-        <category>学习</category>
-      </categories>
-      <tags>
-        <tag>PN结</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ISP一键下载原理分析</title>
     <url>/ISP%E4%B8%80%E9%94%AE%E4%B8%8B%E8%BD%BD%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90.html</url>
     <content><![CDATA[<h2 id="ISP一键下载原理分析"><a href="#ISP一键下载原理分析" class="headerlink" title="ISP一键下载原理分析"></a>ISP一键下载原理分析</h2><h3 id="ISP一键下载原理分析-1"><a href="#ISP一键下载原理分析-1" class="headerlink" title="ISP一键下载原理分析"></a>ISP一键下载原理分析</h3><p>ISP指电路板上的空白元器件可以编程写入最终用户代码， 而不需要从电路板上取下元器件。 已经编程的器件也可以用ISP方式擦除或再编程。<br>使用ISP的时候需要用到自举程序（BootLoader） ， 自举程序存储在STM32器件的内部自举 ROM（系统存储器） 中。 其主要任务是通过一种可用的串行外设（USART、 CAN、 USB、 I2C等） 将应用程序下载到内部Flash存储器中。 每种串行接口都定义了相应的通信协议， 其中包含兼容的命令集和序列。  </p>
@@ -117,6 +104,58 @@
       </tags>
   </entry>
   <entry>
+    <title>STM32-GPIO框图剖析</title>
+    <url>/STM32-GPIO%E6%A1%86%E5%9B%BE%E5%89%96%E6%9E%90.html</url>
+    <content><![CDATA[<h2 id="GPIO框图剖析"><a href="#GPIO框图剖析" class="headerlink" title="GPIO框图剖析"></a>GPIO框图剖析</h2><p>GPIO是通用输入输出端口的简称，简单来说就是STM32可控制的引脚，STM32芯片的GPIO引脚与外部设备连接起来，从而实现与外部通讯、控制以及数据采集的功能。STM32芯片的GPIO被分成很多组，每组有16个引脚，如型号为STM32F103VET6型号的芯片有GPIOA、GPIOB、GPIOC 至GPIOE 共5 组GPIO，芯片一共100 个引脚，其中GPIO就占了一大部分，所有的GPIO引脚都有基本的输入输出功能。</p>
+<p>最基本的输出功能是由STM32控制引脚输出高、低电平，实现开关控制，如把GPIO引脚接入到LED灯，那就可以控制LED灯的亮灭，引脚接入到继电器或三极管，那就可以通过继电器或三极管控制外部大功率电路的通断。最基本的输入功能是检测外部输入电平，如把GPIO 引脚连接到按键，通过电平高低区分按键是否被按下。</p>
+<p><img src="https://i.loli.net/2021/07/04/FXIZNSr63Qpi7x5.png" alt="1.png"></p>
+<h3 id="基本结构分析"><a href="#基本结构分析" class="headerlink" title="基本结构分析"></a>基本结构分析</h3><h4 id="保护二极管及上、下拉电阻"><a href="#保护二极管及上、下拉电阻" class="headerlink" title="保护二极管及上、下拉电阻"></a>保护二极管及上、下拉电阻</h4><p>引脚的两个保护二级管可以防止引脚外部过高或过低的电压输入，当引脚电压高于VDD时，上方的二极管导通，当引脚电压低于VSS时，下方的二极管导通，防止不正常电压引入芯片导致芯片烧毁。尽管有这样的保护，并不意味着STM32的引脚能直接外接大功率驱动器件，如直接驱动电机，强制驱动要么电机不转，要么导致芯片烧坏，必须要加大功率及隔离电路驱动。</p>
+<h4 id="P-MOS管-和-N-MOS管"><a href="#P-MOS管-和-N-MOS管" class="headerlink" title="P-MOS管 和 N-MOS管"></a>P-MOS管 和 N-MOS管</h4><p>推挽输出：<br>推挽输出模式，是根据这两个 MOS 管的工作方式来命名的。<br>在该结构中输入高电平时，上方的 P-MOS 导通，下方的 N-MOS 关闭，对外输出高电平；而在该结构中输入低电平时，N-MOS 管导通，P-MOS 关闭，对外输出低电平。当引脚高低电平切换时，两个管子轮流导通，一个负责灌电流，一个负责拉电流，使其负载能力和开关速度都比普通的方式有很大的提高。推挽输出的低电平为 0 伏，高电平为 3.3 伏。</p>
+<p><img src="https://i.loli.net/2021/07/04/ANJjrdVRicT8w27.png" alt="2.png"></p>
+<p>开漏输出模式：<br>上方的 P-MOS 管完全不工作，如果我们控制输出为 0，低电平，则 P-MOS 管关闭， N-MOS 管导通，使输出接地，若控制输出为 1 (它无法直接输出高电平)时，则 P-MOS 管和 N-MOS 管都关闭，所以引脚既不输出高电平，也不输出低电平，为高阻态。为正常使用时必须接上拉电阻，若有很多个开漏模式引脚连接到一起时，只有当所有引脚都输出高阻态，才由上拉电阻提供高电平，此高电平的电压为外部上拉电阻所接的电源的电压。若其中一个引脚为低电平，那线路就相当于短路接地，使得整条线路都为低电平，0 伏。</p>
+<p><img src="https://i.loli.net/2021/07/04/OGIAxvTZ1mLREXp.png" alt="3.png"></p>
+<p>推挽输出模式一般应用在输出电平为 0 和 3.3 伏而且需要高速切换开关状态的场合。在 STM32 的应用中，除了必须用开漏模式的场合，我们都习惯使用推挽输出模式。开漏输出一般应用在 I2C、SMBUS 通讯等需要“线与”功能的总线电路中，还用在电平不匹配的场合，如需要输出 5 伏的高电平，就可以在外部接一个上拉电阻， 上拉电源为 5 伏， 并且把 GPIO 设置为开漏模式，当输出高阻态时，由上拉电阻和电源向外输出 5 伏的电平。</p>
+<p><img src="https://i.loli.net/2021/07/04/nfhepKDsAqCJd7W.png" alt="4.png"></p>
+<h4 id="输出数据寄存器"><a href="#输出数据寄存器" class="headerlink" title="输出数据寄存器"></a>输出数据寄存器</h4><p>前面提到的双MOS管结构电路的输入信号，是由GPIO“输出数据寄存器GPIOx_ODR”提供的，因此我们通过修改输出数据寄存器的值就可以修改GPIO引脚的输出电平。而“置位/复位寄存器GPIOx_BSRR”可以通过修改输出数据寄存器的值从而影响电路的输出。</p>
+<h4 id="复用功能输出"><a href="#复用功能输出" class="headerlink" title="复用功能输出"></a>复用功能输出</h4><p>“复用功能输出”中的“复用”是指STM32的其它片上外设对GPIO引脚进行控制，此时GPIO引脚用作该外设功能的一部分，算是第二用途。从其它外设引出来的“复用功能输出信号”与GPIO本身的数据据寄存器都连接到双MOS管结构的输入中，通过图中的梯形结构作为开关切换选择。<br>例如我们使用USART串口通讯时，需要用到某个GPIO引脚作为通讯发送引脚，这个时候就可以把该GPIO引脚配置成USART串口复用功能，由串口外设控制该引脚，发送数据。<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// GPIOB16个IO全部输出0XFF</span></span><br><span class="line">GPIOB-&gt;ODR = <span class="number">0XFF</span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="输入数据寄存器"><a href="#输入数据寄存器" class="headerlink" title="输入数据寄存器"></a>输入数据寄存器</h4><p>看GPIO 结构框图的上半部分，GPIO 引脚经过内部的上、下拉电阻，可以配置成上/下拉输入，然后再连接到施密特触发器，信号经过触发器后，模拟信号转化为0、1 的数字信号，然后存储在“输入数据寄存器GPIOx_IDR”中，通过读取该寄存器就可以了解GPIO引脚的电平状态。<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//读取GPIOB端口的16位数据值</span></span><br><span class="line">uint16_ttemp;</span><br><span class="line">temp = GPIOB-&gt;IDR;</span><br></pre></td></tr></table></figure></p>
+<h4 id="复用功能输入"><a href="#复用功能输入" class="headerlink" title="复用功能输入"></a>复用功能输入</h4><p>与“复用功能输出”模式类似，在“复用功能输入模式”时，GPIO引脚的信号传输到STM32其它片上外设，由该外设读取引脚状态。同样，如我们使用USART串口通讯时，需要用到某个GPIO引脚作为通讯接收引脚，这个时候就可以把该GPIO引脚配置成USART串口复用功能，使USART可以通过该通讯引脚的接收远端数据。</p>
+<h4 id="模拟输入输出"><a href="#模拟输入输出" class="headerlink" title="模拟输入输出"></a>模拟输入输出</h4><p>当GPIO引脚用于ADC采集电压的输入通道时，用作“模拟输入”功能，此时信号是不经过施密特触发器的，因为经过施密特触发器后信号只有0、1两种状态，所以ADC外设要采集到原始的模拟信号，信号源输入必须在施密特触发器之前。类似地，当GPIO引脚用于DAC作为模拟电压输出通道时，此时作为“模拟输出”功能，DAC的模拟信号输出就不经过双MOS管结构，模拟信号直接输出到引脚。</p>
+<h3 id="工作模式"><a href="#工作模式" class="headerlink" title="工作模式"></a>工作模式</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//8种工作模式</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span></span><br><span class="line">&#123;</span><br><span class="line">GPIO_Mode_AIN = <span class="number">0x0</span>,<span class="comment">//模拟输入</span></span><br><span class="line">GPIO_Mode_IN_FLOATING = <span class="number">0x04</span>,<span class="comment">//浮空输入</span></span><br><span class="line">GPIO_Mode_IPD = <span class="number">0x28</span>,<span class="comment">//下拉输入</span></span><br><span class="line">GPIO_Mode_IPU = <span class="number">0x48</span>,<span class="comment">//上拉输入</span></span><br><span class="line">GPIO_Mode_Out_OD = <span class="number">0x14</span>,<span class="comment">//开漏输出</span></span><br><span class="line">GPIO_Mode_Out_PP = <span class="number">0x10</span>,<span class="comment">//推挽输出</span></span><br><span class="line">GPIO_Mode_AF_OD = <span class="number">0x1C</span>,<span class="comment">//复用开漏输出</span></span><br><span class="line">GPIO_Mode_AF_PP = <span class="number">0x18</span><span class="comment">//复用推挽输出</span></span><br><span class="line">&#125; GPIOMode_TypeDef;</span><br></pre></td></tr></table></figure>
+<h4 id="输入模式（上拉、下拉、浮空、模拟）"><a href="#输入模式（上拉、下拉、浮空、模拟）" class="headerlink" title="输入模式（上拉、下拉、浮空、模拟）"></a>输入模式（上拉、下拉、浮空、模拟）</h4><p>在输入模式时，施密特触发器打开，输出被禁止，可通过输入数据寄存器GPIOx_IDR读取I/O状态。其中输入模式，可设置为上拉、下拉、浮空和模拟输入四种。上拉和下拉输入很好理解，默认的电平由上拉或者下拉决定。浮空输入的电平是不确定的，完全由外部的输入决定，一般接按键的时候用的是这个模式。模拟输入则用于ADC 采集。</p>
+<h4 id="输出模式（推挽、开漏）"><a href="#输出模式（推挽、开漏）" class="headerlink" title="输出模式（推挽、开漏）"></a>输出模式（推挽、开漏）</h4><p>在输出模式中，推挽模式时双MOS管以轮流方式工作，输出数据寄存器GPIOx_ODR可控制I/O输出高低电平。开漏模式时，只有N-MOS管工作，输出数据寄存器可控制I/O输出高阻态或低电平。输出速度可配置，有2MHz\10MHz\50MHz 的选项。此处的输出速度即I/O支持的高低电平状态最高切换频率，支持的频率越高，功耗越大，如果功耗要求不严格，把速度设置成最大即可。</p>
+<p>在输出模式时施密特触发器是打开的，即输入可用，通过输入数据寄存器GPIOx_IDR可读取I/O的实际状态。</p>
+<h4 id="复用功能（推挽、开漏）"><a href="#复用功能（推挽、开漏）" class="headerlink" title="复用功能（推挽、开漏）"></a>复用功能（推挽、开漏）</h4><p>复用功能模式中，输出使能，输出速度可配置，可工作在开漏及推挽模式，但是输出信号源于其它外设，输出数据寄存器GPIOx_ODR 无效;输入可用，通过输入数据寄存器可获取I/O实际状态，但一般直接用外设的寄存器来获取该数据信号。</p>
+<p>通过对GPIO寄存器写入不同的参数，就可以改变GPIO的工作模式，再强调一下，要了解具体寄存器时一定要查阅《STM32F10X-中文参考手册》中对应外设的寄存器说明。在GPIO外设中，控制端口高低控制寄存器CRH和CRL可以配置每个GPIO的工作模式和工作的速度，每4个位控制一个IO，CRH 控制端口的高八位，CRL控制端口的低8位，具体的看CRH和CRL的寄存器描述。</p>
+<p><img src="https://i.loli.net/2021/07/04/EdMWjecut8f13Jp.jpg" alt="5.jpg"></p>
+<p><img src="https://i.loli.net/2021/07/04/TKEi5a1nG4MupQJ.jpg" alt="6.jpg"></p>
+<p>参考引用：</p>
+<p>1、野火—-《零死角玩转STM32-F103霸道》<br>2、《STM32F1xx中文参考手册》<br>3、《Cortex-M3内核编程手册》</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>开发</tag>
+        <tag>嵌入式</tag>
+        <tag>单片机</tag>
+        <tag>STM32</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PN结的特性</title>
+    <url>/PN%E7%BB%93%E7%9A%84%E7%89%B9%E6%80%A7.html</url>
+    <content><![CDATA[<h3 id="PN结的反向击穿"><a href="#PN结的反向击穿" class="headerlink" title="PN结的反向击穿"></a>PN结的反向击穿</h3><h4 id="雪崩击穿和齐纳击穿"><a href="#雪崩击穿和齐纳击穿" class="headerlink" title="雪崩击穿和齐纳击穿"></a>雪崩击穿和齐纳击穿</h4><p>雪崩击穿：当二极管掺杂浓度较低时，外加反向电压，PN结宽， PN结变成“粒子加速器”，一旦P端或N端有粒子通过漂移运动进入PN结时，瞬间被加速，撞到PN结中的共价键上，价电子变成自由电子，开始在PN结中四处碰撞，引起“雪崩反应”，导致PN结击穿。<br>前提：PN结宽度足够宽，能使粒子加速。<br>温度越高，雪崩击穿所需要的击穿电压越高。<br>齐纳击穿：当二极管掺杂浓度较高时，外加反向电压，PN结窄，距离短，场强大，共价键断裂，价电子变成自由电子，导致PN结击穿。<br>温度越高，齐纳击穿所需要的击穿电压越低。<br>上述两种电击穿过程都是可逆的。</p>
+<h3 id="PN结的电容效应"><a href="#PN结的电容效应" class="headerlink" title="PN结的电容效应"></a>PN结的电容效应</h3><h4 id="势垒电容和扩散电容"><a href="#势垒电容和扩散电容" class="headerlink" title="势垒电容和扩散电容"></a>势垒电容和扩散电容</h4><p>势垒电容：当PN结处于反向偏置时，当外加电压增加时，势垒电场增强，多数载流子被拉出而远离PN结，势垒区将增宽，反之，当外加电压减小时，势垒区变窄。势垒区的变化意味着区间存储的正、负离子电荷数的增减，类似于平行板电容器两极板上电荷的变化。此时PN结呈现出的电容效应称为势垒电容,所不同的是，势垒电容是非线性的。<br>扩散电容：当PN结处于正向偏置时，P区的空穴将向N区扩散，其结果导致到达N区的空穴在靠近结边缘的浓度高于距结稍远处的浓度。离结越近，空穴浓度越低，这是因为空穴在N区与多数载流子复合所致。N区的电子向P区扩散的情况与上述情况类似。若外加正向电压有一增量ΔV，则相应的空穴（电子）扩散运动在结的附近产生一电荷增量ΔQ，二者之比ΔQ/ΔV为扩散电容。PN结在正向偏置时，积累在P区的电子和N区的空穴随正向电压的增加而很快增加，扩散电容较大。反向偏置时，因为载流子数目很少，所以扩散电容数值很小，一般可以忽略。</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>PN结</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>STM32的复用时钟的开启和重映射功能</title>
     <url>/STM32%E7%9A%84%E5%A4%8D%E7%94%A8%E6%97%B6%E9%92%9F%E7%9A%84%E5%BC%80%E5%90%AF%E5%92%8C%E9%87%8D%E6%98%A0%E5%B0%84%E5%8A%9F%E8%83%BD.html</url>
     <content><![CDATA[<p>最近在学习STM32，在参考手册上了解到关于“复用”和“重映射”这些概念，刚开始没搞懂，通过这几天在网上查找资料和看手册，弄清楚了，先与大家分享，希望能对跟我一样的新手有所帮助吧。</p>
@@ -136,34 +175,6 @@
 <p>3.配制重映射后的引脚： 这里只需配置重映射后的I/O（PB6,PB7）,原来的不需要去配置（PA9，PA10）。</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6; </span><br><span class="line">GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;</span><br><span class="line">GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; </span><br><span class="line">GPIO_Init(GPIOB, &amp;GPIO_InitStructure); </span><br><span class="line"></span><br><span class="line">GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;</span><br><span class="line">GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; </span><br><span class="line">GPIO_Init(GPIOB, &amp;GPIO_InitStructure);</span><br></pre></td></tr></table></figure>
 <p>简言之，若GPIO口使用了重映射栏中的外设功能，则需要开启AFIO时钟；只使用默认复用功能时，只开启相应外设时钟无需开启AFIO时钟。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-      </categories>
-      <tags>
-        <tag>开发</tag>
-        <tag>嵌入式</tag>
-        <tag>单片机</tag>
-        <tag>STM32</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>初识STM32</title>
-    <url>/%E5%88%9D%E8%AF%8632%E5%8D%95%E7%89%87%E6%9C%BA.html</url>
-    <content><![CDATA[<h2 id="什么是STM32"><a href="#什么是STM32" class="headerlink" title="什么是STM32"></a>什么是STM32</h2><h3 id="STM32的字面含义"><a href="#STM32的字面含义" class="headerlink" title="STM32的字面含义"></a>STM32的字面含义</h3><p>1、ST——意法半导体，是一个公司名，即SOC厂商。STM32等系列芯片的内核由ARM公司生产（ARM是一个IP厂商，本身生产芯片，将内核授权给各大SOC厂商使用而盈利），ST公司则负责STM32外围电路的设计。</p>
-<p>2、M— Microelectronics的缩写，表示微控制器，大家注意微控制器（无MMU，主频较低，速度较慢）和微处理器（有MMU,主频较高，可跑Linux）的区别。<br><em>MMU:内存处理单元</em></p>
-<p>3、32— 32bit的意思，表示这是一个32bit的微控制器</p>
-<h2 id="STM32能做什么"><a href="#STM32能做什么" class="headerlink" title="STM32能做什么"></a>STM32能做什么</h2><p>1、串口—USART，用于跟跟串口接口的设备通信，比如：USB转串口模块、ESP8266 WIFI、GPS模块，GSM 模块，串口屏、指纹识别模块</p>
-<p>2、内部集成电路—I2C，用于跟I2C接口的设备通信，比如：EEPROM、电容屏、陀螺仪MPU6050、0.96寸OLED模块</p>
-<p>3、串行通信接口—SPI，用于跟SPI接口的设备通信，比如：串行FLASH、以太网W5500、音频模块VS1053</p>
-<p>4、SDIO、FSMC的超级、I2S、ADC、GPIO</p>
-<h2 id="STM32怎么选型"><a href="#STM32怎么选型" class="headerlink" title="STM32怎么选型"></a>STM32怎么选型</h2><h3 id="STM32分类"><a href="#STM32分类" class="headerlink" title="STM32分类"></a>STM32分类</h3><p><img src="https://i.loli.net/2020/10/31/x5dv6JXP1oqCrYh.png" alt="1.png"></p>
-<h3 id="STM32的命名方法"><a href="#STM32的命名方法" class="headerlink" title="STM32的命名方法"></a>STM32的命名方法</h3><p><img src="https://i.loli.net/2020/10/31/PY1nF7Kvm9gIsD3.png" alt="2.png"></p>
-<p><img src="https://i.loli.net/2020/10/31/GNgvuF413hOmLdi.png" alt="3.png"></p>
-<h3 id="如何分配原理图引脚"><a href="#如何分配原理图引脚" class="headerlink" title="如何分配原理图引脚"></a>如何分配原理图引脚</h3><p><img src="https://i.loli.net/2020/10/31/kPChVvqt1KfiUAl.png" alt="4.png"></p>
-<h3 id="如何寻找引脚的功能说明"><a href="#如何寻找引脚的功能说明" class="headerlink" title="如何寻找引脚的功能说明"></a>如何寻找引脚的功能说明</h3><p><img src="https://i.loli.net/2020/10/31/QtpzF8uBf1n293c.png" alt="5.png"></p>
-<h3 id="数据手册中对引脚的功能定义"><a href="#数据手册中对引脚的功能定义" class="headerlink" title="数据手册中对引脚的功能定义"></a>数据手册中对引脚的功能定义</h3><p><img src="https://i.loli.net/2020/10/31/ex1uyaGVtIjsCJ3.png" alt="6.png"></p>
-<h3 id="引脚的功能定义解读"><a href="#引脚的功能定义解读" class="headerlink" title="引脚的功能定义解读"></a>引脚的功能定义解读</h3><p><img src="https://i.loli.net/2020/10/31/zPxakTuUyVeF3ol.png" alt="7.png"></p>
 ]]></content>
       <categories>
         <category>开发</category>
@@ -237,33 +248,22 @@
       </tags>
   </entry>
   <entry>
-    <title>STM32-GPIO框图剖析</title>
-    <url>/STM32-GPIO%E6%A1%86%E5%9B%BE%E5%89%96%E6%9E%90.html</url>
-    <content><![CDATA[<h2 id="GPIO框图剖析"><a href="#GPIO框图剖析" class="headerlink" title="GPIO框图剖析"></a>GPIO框图剖析</h2><p>GPIO是通用输入输出端口的简称，简单来说就是STM32可控制的引脚，STM32芯片的GPIO引脚与外部设备连接起来，从而实现与外部通讯、控制以及数据采集的功能。STM32芯片的GPIO被分成很多组，每组有16个引脚，如型号为STM32F103VET6型号的芯片有GPIOA、GPIOB、GPIOC 至GPIOE 共5 组GPIO，芯片一共100 个引脚，其中GPIO就占了一大部分，所有的GPIO引脚都有基本的输入输出功能。</p>
-<p>最基本的输出功能是由STM32控制引脚输出高、低电平，实现开关控制，如把GPIO引脚接入到LED灯，那就可以控制LED灯的亮灭，引脚接入到继电器或三极管，那就可以通过继电器或三极管控制外部大功率电路的通断。最基本的输入功能是检测外部输入电平，如把GPIO 引脚连接到按键，通过电平高低区分按键是否被按下。</p>
-<p><img src="https://i.loli.net/2021/07/04/FXIZNSr63Qpi7x5.png" alt="1.png"></p>
-<h3 id="基本结构分析"><a href="#基本结构分析" class="headerlink" title="基本结构分析"></a>基本结构分析</h3><h4 id="保护二极管及上、下拉电阻"><a href="#保护二极管及上、下拉电阻" class="headerlink" title="保护二极管及上、下拉电阻"></a>保护二极管及上、下拉电阻</h4><p>引脚的两个保护二级管可以防止引脚外部过高或过低的电压输入，当引脚电压高于VDD时，上方的二极管导通，当引脚电压低于VSS时，下方的二极管导通，防止不正常电压引入芯片导致芯片烧毁。尽管有这样的保护，并不意味着STM32的引脚能直接外接大功率驱动器件，如直接驱动电机，强制驱动要么电机不转，要么导致芯片烧坏，必须要加大功率及隔离电路驱动。</p>
-<h4 id="P-MOS管-和-N-MOS管"><a href="#P-MOS管-和-N-MOS管" class="headerlink" title="P-MOS管 和 N-MOS管"></a>P-MOS管 和 N-MOS管</h4><p>推挽输出：<br>推挽输出模式，是根据这两个 MOS 管的工作方式来命名的。<br>在该结构中输入高电平时，上方的 P-MOS 导通，下方的 N-MOS 关闭，对外输出高电平；而在该结构中输入低电平时，N-MOS 管导通，P-MOS 关闭，对外输出低电平。当引脚高低电平切换时，两个管子轮流导通，一个负责灌电流，一个负责拉电流，使其负载能力和开关速度都比普通的方式有很大的提高。推挽输出的低电平为 0 伏，高电平为 3.3 伏。</p>
-<p><img src="https://i.loli.net/2021/07/04/ANJjrdVRicT8w27.png" alt="2.png"></p>
-<p>开漏输出模式：<br>上方的 P-MOS 管完全不工作，如果我们控制输出为 0，低电平，则 P-MOS 管关闭， N-MOS 管导通，使输出接地，若控制输出为 1 (它无法直接输出高电平)时，则 P-MOS 管和 N-MOS 管都关闭，所以引脚既不输出高电平，也不输出低电平，为高阻态。为正常使用时必须接上拉电阻，若有很多个开漏模式引脚连接到一起时，只有当所有引脚都输出高阻态，才由上拉电阻提供高电平，此高电平的电压为外部上拉电阻所接的电源的电压。若其中一个引脚为低电平，那线路就相当于短路接地，使得整条线路都为低电平，0 伏。</p>
-<p><img src="https://i.loli.net/2021/07/04/OGIAxvTZ1mLREXp.png" alt="3.png"></p>
-<p>推挽输出模式一般应用在输出电平为 0 和 3.3 伏而且需要高速切换开关状态的场合。在 STM32 的应用中，除了必须用开漏模式的场合，我们都习惯使用推挽输出模式。开漏输出一般应用在 I2C、SMBUS 通讯等需要“线与”功能的总线电路中，还用在电平不匹配的场合，如需要输出 5 伏的高电平，就可以在外部接一个上拉电阻， 上拉电源为 5 伏， 并且把 GPIO 设置为开漏模式，当输出高阻态时，由上拉电阻和电源向外输出 5 伏的电平。</p>
-<p><img src="https://i.loli.net/2021/07/04/nfhepKDsAqCJd7W.png" alt="4.png"></p>
-<h4 id="输出数据寄存器"><a href="#输出数据寄存器" class="headerlink" title="输出数据寄存器"></a>输出数据寄存器</h4><p>前面提到的双MOS管结构电路的输入信号，是由GPIO“输出数据寄存器GPIOx_ODR”提供的，因此我们通过修改输出数据寄存器的值就可以修改GPIO引脚的输出电平。而“置位/复位寄存器GPIOx_BSRR”可以通过修改输出数据寄存器的值从而影响电路的输出。</p>
-<h4 id="复用功能输出"><a href="#复用功能输出" class="headerlink" title="复用功能输出"></a>复用功能输出</h4><p>“复用功能输出”中的“复用”是指STM32的其它片上外设对GPIO引脚进行控制，此时GPIO引脚用作该外设功能的一部分，算是第二用途。从其它外设引出来的“复用功能输出信号”与GPIO本身的数据据寄存器都连接到双MOS管结构的输入中，通过图中的梯形结构作为开关切换选择。<br>例如我们使用USART串口通讯时，需要用到某个GPIO引脚作为通讯发送引脚，这个时候就可以把该GPIO引脚配置成USART串口复用功能，由串口外设控制该引脚，发送数据。<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// GPIOB16个IO全部输出0XFF</span></span><br><span class="line">GPIOB-&gt;ODR = <span class="number">0XFF</span>;</span><br></pre></td></tr></table></figure></p>
-<h4 id="输入数据寄存器"><a href="#输入数据寄存器" class="headerlink" title="输入数据寄存器"></a>输入数据寄存器</h4><p>看GPIO 结构框图的上半部分，GPIO 引脚经过内部的上、下拉电阻，可以配置成上/下拉输入，然后再连接到施密特触发器，信号经过触发器后，模拟信号转化为0、1 的数字信号，然后存储在“输入数据寄存器GPIOx_IDR”中，通过读取该寄存器就可以了解GPIO引脚的电平状态。<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//读取GPIOB端口的16位数据值</span></span><br><span class="line">uint16_ttemp;</span><br><span class="line">temp = GPIOB-&gt;IDR;</span><br></pre></td></tr></table></figure></p>
-<h4 id="复用功能输入"><a href="#复用功能输入" class="headerlink" title="复用功能输入"></a>复用功能输入</h4><p>与“复用功能输出”模式类似，在“复用功能输入模式”时，GPIO引脚的信号传输到STM32其它片上外设，由该外设读取引脚状态。同样，如我们使用USART串口通讯时，需要用到某个GPIO引脚作为通讯接收引脚，这个时候就可以把该GPIO引脚配置成USART串口复用功能，使USART可以通过该通讯引脚的接收远端数据。</p>
-<h4 id="模拟输入输出"><a href="#模拟输入输出" class="headerlink" title="模拟输入输出"></a>模拟输入输出</h4><p>当GPIO引脚用于ADC采集电压的输入通道时，用作“模拟输入”功能，此时信号是不经过施密特触发器的，因为经过施密特触发器后信号只有0、1两种状态，所以ADC外设要采集到原始的模拟信号，信号源输入必须在施密特触发器之前。类似地，当GPIO引脚用于DAC作为模拟电压输出通道时，此时作为“模拟输出”功能，DAC的模拟信号输出就不经过双MOS管结构，模拟信号直接输出到引脚。</p>
-<h3 id="工作模式"><a href="#工作模式" class="headerlink" title="工作模式"></a>工作模式</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//8种工作模式</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span></span><br><span class="line">&#123;</span><br><span class="line">GPIO_Mode_AIN = <span class="number">0x0</span>,<span class="comment">//模拟输入</span></span><br><span class="line">GPIO_Mode_IN_FLOATING = <span class="number">0x04</span>,<span class="comment">//浮空输入</span></span><br><span class="line">GPIO_Mode_IPD = <span class="number">0x28</span>,<span class="comment">//下拉输入</span></span><br><span class="line">GPIO_Mode_IPU = <span class="number">0x48</span>,<span class="comment">//上拉输入</span></span><br><span class="line">GPIO_Mode_Out_OD = <span class="number">0x14</span>,<span class="comment">//开漏输出</span></span><br><span class="line">GPIO_Mode_Out_PP = <span class="number">0x10</span>,<span class="comment">//推挽输出</span></span><br><span class="line">GPIO_Mode_AF_OD = <span class="number">0x1C</span>,<span class="comment">//复用开漏输出</span></span><br><span class="line">GPIO_Mode_AF_PP = <span class="number">0x18</span><span class="comment">//复用推挽输出</span></span><br><span class="line">&#125; GPIOMode_TypeDef;</span><br></pre></td></tr></table></figure>
-<h4 id="输入模式（上拉、下拉、浮空、模拟）"><a href="#输入模式（上拉、下拉、浮空、模拟）" class="headerlink" title="输入模式（上拉、下拉、浮空、模拟）"></a>输入模式（上拉、下拉、浮空、模拟）</h4><p>在输入模式时，施密特触发器打开，输出被禁止，可通过输入数据寄存器GPIOx_IDR读取I/O状态。其中输入模式，可设置为上拉、下拉、浮空和模拟输入四种。上拉和下拉输入很好理解，默认的电平由上拉或者下拉决定。浮空输入的电平是不确定的，完全由外部的输入决定，一般接按键的时候用的是这个模式。模拟输入则用于ADC 采集。</p>
-<h4 id="输出模式（推挽、开漏）"><a href="#输出模式（推挽、开漏）" class="headerlink" title="输出模式（推挽、开漏）"></a>输出模式（推挽、开漏）</h4><p>在输出模式中，推挽模式时双MOS管以轮流方式工作，输出数据寄存器GPIOx_ODR可控制I/O输出高低电平。开漏模式时，只有N-MOS管工作，输出数据寄存器可控制I/O输出高阻态或低电平。输出速度可配置，有2MHz\10MHz\50MHz 的选项。此处的输出速度即I/O支持的高低电平状态最高切换频率，支持的频率越高，功耗越大，如果功耗要求不严格，把速度设置成最大即可。</p>
-<p>在输出模式时施密特触发器是打开的，即输入可用，通过输入数据寄存器GPIOx_IDR可读取I/O的实际状态。</p>
-<h4 id="复用功能（推挽、开漏）"><a href="#复用功能（推挽、开漏）" class="headerlink" title="复用功能（推挽、开漏）"></a>复用功能（推挽、开漏）</h4><p>复用功能模式中，输出使能，输出速度可配置，可工作在开漏及推挽模式，但是输出信号源于其它外设，输出数据寄存器GPIOx_ODR 无效;输入可用，通过输入数据寄存器可获取I/O实际状态，但一般直接用外设的寄存器来获取该数据信号。</p>
-<p>通过对GPIO寄存器写入不同的参数，就可以改变GPIO的工作模式，再强调一下，要了解具体寄存器时一定要查阅《STM32F10X-中文参考手册》中对应外设的寄存器说明。在GPIO外设中，控制端口高低控制寄存器CRH和CRL可以配置每个GPIO的工作模式和工作的速度，每4个位控制一个IO，CRH 控制端口的高八位，CRL控制端口的低8位，具体的看CRH和CRL的寄存器描述。</p>
-<p><img src="https://i.loli.net/2021/07/04/EdMWjecut8f13Jp.jpg" alt="5.jpg"></p>
-<p><img src="https://i.loli.net/2021/07/04/TKEi5a1nG4MupQJ.jpg" alt="6.jpg"></p>
-<p>参考引用：</p>
-<p>1、野火—-《零死角玩转STM32-F103霸道》<br>2、《STM32F1xx中文参考手册》<br>3、《Cortex-M3内核编程手册》</p>
+    <title>初识STM32</title>
+    <url>/%E5%88%9D%E8%AF%8632%E5%8D%95%E7%89%87%E6%9C%BA.html</url>
+    <content><![CDATA[<h2 id="什么是STM32"><a href="#什么是STM32" class="headerlink" title="什么是STM32"></a>什么是STM32</h2><h3 id="STM32的字面含义"><a href="#STM32的字面含义" class="headerlink" title="STM32的字面含义"></a>STM32的字面含义</h3><p>1、ST——意法半导体，是一个公司名，即SOC厂商。STM32等系列芯片的内核由ARM公司生产（ARM是一个IP厂商，本身生产芯片，将内核授权给各大SOC厂商使用而盈利），ST公司则负责STM32外围电路的设计。</p>
+<p>2、M— Microelectronics的缩写，表示微控制器，大家注意微控制器（无MMU，主频较低，速度较慢）和微处理器（有MMU,主频较高，可跑Linux）的区别。<br><em>MMU:内存处理单元</em></p>
+<p>3、32— 32bit的意思，表示这是一个32bit的微控制器</p>
+<h2 id="STM32能做什么"><a href="#STM32能做什么" class="headerlink" title="STM32能做什么"></a>STM32能做什么</h2><p>1、串口—USART，用于跟跟串口接口的设备通信，比如：USB转串口模块、ESP8266 WIFI、GPS模块，GSM 模块，串口屏、指纹识别模块</p>
+<p>2、内部集成电路—I2C，用于跟I2C接口的设备通信，比如：EEPROM、电容屏、陀螺仪MPU6050、0.96寸OLED模块</p>
+<p>3、串行通信接口—SPI，用于跟SPI接口的设备通信，比如：串行FLASH、以太网W5500、音频模块VS1053</p>
+<p>4、SDIO、FSMC的超级、I2S、ADC、GPIO</p>
+<h2 id="STM32怎么选型"><a href="#STM32怎么选型" class="headerlink" title="STM32怎么选型"></a>STM32怎么选型</h2><h3 id="STM32分类"><a href="#STM32分类" class="headerlink" title="STM32分类"></a>STM32分类</h3><p><img src="https://i.loli.net/2020/10/31/x5dv6JXP1oqCrYh.png" alt="1.png"></p>
+<h3 id="STM32的命名方法"><a href="#STM32的命名方法" class="headerlink" title="STM32的命名方法"></a>STM32的命名方法</h3><p><img src="https://i.loli.net/2020/10/31/PY1nF7Kvm9gIsD3.png" alt="2.png"></p>
+<p><img src="https://i.loli.net/2020/10/31/GNgvuF413hOmLdi.png" alt="3.png"></p>
+<h3 id="如何分配原理图引脚"><a href="#如何分配原理图引脚" class="headerlink" title="如何分配原理图引脚"></a>如何分配原理图引脚</h3><p><img src="https://i.loli.net/2020/10/31/kPChVvqt1KfiUAl.png" alt="4.png"></p>
+<h3 id="如何寻找引脚的功能说明"><a href="#如何寻找引脚的功能说明" class="headerlink" title="如何寻找引脚的功能说明"></a>如何寻找引脚的功能说明</h3><p><img src="https://i.loli.net/2020/10/31/QtpzF8uBf1n293c.png" alt="5.png"></p>
+<h3 id="数据手册中对引脚的功能定义"><a href="#数据手册中对引脚的功能定义" class="headerlink" title="数据手册中对引脚的功能定义"></a>数据手册中对引脚的功能定义</h3><p><img src="https://i.loli.net/2020/10/31/ex1uyaGVtIjsCJ3.png" alt="6.png"></p>
+<h3 id="引脚的功能定义解读"><a href="#引脚的功能定义解读" class="headerlink" title="引脚的功能定义解读"></a>引脚的功能定义解读</h3><p><img src="https://i.loli.net/2020/10/31/zPxakTuUyVeF3ol.png" alt="7.png"></p>
 ]]></content>
       <categories>
         <category>开发</category>
@@ -502,6 +502,26 @@
         <tag>嵌入式</tag>
         <tag>单片机</tag>
         <tag>STC89C52</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>STM32基于FSMC的SRAM扩展</title>
+    <url>/STM32%E5%9F%BA%E4%BA%8EFSMC%E7%9A%84SRAM%E6%89%A9%E5%B1%95.html</url>
+    <content><![CDATA[<p>STM32F103ZET6属于STM32F103xE增强型系列,工作频率为72MHz,内置高速存储器(高达512K字节的闪存和64K字节的SRAM) ,丰富的外设资源足以满足大部分的一般应用,但对于一些需要采集处理较多数据.应用算法或使用GUI等场合,内置的SRAM就显得捉襟见肘了,这时就需要扩展SRAM了。</p>
+<p>IS61LV51216是ISSI公司生产的常用16位SRAM异步存储芯片,内部512k存储容量足以满足多数场合应用需求,存取时间8~12ns ,全静态操作,不需时钟或刷新,兼容TTL标准接口,具有高速,可靠、易操作.低功耗等优点。</p>
+<p>FSMC(灵活的静态存储器控制器)是STM32采用的一种新型存储器控制技术,包含四个主要模块:AHB接口.NOR闪存和PSRAM控制器、NAND闪存和PC卡控制器、外部设备接口。</p>
+<p>STM32F103系列中的64脚的STM32F103Rx系列没有FSMC功能,无法扩展SRAM;100脚的STM32F103Vx系列的FSMC在使用时需要管脚复用,不仅设置起来更复杂一些,而且还需增加锁存器,FSMC本身也占用大量管脚,在许多应用场合中造成管脚分配困难，但成本却与144脚的STM32F103Zx系列相差不大,因此在需要扩展SRAM时除非对成本要求特别严格或有其他要求,一般较少选用STM32F103Vx系列。</p>
+<p>硬件电路设计<br>STM32F103ZET6与IS61LV51216的硬件电路连接:管脚接法同时兼容容量较小但成本更低的IS61LV25616。由于篇幅原因,IS61LV51216芯片的A18-AO为地址线,在此没有用到的FSMC_A可以作为通用IO使用,I/O15-I/O0为数据线,CE为片选引脚,本例选择使用地址为bank1的第三个子区域,片选脚为FSMC_NE3,WE为写入使能引脚,控制存储器的写入和读取,DE为输出使能引脚。LB为低位控制脚,UB为高位控制脚,用于将32位数据分割为连续的16位数据进行操作。</p>
+<p>————————————————<br>版权声明：本文为CSDN博主「EVERSPIN」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br><a href="https://blog.csdn.net/EVERSPIN/article/details/110480180" target="_blank" rel="noopener">原文链接</a></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>开发</tag>
+        <tag>嵌入式</tag>
+        <tag>单片机</tag>
+        <tag>STM32</tag>
       </tags>
   </entry>
 </search>
