@@ -141,6 +141,26 @@
       </tags>
   </entry>
   <entry>
+    <title>ISP一键下载原理分析</title>
+    <url>/ISP%E4%B8%80%E9%94%AE%E4%B8%8B%E8%BD%BD%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90.html</url>
+    <content><![CDATA[<h2 id="ISP一键下载原理分析"><a href="#ISP一键下载原理分析" class="headerlink" title="ISP一键下载原理分析"></a>ISP一键下载原理分析</h2><h3 id="ISP一键下载原理分析-1"><a href="#ISP一键下载原理分析-1" class="headerlink" title="ISP一键下载原理分析"></a>ISP一键下载原理分析</h3><p>ISP指电路板上的空白元器件可以编程写入最终用户代码， 而不需要从电路板上取下元器件。 已经编程的器件也可以用ISP方式擦除或再编程。<br>使用ISP的时候需要用到自举程序（BootLoader） ， 自举程序存储在STM32器件的内部自举 ROM（系统存储器） 中。 其主要任务是通过一种可用的串行外设（USART、 CAN、 USB、 I2C等） 将应用程序下载到内部Flash存储器中。 每种串行接口都定义了相应的通信协议， 其中包含兼容的命令集和序列。  </p>
+<h3 id="ISP普通下载"><a href="#ISP普通下载" class="headerlink" title="ISP普通下载"></a>ISP普通下载</h3><p>现在我们针对USART1的ISP进行分析， 通常的ISP下载的步骤如下：<br>1） 通过USB转串口线将电脑连接到STM32的USART1， 并打开电脑端的上位机；<br>2） 设置跳线保持BOOT0为高电平， BOOT1为低电平；<br>3） 复位单片机使其进入BootLoader模式， 通过上位机下载程序；<br>4） 下载完毕， 设置跳线保持BOOT0为低电平， BOOT1为低电平；<br>5） 复位单片机即可启动用户代码， 正常运行。<br>以上步骤有个不好的地方就是： 下载程序需要跳线及复位操作， 很繁琐。 理解了ISP的原理， 就理解一键ISP了。 它需要做的事情就是用上位机去控制BOOT0引脚和单片机的复位引脚， 电路图见下图。</p>
+<p><img src="https://i.loli.net/2021/07/04/uIzJqgPrpychOiW.png" alt="image.png"></p>
+<h3 id="BOOT配置"><a href="#BOOT配置" class="headerlink" title="BOOT配置"></a>BOOT配置</h3><p>在ISP下载电路中， 需要配置BOOT引脚， BOOT引脚不同的配置会产生不同的启动方式， 具体见下表。 </p>
+<p><img src="https://i.loli.net/2021/07/04/WOLamyzgpdkj45P.png" alt="image.png"></p>
+<h3 id="ISP一键下载"><a href="#ISP一键下载" class="headerlink" title="ISP一键下载"></a>ISP一键下载</h3><p>USB转串口大家都很熟悉， 一般是用RXD和TXD这两个引脚。 在一键ISP电路中， 我们需要用USB转串口的芯片的DTR引脚和RTS引脚来控制单片机的BOOT0和NRST， 原理如下：<br>1） 通过上位机控制U6（CH340G） 的RTS引脚为低电平， Q1导通， BOOT0的电平上拉为高电平（1K电阻直接接在3V3，接地的时候10k电阻直接接地）。<br>2） 通过上位机控制U6（CH340G） 的DTR引脚为高电平， 由于RTS为低电平， Q2导通， U18的2引脚为低电平， U18为一个模拟开关， 使能端由4引脚控制， 默认为高电平， U18的1引脚和2引脚导通， 所以NRST为低电平， 系统复位。<br>3） 单片机进入ISP模式（即BOOT0和BOOT1引脚电平被锁存之后，改变他们的引脚也不影响）， 此时可以将DTR引脚设置为低电平， RTS设置为高电平。 Q1和Q2处于截止状态， BOOT0（原接地）和NRST（被拉高）还原到初始状态。<br>4） 上位机将程序下载到单片机， 下载完毕之后， 程序自动运行。<br>5） 有人认为U18、 Q1、 Q2是多余的， 用U6的RTS和DTR直接控制也可以。 正常情况下， 这样理解没有问题， 但是他们忽略了一点， 就是在单片机上电瞬间， 如果USB转串口连接了电脑， DTR和RTS的电平是变化的， 如果处理不好， 单片机会一直进入ISP模式， 或者系统会复位多次， 这种情况是不允许的。<br>6） 于是， 就有了全新的一键ISP电路。 我们主要是分析上电瞬间的逻辑关系， 单片机上电时通过示波器观察波形得知DTR和RTS的电平是变化的， 但是也有一个规律就是： 当RTS为低电平的时候，DTR也是低电平， 因此一般情况下Q2不会导通， 但由于这两个IO口的电平存在“竞争冒险”， 会出现RTS的下降沿刚好遇到DTR的上升沿， 这个时候Q2导通， 导致系统复位， 而BOOT0此时有可能也为高电平， 就会进入ISP模式。 这个是不受我们控制的， 而我们不想系统出现这样的情况， 因此加入了模拟开关来切断这种干扰。<br>7） 加入模拟开关U18， 通过控制U18的4引脚的开关来达到隔离干扰电平的目的。 下面我们分析一下延时开关电路， 上电瞬间， 电容C65通过电阻R18来充电， 由于电阻100kΩ 很大， 电容的充电电流很小， 电容充电达到U18的4引脚的有效电平2V大概耗时1秒， 在这个1秒时间内U18的模拟开关是断开的， 因此RTS和DTR的干扰电平不会影响到系统复位。 这样就保证了系统正常运行。  </p>
+]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>开发</tag>
+        <tag>嵌入式</tag>
+        <tag>单片机</tag>
+        <tag>STM32</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>HC-05蓝牙模块的学习开发</title>
     <url>/HC-05%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%BC%80%E5%8F%91.html</url>
     <content><![CDATA[<h2 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h2><h3 id="特点简介"><a href="#特点简介" class="headerlink" title="特点简介"></a>特点简介</h3><p>HC-05 蓝牙串口通信模块，是基于 Bluetooth Specification V2.0 带 EDR 蓝牙协议的数传模块。无线工作频段为 2.4GHz ISM，调制方式是 GFSK。模块最大发射功率为 4dBm，接收灵敏度-85dBm，板载 PCB 天线，可以实现 10 米距离通信。</p>
@@ -392,26 +412,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ISP一键下载原理分析</title>
-    <url>/ISP%E4%B8%80%E9%94%AE%E4%B8%8B%E8%BD%BD%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90.html</url>
-    <content><![CDATA[<h2 id="ISP一键下载原理分析"><a href="#ISP一键下载原理分析" class="headerlink" title="ISP一键下载原理分析"></a>ISP一键下载原理分析</h2><h3 id="ISP一键下载原理分析-1"><a href="#ISP一键下载原理分析-1" class="headerlink" title="ISP一键下载原理分析"></a>ISP一键下载原理分析</h3><p>ISP指电路板上的空白元器件可以编程写入最终用户代码， 而不需要从电路板上取下元器件。 已经编程的器件也可以用ISP方式擦除或再编程。<br>使用ISP的时候需要用到自举程序（BootLoader） ， 自举程序存储在STM32器件的内部自举 ROM（系统存储器） 中。 其主要任务是通过一种可用的串行外设（USART、 CAN、 USB、 I2C等） 将应用程序下载到内部Flash存储器中。 每种串行接口都定义了相应的通信协议， 其中包含兼容的命令集和序列。  </p>
-<h3 id="ISP普通下载"><a href="#ISP普通下载" class="headerlink" title="ISP普通下载"></a>ISP普通下载</h3><p>现在我们针对USART1的ISP进行分析， 通常的ISP下载的步骤如下：<br>1） 通过USB转串口线将电脑连接到STM32的USART1， 并打开电脑端的上位机；<br>2） 设置跳线保持BOOT0为高电平， BOOT1为低电平；<br>3） 复位单片机使其进入BootLoader模式， 通过上位机下载程序；<br>4） 下载完毕， 设置跳线保持BOOT0为低电平， BOOT1为低电平；<br>5） 复位单片机即可启动用户代码， 正常运行。<br>以上步骤有个不好的地方就是： 下载程序需要跳线及复位操作， 很繁琐。 理解了ISP的原理， 就理解一键ISP了。 它需要做的事情就是用上位机去控制BOOT0引脚和单片机的复位引脚， 电路图见下图。</p>
-<p><img src="https://i.loli.net/2021/07/04/uIzJqgPrpychOiW.png" alt="image.png"></p>
-<h3 id="BOOT配置"><a href="#BOOT配置" class="headerlink" title="BOOT配置"></a>BOOT配置</h3><p>在ISP下载电路中， 需要配置BOOT引脚， BOOT引脚不同的配置会产生不同的启动方式， 具体见下表。 </p>
-<p><img src="https://i.loli.net/2021/07/04/WOLamyzgpdkj45P.png" alt="image.png"></p>
-<h3 id="ISP一键下载"><a href="#ISP一键下载" class="headerlink" title="ISP一键下载"></a>ISP一键下载</h3><p>USB转串口大家都很熟悉， 一般是用RXD和TXD这两个引脚。 在一键ISP电路中， 我们需要用USB转串口的芯片的DTR引脚和RTS引脚来控制单片机的BOOT0和NRST， 原理如下：<br>1） 通过上位机控制U6（CH340G） 的RTS引脚为低电平， Q1导通， BOOT0的电平上拉为高电平（1K电阻直接接在3V3，接地的时候10k电阻直接接地）。<br>2） 通过上位机控制U6（CH340G） 的DTR引脚为高电平， 由于RTS为低电平， Q2导通， U18的2引脚为低电平， U18为一个模拟开关， 使能端由4引脚控制， 默认为高电平， U18的1引脚和2引脚导通， 所以NRST为低电平， 系统复位。<br>3） 单片机进入ISP模式（即BOOT0和BOOT1引脚电平被锁存之后，改变他们的引脚也不影响）， 此时可以将DTR引脚设置为低电平， RTS设置为高电平。 Q1和Q2处于截止状态， BOOT0（原接地）和NRST（被拉高）还原到初始状态。<br>4） 上位机将程序下载到单片机， 下载完毕之后， 程序自动运行。<br>5） 有人认为U18、 Q1、 Q2是多余的， 用U6的RTS和DTR直接控制也可以。 正常情况下， 这样理解没有问题， 但是他们忽略了一点， 就是在单片机上电瞬间， 如果USB转串口连接了电脑， DTR和RTS的电平是变化的， 如果处理不好， 单片机会一直进入ISP模式， 或者系统会复位多次， 这种情况是不允许的。<br>6） 于是， 就有了全新的一键ISP电路。 我们主要是分析上电瞬间的逻辑关系， 单片机上电时通过示波器观察波形得知DTR和RTS的电平是变化的， 但是也有一个规律就是： 当RTS为低电平的时候，DTR也是低电平， 因此一般情况下Q2不会导通， 但由于这两个IO口的电平存在“竞争冒险”， 会出现RTS的下降沿刚好遇到DTR的上升沿， 这个时候Q2导通， 导致系统复位， 而BOOT0此时有可能也为高电平， 就会进入ISP模式。 这个是不受我们控制的， 而我们不想系统出现这样的情况， 因此加入了模拟开关来切断这种干扰。<br>7） 加入模拟开关U18， 通过控制U18的4引脚的开关来达到隔离干扰电平的目的。 下面我们分析一下延时开关电路， 上电瞬间， 电容C65通过电阻R18来充电， 由于电阻100kΩ 很大， 电容的充电电流很小， 电容充电达到U18的4引脚的有效电平2V大概耗时1秒， 在这个1秒时间内U18的模拟开关是断开的， 因此RTS和DTR的干扰电平不会影响到系统复位。 这样就保证了系统正常运行。  </p>
-]]></content>
-      <categories>
-        <category>开发</category>
-      </categories>
-      <tags>
-        <tag>开发</tag>
-        <tag>嵌入式</tag>
-        <tag>单片机</tag>
-        <tag>STM32</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>OLED显示1602HWTW的数据</title>
     <url>/OLED%E6%98%BE%E7%A4%BA1602HWTW%E7%9A%84%E6%95%B0%E6%8D%AE.html</url>
     <content><![CDATA[<h2 id="OLED显示1602HWTW的数据"><a href="#OLED显示1602HWTW的数据" class="headerlink" title="OLED显示1602HWTW的数据"></a>OLED显示1602HWTW的数据</h2><h3 id="开发背景"><a href="#开发背景" class="headerlink" title="开发背景"></a>开发背景</h3><p>​        2020年前夕突发疫情，病毒的广泛传播，人们口口相传的危害性，导致体温计、口罩等医用设备供不应求，在此大环境下，我萌发出用自己的能力去测体温的想法。在接触51单片机后，然后学习了相关串口通信知识和OLED显示原理，凭借自己对知识的理解，从工程的构建到最后构想的实现，最后OLED亮起那一瞬间，我感受到了知识的力量。在此期间，学到了很多知识，对涉及这一块的知识更加了解，对自己的未来更加充满希望。</p>
@@ -450,6 +450,39 @@
         <tag>1602HWTW</tag>
         <tag>温度传感器</tag>
         <tag>STC89C52</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PN结的特性</title>
+    <url>/PN%E7%BB%93%E7%9A%84%E7%89%B9%E6%80%A7.html</url>
+    <content><![CDATA[<h3 id="PN结的反向击穿"><a href="#PN结的反向击穿" class="headerlink" title="PN结的反向击穿"></a>PN结的反向击穿</h3><h4 id="雪崩击穿和齐纳击穿"><a href="#雪崩击穿和齐纳击穿" class="headerlink" title="雪崩击穿和齐纳击穿"></a>雪崩击穿和齐纳击穿</h4><p>雪崩击穿：当二极管掺杂浓度较低时，外加反向电压，PN结宽， PN结变成“粒子加速器”，一旦P端或N端有粒子通过漂移运动进入PN结时，瞬间被加速，撞到PN结中的共价键上，价电子变成自由电子，开始在PN结中四处碰撞，引起“雪崩反应”，导致PN结击穿。<br>前提：PN结宽度足够宽，能使粒子加速。<br>温度越高，雪崩击穿所需要的击穿电压越高。<br>齐纳击穿：当二极管掺杂浓度较高时，外加反向电压，PN结窄，距离短，场强大，共价键断裂，价电子变成自由电子，导致PN结击穿。<br>温度越高，齐纳击穿所需要的击穿电压越低。<br>上述两种电击穿过程都是可逆的。</p>
+<h3 id="PN结的电容效应"><a href="#PN结的电容效应" class="headerlink" title="PN结的电容效应"></a>PN结的电容效应</h3><h4 id="势垒电容和扩散电容"><a href="#势垒电容和扩散电容" class="headerlink" title="势垒电容和扩散电容"></a>势垒电容和扩散电容</h4><p>势垒电容：当PN结处于反向偏置时，当外加电压增加时，势垒电场增强，多数载流子被拉出而远离PN结，势垒区将增宽，反之，当外加电压减小时，势垒区变窄。势垒区的变化意味着区间存储的正、负离子电荷数的增减，类似于平行板电容器两极板上电荷的变化。此时PN结呈现出的电容效应称为势垒电容,所不同的是，势垒电容是非线性的。<br>扩散电容：当PN结处于正向偏置时，P区的空穴将向N区扩散，其结果导致到达N区的空穴在靠近结边缘的浓度高于距结稍远处的浓度。离结越近，空穴浓度越低，这是因为空穴在N区与多数载流子复合所致。N区的电子向P区扩散的情况与上述情况类似。若外加正向电压有一增量ΔV，则相应的空穴（电子）扩散运动在结的附近产生一电荷增量ΔQ，二者之比ΔQ/ΔV为扩散电容。PN结在正向偏置时，积累在P区的电子和N区的空穴随正向电压的增加而很快增加，扩散电容较大。反向偏置时，因为载流子数目很少，所以扩散电容数值很小，一般可以忽略。</p>
+]]></content>
+      <categories>
+        <category>学习</category>
+      </categories>
+      <tags>
+        <tag>PN结</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>STM32基于FSMC的SRAM扩展</title>
+    <url>/STM32%E5%9F%BA%E4%BA%8EFSMC%E7%9A%84SRAM%E6%89%A9%E5%B1%95.html</url>
+    <content><![CDATA[<p>STM32F103ZET6属于STM32F103xE增强型系列,工作频率为72MHz,内置高速存储器(高达512K字节的闪存和64K字节的SRAM) ,丰富的外设资源足以满足大部分的一般应用,但对于一些需要采集处理较多数据.应用算法或使用GUI等场合,内置的SRAM就显得捉襟见肘了,这时就需要扩展SRAM了。</p>
+<p>IS61LV51216是ISSI公司生产的常用16位SRAM异步存储芯片,内部512k存储容量足以满足多数场合应用需求,存取时间8~12ns ,全静态操作,不需时钟或刷新,兼容TTL标准接口,具有高速,可靠、易操作.低功耗等优点。</p>
+<p>FSMC(灵活的静态存储器控制器)是STM32采用的一种新型存储器控制技术,包含四个主要模块:AHB接口.NOR闪存和PSRAM控制器、NAND闪存和PC卡控制器、外部设备接口。</p>
+<p>STM32F103系列中的64脚的STM32F103Rx系列没有FSMC功能,无法扩展SRAM;100脚的STM32F103Vx系列的FSMC在使用时需要管脚复用,不仅设置起来更复杂一些,而且还需增加锁存器,FSMC本身也占用大量管脚,在许多应用场合中造成管脚分配困难，但成本却与144脚的STM32F103Zx系列相差不大,因此在需要扩展SRAM时除非对成本要求特别严格或有其他要求,一般较少选用STM32F103Vx系列。</p>
+<p>硬件电路设计<br>STM32F103ZET6与IS61LV51216的硬件电路连接:管脚接法同时兼容容量较小但成本更低的IS61LV25616。由于篇幅原因,IS61LV51216芯片的A18-AO为地址线,在此没有用到的FSMC_A可以作为通用IO使用,I/O15-I/O0为数据线,CE为片选引脚,本例选择使用地址为bank1的第三个子区域,片选脚为FSMC_NE3,WE为写入使能引脚,控制存储器的写入和读取,DE为输出使能引脚。LB为低位控制脚,UB为高位控制脚,用于将32位数据分割为连续的16位数据进行操作。</p>
+<p>————————————————<br>版权声明：本文为CSDN博主「EVERSPIN」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br><a href="https://blog.csdn.net/EVERSPIN/article/details/110480180" target="_blank" rel="noopener">原文链接</a></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>开发</tag>
+        <tag>嵌入式</tag>
+        <tag>单片机</tag>
+        <tag>STM32</tag>
       </tags>
   </entry>
   <entry>
@@ -495,16 +528,132 @@
       </tags>
   </entry>
   <entry>
-    <title>PN结的特性</title>
-    <url>/PN%E7%BB%93%E7%9A%84%E7%89%B9%E6%80%A7.html</url>
-    <content><![CDATA[<h3 id="PN结的反向击穿"><a href="#PN结的反向击穿" class="headerlink" title="PN结的反向击穿"></a>PN结的反向击穿</h3><h4 id="雪崩击穿和齐纳击穿"><a href="#雪崩击穿和齐纳击穿" class="headerlink" title="雪崩击穿和齐纳击穿"></a>雪崩击穿和齐纳击穿</h4><p>雪崩击穿：当二极管掺杂浓度较低时，外加反向电压，PN结宽， PN结变成“粒子加速器”，一旦P端或N端有粒子通过漂移运动进入PN结时，瞬间被加速，撞到PN结中的共价键上，价电子变成自由电子，开始在PN结中四处碰撞，引起“雪崩反应”，导致PN结击穿。<br>前提：PN结宽度足够宽，能使粒子加速。<br>温度越高，雪崩击穿所需要的击穿电压越高。<br>齐纳击穿：当二极管掺杂浓度较高时，外加反向电压，PN结窄，距离短，场强大，共价键断裂，价电子变成自由电子，导致PN结击穿。<br>温度越高，齐纳击穿所需要的击穿电压越低。<br>上述两种电击穿过程都是可逆的。</p>
-<h3 id="PN结的电容效应"><a href="#PN结的电容效应" class="headerlink" title="PN结的电容效应"></a>PN结的电容效应</h3><h4 id="势垒电容和扩散电容"><a href="#势垒电容和扩散电容" class="headerlink" title="势垒电容和扩散电容"></a>势垒电容和扩散电容</h4><p>势垒电容：当PN结处于反向偏置时，当外加电压增加时，势垒电场增强，多数载流子被拉出而远离PN结，势垒区将增宽，反之，当外加电压减小时，势垒区变窄。势垒区的变化意味着区间存储的正、负离子电荷数的增减，类似于平行板电容器两极板上电荷的变化。此时PN结呈现出的电容效应称为势垒电容,所不同的是，势垒电容是非线性的。<br>扩散电容：当PN结处于正向偏置时，P区的空穴将向N区扩散，其结果导致到达N区的空穴在靠近结边缘的浓度高于距结稍远处的浓度。离结越近，空穴浓度越低，这是因为空穴在N区与多数载流子复合所致。N区的电子向P区扩散的情况与上述情况类似。若外加正向电压有一增量ΔV，则相应的空穴（电子）扩散运动在结的附近产生一电荷增量ΔQ，二者之比ΔQ/ΔV为扩散电容。PN结在正向偏置时，积累在P区的电子和N区的空穴随正向电压的增加而很快增加，扩散电容较大。反向偏置时，因为载流子数目很少，所以扩散电容数值很小，一般可以忽略。</p>
+    <title>STM32的复用时钟的开启和重映射功能</title>
+    <url>/STM32%E7%9A%84%E5%A4%8D%E7%94%A8%E6%97%B6%E9%92%9F%E7%9A%84%E5%BC%80%E5%90%AF%E5%92%8C%E9%87%8D%E6%98%A0%E5%B0%84%E5%8A%9F%E8%83%BD.html</url>
+    <content><![CDATA[<p>最近在学习STM32，在参考手册上了解到关于“复用”和“重映射”这些概念，刚开始没搞懂，通过这几天在网上查找资料和看手册，弄清楚了，先与大家分享，希望能对跟我一样的新手有所帮助吧。</p>
+<p>为了优化64脚或100脚封装的外设数目，可以把一些复用功能重新映射到其他引脚上。设置复用<br>重映射和调试I/O配置寄存器(AFIO_MAPR)实现引脚的重新映射。这时，复用功能不再映射到它<br>们的原始分配上。  </p>
+<p>STM32上有很多I/O口，也有很多的内置外设，像I2C,ADC,ISP,USART等 ，为了节省引出管脚，这些内置外设基本上是与I/O口共用管脚的，也就是I/O管脚的复用功能。但是STM32还有一特别之处就是：很多内置外设的I/O复用引脚可以通过重映射功能，从不同的I/O管脚引出，即使用了复用功能的引脚是可通过程序改变的。 知道了这些我们就不难理解上面代码的意思了，程序中用到的USART2外设的TX，RX分别对应PA2，PA3，但是我的学习板上的PA2,PA3引脚接了其他设备，但是为了还要用USART2， “RCC_APB2Periph_GPIOD |RCC_APB2Periph_AFIO”就打开了GPIOD重映射功能，把USART2设备的TX，RX映射到PD5,PD6上，我们在这两个引脚上接上MAX232串口芯片就可以使用USART2串口通信了。 </p>
+<p>那各位各位该问：“USART2是不是可以映射到任意管脚呢？” 答案是否定的，它只能映射到固定的管脚，下图是USART2重映射表。</p>
+<p><img src="https://i.loli.net/2021/07/04/fwdWRCnV3kMA2um.png" alt="5PFEFD_5JJZ196ZHQTWG__9.png"></p>
+<p>其他外设的重映射可以参考STM3210x手册8.3节。</p>
+<p>不是说使用了IO的复用功能就一定要启动RCC_APB2Periph_AFIO的Clock的，只有使用了AFIO的事件控制寄存器（AFIO_EVCR）、AFIO的重映射功能(AFIO_MAPR)以及外部中断(AFIO_EXTICRx)控制寄存器才需要开启AFIO的时钟，STM32参考手册从来没说过使用IO的复用功能就一定要开启AFIO时钟。例如下面的，最常用的USART1，如果你的板子上，默认用的就是PA9和PA10这两个IO作为USART1的TX和RX，那么也就是没有重映射（No Remap）这种情况下根本不需要开启AFIO时钟，只要开启USART1的外设时钟并开启对应GPIO复用功能就行了。</p>
+<p>举例说明，默认复用功能只需开始对应外设时钟和对应GPIO复用功能即可，重映射功能除了上述之外，还需开启对应AFIO时钟。</p>
+<p><a href="https://imgtu.com/i/RfU7oF" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/04/RfU7oF.png" alt="RfU7oF.png"></a></p>
+<p>重映射步骤为:</p>
+<p> 1.打开重映射时钟和USART重映射后的I/O口引脚时钟,</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB|RCC_APB2Periph_AFIO,ENABLE); <span class="comment">//使能对应IO口的时钟，因为是复用功能所以还要使能AFIO时钟</span></span><br></pre></td></tr></table></figure>
+<p>2.I/O口重映射开启. </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">GPIO_PinRemapConfig(GPIO_Remap_USART1,ENABLE);</span><br></pre></td></tr></table></figure>
+<p>3.配制重映射后的引脚： 这里只需配置重映射后的I/O（PB6,PB7）,原来的不需要去配置（PA9，PA10）。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6; </span><br><span class="line">GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;</span><br><span class="line">GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; </span><br><span class="line">GPIO_Init(GPIOB, &amp;GPIO_InitStructure); </span><br><span class="line"></span><br><span class="line">GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;</span><br><span class="line">GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; </span><br><span class="line">GPIO_Init(GPIOB, &amp;GPIO_InitStructure);</span><br></pre></td></tr></table></figure>
+<p>简言之，若GPIO口使用了重映射栏中的外设功能，则需要开启AFIO时钟；只使用默认复用功能时，只开启相应外设时钟无需开启AFIO时钟。</p>
+]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>开发</tag>
+        <tag>嵌入式</tag>
+        <tag>单片机</tag>
+        <tag>STM32</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Matlab入门01</title>
+    <url>/Matlab%E5%85%A5%E9%97%A801.html</url>
+    <content><![CDATA[<h2 id="GPIO框图剖析"><a href="#GPIO框图剖析" class="headerlink" title="GPIO框图剖析"></a>GPIO框图剖析</h2><p>GPIO是通用输入输出端口的简称，简单来说就是STM32可控制的引脚，STM32芯片的GPIO引脚与外部设备连接起来，从而实现与外部通讯、控制以及数据采集的功能。STM32芯片的GPIO被分成很多组，每组有16个引脚，如型号为STM32F103VET6型号的芯片有GPIOA、GPIOB、GPIOC 至GPIOE 共5 组GPIO，芯片一共100 个引脚，其中GPIO就占了一大部分，所有的GPIO引脚都有基本的输入输出功能。</p>
+<p>最基本的输出功能是由STM32控制引脚输出高、低电平，实现开关控制，如把GPIO引脚接入到LED灯，那就可以控制LED灯的亮灭，引脚接入到继电器或三极管，那就可以通过继电器或三极管控制外部大功率电路的通断。最基本的输入功能是检测外部输入电平，如把GPIO 引脚连接到按键，通过电平高低区分按键是否被按下。</p>
+<p><img src="https://i.loli.net/2021/07/04/FXIZNSr63Qpi7x5.png" alt="1.png"></p>
+<h3 id="基本结构分析"><a href="#基本结构分析" class="headerlink" title="基本结构分析"></a>基本结构分析</h3><h4 id="保护二极管及上、下拉电阻"><a href="#保护二极管及上、下拉电阻" class="headerlink" title="保护二极管及上、下拉电阻"></a>保护二极管及上、下拉电阻</h4><p>引脚的两个保护二级管可以防止引脚外部过高或过低的电压输入，当引脚电压高于VDD时，上方的二极管导通，当引脚电压低于VSS时，下方的二极管导通，防止不正常电压引入芯片导致芯片烧毁。尽管有这样的保护，并不意味着STM32的引脚能直接外接大功率驱动器件，如直接驱动电机，强制驱动要么电机不转，要么导致芯片烧坏，必须要加大功率及隔离电路驱动。</p>
+<h4 id="P-MOS管-和-N-MOS管"><a href="#P-MOS管-和-N-MOS管" class="headerlink" title="P-MOS管 和 N-MOS管"></a>P-MOS管 和 N-MOS管</h4><p>推挽输出：<br>推挽输出模式，是根据这两个 MOS 管的工作方式来命名的。<br>在该结构中输入高电平时，上方的 P-MOS 导通，下方的 N-MOS 关闭，对外输出高电平；而在该结构中输入低电平时，N-MOS 管导通，P-MOS 关闭，对外输出低电平。当引脚高低电平切换时，两个管子轮流导通，一个负责灌电流，一个负责拉电流，使其负载能力和开关速度都比普通的方式有很大的提高。推挽输出的低电平为 0 伏，高电平为 3.3 伏。</p>
+<p><img src="https://i.loli.net/2021/07/04/ANJjrdVRicT8w27.png" alt="2.png"></p>
+<p>开漏输出模式：<br>上方的 P-MOS 管完全不工作，如果我们控制输出为 0，低电平，则 P-MOS 管关闭， N-MOS 管导通，使输出接地，若控制输出为 1 (它无法直接输出高电平)时，则 P-MOS 管和 N-MOS 管都关闭，所以引脚既不输出高电平，也不输出低电平，为高阻态。为正常使用时必须接上拉电阻，若有很多个开漏模式引脚连接到一起时，只有当所有引脚都输出高阻态，才由上拉电阻提供高电平，此高电平的电压为外部上拉电阻所接的电源的电压。若其中一个引脚为低电平，那线路就相当于短路接地，使得整条线路都为低电平，0 伏。</p>
+<p><img src="https://i.loli.net/2021/07/04/OGIAxvTZ1mLREXp.png" alt="3.png"></p>
+<p>推挽输出模式一般应用在输出电平为 0 和 3.3 伏而且需要高速切换开关状态的场合。在 STM32 的应用中，除了必须用开漏模式的场合，我们都习惯使用推挽输出模式。开漏输出一般应用在 I2C、SMBUS 通讯等需要“线与”功能的总线电路中，还用在电平不匹配的场合，如需要输出 5 伏的高电平，就可以在外部接一个上拉电阻， 上拉电源为 5 伏， 并且把 GPIO 设置为开漏模式，当输出高阻态时，由上拉电阻和电源向外输出 5 伏的电平。</p>
+<p><img src="https://i.loli.net/2021/07/04/nfhepKDsAqCJd7W.png" alt="4.png"></p>
+<h4 id="输出数据寄存器"><a href="#输出数据寄存器" class="headerlink" title="输出数据寄存器"></a>输出数据寄存器</h4><p>前面提到的双MOS管结构电路的输入信号，是由GPIO“输出数据寄存器GPIOx_ODR”提供的，因此我们通过修改输出数据寄存器的值就可以修改GPIO引脚的输出电平。而“置位/复位寄存器GPIOx_BSRR”可以通过修改输出数据寄存器的值从而影响电路的输出。</p>
+<h4 id="复用功能输出"><a href="#复用功能输出" class="headerlink" title="复用功能输出"></a>复用功能输出</h4><p>“复用功能输出”中的“复用”是指STM32的其它片上外设对GPIO引脚进行控制，此时GPIO引脚用作该外设功能的一部分，算是第二用途。从其它外设引出来的“复用功能输出信号”与GPIO本身的数据据寄存器都连接到双MOS管结构的输入中，通过图中的梯形结构作为开关切换选择。<br>例如我们使用USART串口通讯时，需要用到某个GPIO引脚作为通讯发送引脚，这个时候就可以把该GPIO引脚配置成USART串口复用功能，由串口外设控制该引脚，发送数据。<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// GPIOB16个IO全部输出0XFF</span></span><br><span class="line">GPIOB-&gt;ODR = <span class="number">0XFF</span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="输入数据寄存器"><a href="#输入数据寄存器" class="headerlink" title="输入数据寄存器"></a>输入数据寄存器</h4><p>看GPIO 结构框图的上半部分，GPIO 引脚经过内部的上、下拉电阻，可以配置成上/下拉输入，然后再连接到施密特触发器，信号经过触发器后，模拟信号转化为0、1 的数字信号，然后存储在“输入数据寄存器GPIOx_IDR”中，通过读取该寄存器就可以了解GPIO引脚的电平状态。<br><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//读取GPIOB端口的16位数据值</span></span><br><span class="line">uint16_ttemp;</span><br><span class="line">temp = GPIOB-&gt;IDR;</span><br></pre></td></tr></table></figure></p>
+<h4 id="复用功能输入"><a href="#复用功能输入" class="headerlink" title="复用功能输入"></a>复用功能输入</h4><p>与“复用功能输出”模式类似，在“复用功能输入模式”时，GPIO引脚的信号传输到STM32其它片上外设，由该外设读取引脚状态。同样，如我们使用USART串口通讯时，需要用到某个GPIO引脚作为通讯接收引脚，这个时候就可以把该GPIO引脚配置成USART串口复用功能，使USART可以通过该通讯引脚的接收远端数据。</p>
+<h4 id="模拟输入输出"><a href="#模拟输入输出" class="headerlink" title="模拟输入输出"></a>模拟输入输出</h4><p>当GPIO引脚用于ADC采集电压的输入通道时，用作“模拟输入”功能，此时信号是不经过施密特触发器的，因为经过施密特触发器后信号只有0、1两种状态，所以ADC外设要采集到原始的模拟信号，信号源输入必须在施密特触发器之前。类似地，当GPIO引脚用于DAC作为模拟电压输出通道时，此时作为“模拟输出”功能，DAC的模拟信号输出就不经过双MOS管结构，模拟信号直接输出到引脚。</p>
+<h3 id="工作模式"><a href="#工作模式" class="headerlink" title="工作模式"></a>工作模式</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//8种工作模式</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span></span><br><span class="line">&#123;</span><br><span class="line">GPIO_Mode_AIN = <span class="number">0x0</span>,<span class="comment">//模拟输入</span></span><br><span class="line">GPIO_Mode_IN_FLOATING = <span class="number">0x04</span>,<span class="comment">//浮空输入</span></span><br><span class="line">GPIO_Mode_IPD = <span class="number">0x28</span>,<span class="comment">//下拉输入</span></span><br><span class="line">GPIO_Mode_IPU = <span class="number">0x48</span>,<span class="comment">//上拉输入</span></span><br><span class="line">GPIO_Mode_Out_OD = <span class="number">0x14</span>,<span class="comment">//开漏输出</span></span><br><span class="line">GPIO_Mode_Out_PP = <span class="number">0x10</span>,<span class="comment">//推挽输出</span></span><br><span class="line">GPIO_Mode_AF_OD = <span class="number">0x1C</span>,<span class="comment">//复用开漏输出</span></span><br><span class="line">GPIO_Mode_AF_PP = <span class="number">0x18</span><span class="comment">//复用推挽输出</span></span><br><span class="line">&#125; GPIOMode_TypeDef;</span><br></pre></td></tr></table></figure>
+<h4 id="输入模式（上拉、下拉、浮空、模拟）"><a href="#输入模式（上拉、下拉、浮空、模拟）" class="headerlink" title="输入模式（上拉、下拉、浮空、模拟）"></a>输入模式（上拉、下拉、浮空、模拟）</h4><p>在输入模式时，施密特触发器打开，输出被禁止，可通过输入数据寄存器GPIOx_IDR读取I/O状态。其中输入模式，可设置为上拉、下拉、浮空和模拟输入四种。上拉和下拉输入很好理解，默认的电平由上拉或者下拉决定。浮空输入的电平是不确定的，完全由外部的输入决定，一般接按键的时候用的是这个模式。模拟输入则用于ADC 采集。</p>
+<h4 id="输出模式（推挽、开漏）"><a href="#输出模式（推挽、开漏）" class="headerlink" title="输出模式（推挽、开漏）"></a>输出模式（推挽、开漏）</h4><p>在输出模式中，推挽模式时双MOS管以轮流方式工作，输出数据寄存器GPIOx_ODR可控制I/O输出高低电平。开漏模式时，只有N-MOS管工作，输出数据寄存器可控制I/O输出高阻态或低电平。输出速度可配置，有2MHz\10MHz\50MHz 的选项。此处的输出速度即I/O支持的高低电平状态最高切换频率，支持的频率越高，功耗越大，如果功耗要求不严格，把速度设置成最大即可。</p>
+<p>在输出模式时施密特触发器是打开的，即输入可用，通过输入数据寄存器GPIOx_IDR可读取I/O的实际状态。</p>
+<h4 id="复用功能（推挽、开漏）"><a href="#复用功能（推挽、开漏）" class="headerlink" title="复用功能（推挽、开漏）"></a>复用功能（推挽、开漏）</h4><p>复用功能模式中，输出使能，输出速度可配置，可工作在开漏及推挽模式，但是输出信号源于其它外设，输出数据寄存器GPIOx_ODR 无效;输入可用，通过输入数据寄存器可获取I/O实际状态，但一般直接用外设的寄存器来获取该数据信号。</p>
+<p>通过对GPIO寄存器写入不同的参数，就可以改变GPIO的工作模式，再强调一下，要了解具体寄存器时一定要查阅《STM32F10X-中文参考手册》中对应外设的寄存器说明。在GPIO外设中，控制端口高低控制寄存器CRH和CRL可以配置每个GPIO的工作模式和工作的速度，每4个位控制一个IO，CRH 控制端口的高八位，CRL控制端口的低8位，具体的看CRH和CRL的寄存器描述。</p>
+<p><img src="https://i.loli.net/2021/07/04/EdMWjecut8f13Jp.jpg" alt="5.jpg"></p>
+<p><img src="https://i.loli.net/2021/07/04/TKEi5a1nG4MupQJ.jpg" alt="6.jpg"></p>
+<p>参考引用：</p>
+<p>1、野火—-《零死角玩转STM32-F103霸道》<br>2、《STM32F1xx中文参考手册》<br>3、《Cortex-M3内核编程手册》</p>
 ]]></content>
       <categories>
         <category>学习</category>
       </categories>
       <tags>
-        <tag>PN结</tag>
+        <tag>MATLAB</tag>
+        <tag>数学建模</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>keil5(MDK版)开发STM32和STC89C52</title>
+    <url>/keil-anzhuang.html</url>
+    <content><![CDATA[<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>在安装keil之前，请下载安装工具包，我已全部整理好，链接如下：<br><a href="https://pan.baidu.com/s/1g3CVmU_jkbZVSMSAcNg0PQ" target="_blank" rel="noopener">安装工具包</a> 提取码: ttbt</p>
+<h3 id="安装MDK"><a href="#安装MDK" class="headerlink" title="安装MDK"></a>安装MDK</h3><p>双击安装包后如下图所示，选择Next即可<br><img src="https://i.loli.net/2020/05/13/2v1qJNYjab3wDf5.png" alt><br><img src="https://i.loli.net/2020/05/13/GPKoReNjE6t4nMx.png" alt></p>
+<p>勾选代表同意KEIL的协议，必须勾选，否则无法安装<br><img src="https://i.loli.net/2020/05/13/iMqrVvXKQeuT1BU.png" alt></p>
+<p>选择安装路径，建议装在D盘，方便管理<br><img src="https://i.loli.net/2020/05/13/vrWLCpAyMYb6fkG.png" alt></p>
+<p> 填写安装注册信息，随便填写即可<br><img src="https://i.loli.net/2020/05/13/aRpdtyWPZx35Y7w.png" alt></p>
+<p>等待安装完成即可<br><img src="https://i.loli.net/2020/05/13/ZUxuPzXwntpNkSF.png" alt></p>
+<p><img src="https://i.loli.net/2020/05/13/2kJUcZAmXjOHqir.png" alt></p>
+<p>注意：如果是第一次安装，可能会弹出界面让你安装下载器驱动，建议勾选并安装，这里因为我之前已经 安装了所以并没有提示安装下载器驱动<br>最后显示下图界面表示安装成功，点击 Finish 完成安装<br><img src="https://i.loli.net/2020/05/13/nhkdjMKQ43FGopz.png" alt></p>
+<h3 id="安装Keil4编译器"><a href="#安装Keil4编译器" class="headerlink" title="安装Keil4编译器"></a>安装Keil4编译器</h3><p>将我分享的文件夹里面的C51文件夹复制到安装路径目录下，如：我的安装路径为D:\Keil_v5<br><img src="https://i.loli.net/2020/05/13/sFeRzQfdx4lErG9.png" alt></p>
+<p>注意复制后C51的文件夹应该与ARM文件夹在同一目录下<br><img src="https://i.loli.net/2020/05/13/4jqmFQoA92BcVCM.png" alt></p>
+<p>然后还需修改配置文件，使其支持keil4<br>①用记事本打开安装目录下的 TOOLS.INI 配置文件，将我分享的文件夹里的 C51.txt 里的内容复制到 [ARM] 前面<br><img src="https://i.loli.net/2020/05/13/vkmsCdqcgUutpFi.png" alt><br><img src="https://i.loli.net/2020/05/13/BQskRHY2vfp8yTW.png" alt></p>
+<p>​ ②修改 [C51] 中的PATH为MDK安装目录下C51文件夹的路径，如：我的为D:\Keil_v5\C51<br>​ ③保存退出<br><img src="https://s1.ax1x.com/2020/07/04/NxfMY4.jpg" alt></p>
+<h3 id="安装芯片“支持包”"><a href="#安装芯片“支持包”" class="headerlink" title="安装芯片“支持包”"></a>安装芯片“支持包”</h3><p>①安装STM32的支持包<br>我已经整理好在文件夹里面了，无需重复下载<br>如果想安装其他型号的单片机支持包，可以到官网下载</p>
+<p>​下载链接：<a href="http://www.keil.com/dd2/pack/" target="_blank" rel="noopener">http://www.keil.com/dd2/pack/</a><br><img src="https://i.loli.net/2020/05/13/JQtPzmLc6rGy798.png" alt><br><img src="https://i.loli.net/2020/05/13/o5wXd8kGrEJjLuH.png" alt><br><img src="https://i.loli.net/2020/05/13/15SpKPwt2NHbW7O.png" alt></p>
+<p>②安装STC51单片机的支持包</p>
+<p>在我上传的文件夹中有一个 stc-isp-15xx-v6.86r.exe 的软件，其实就是STC的51单片机的下载软件，不需要安装，直接双击打开即可<br><img src="https://i.loli.net/2020/05/13/bVdhRkHjXWCBzGo.png" alt></p>
+<p>​点击右边的 Keil仿真设置–&gt;添加型号和头文件到Keil中<br><img src="https://i.loli.net/2020/05/13/TID1B86a4MEr3Ow.png" alt></p>
+<p>​选择之前我们复制过去的C51文件夹<br><img src="https://i.loli.net/2020/05/13/cOKQnkdwjevUV9S.png" alt></p>
+<p>显示下图，STC的芯片支持包就导入成功了<br><img src="https://i.loli.net/2020/05/13/Lg1BtVODf7s5okp.png" alt></p>
+<h3 id="破解MDK"><a href="#破解MDK" class="headerlink" title="破解MDK"></a>破解MDK</h3><p>keil5 MDK版 不破解，会有代码大小限制，非常不利于后续学习开发，我们这里破解一下，一劳永逸。</p>
+<p>首先回到桌面，已经创建了keil5的快捷方式，鼠标右键单击Keil5，以管理员身份运行，记住，一定要以管理员身份运行，不然会破解失败<br><img src="https://s1.ax1x.com/2020/05/13/YanB0U.png" alt></p>
+<p>​ 依次点击 File–&gt;License Management…<br><img src="https://s1.ax1x.com/2020/05/13/Yansk4.png" alt></p>
+<p>复制CID码<br><img src="https://s1.ax1x.com/2020/05/13/Yan0mT.png" alt></p>
+<p>下一步操作前，请先将禁音电脑，相信我！！！因为破解软件打开后会有噪音，禁音就完事了</p>
+<p>然后打开我分享的文件夹，解压keygen.zip<br><img src="https://s1.ax1x.com/2020/05/13/YanD7F.png" alt></p>
+<p>打开里面的软件（可能报毒，关掉杀毒软件重新解压打开即可）<br>按下图示操作<br><img src="https://s1.ax1x.com/2020/05/13/YanytJ.png" alt></p>
+<p>复制生成的注册码<br><img src="https://s1.ax1x.com/2020/05/13/YangpR.png" alt></p>
+<p>粘贴到选中框<br><img src="https://s1.ax1x.com/2020/05/13/Yan6h9.png" alt></p>
+<p>点击 Add LIC 注册成功<br><img src="https://s1.ax1x.com/2020/05/13/Yan211.png" alt></p>
+<p>这样就注册了C51的编译器，还有STM32的编译器需要注册，重复刚才的操作，只需要将 Target 改成 ARM ，在此不再赘述</p>
+<h3 id="检查功能"><a href="#检查功能" class="headerlink" title="检查功能"></a>检查功能</h3><p>​<br> 打开keil 5检查功能，选择 Project–&gt; New uVision Project…<br><img src="https://s1.ax1x.com/2020/05/13/YanR6x.png" alt></p>
+<p>随便找个地方放工程文件<br><img src="https://s1.ax1x.com/2020/05/13/YanWX6.png" alt></p>
+<p>看到这三个芯片“支持包”数据库就OK了<br><img src="https://s1.ax1x.com/2020/05/13/Yan57D.png" alt></p>
+<p>从上到下分别为STM32的支持包数据库、keil4自带的一些芯片支持、STC的支持包数据库</p>
+<p>STC89C51单片机<br><img src="https://s1.ax1x.com/2020/05/13/Yan40O.png" alt></p>
+<p>STM32单片机<br><img src="https://s1.ax1x.com/2020/05/13/YanhnK.png" alt></p>
+<h3 id="软件汉化"><a href="#软件汉化" class="headerlink" title="软件汉化"></a>软件汉化</h3><p>将我分享的文件夹里的UV4.exe移动到安装路径<br><img src="https://s1.ax1x.com/2020/05/13/YanTtH.png" alt></p>
+<p>替换目标中的文件即可<br><img src="https://s1.ax1x.com/2020/05/13/Yan7hd.png" alt></p>
+<h3 id="完成安装"><a href="#完成安装" class="headerlink" title="完成安装"></a>完成安装</h3><p><img src="https://s1.ax1x.com/2020/05/13/Yanb9A.png" alt></p>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><pre><code>最新版本的KEIL5，并不是像原来的KEIL4一样，将89C51系列芯片放在Atmel里面，而是放在Microchip里面：
+</code></pre><p><img src="https://s1.ax1x.com/2020/05/14/Ywq0p9.png" alt></p>
+<p><img src="https://s1.ax1x.com/2020/05/14/YwqBlR.png" alt></p>
+]]></content>
+      <categories>
+        <category>教程</category>
+      </categories>
+      <tags>
+        <tag>开发</tag>
+        <tag>嵌入式</tag>
+        <tag>单片机</tag>
+        <tag>STM32</tag>
+        <tag>keil</tag>
+        <tag>软件</tag>
+        <tag>安装</tag>
+        <tag>uVision</tag>
+        <tag>STC89C51</tag>
       </tags>
   </entry>
   <entry>
@@ -581,118 +730,6 @@
       </tags>
   </entry>
   <entry>
-    <title>STM32的复用时钟的开启和重映射功能</title>
-    <url>/STM32%E7%9A%84%E5%A4%8D%E7%94%A8%E6%97%B6%E9%92%9F%E7%9A%84%E5%BC%80%E5%90%AF%E5%92%8C%E9%87%8D%E6%98%A0%E5%B0%84%E5%8A%9F%E8%83%BD.html</url>
-    <content><![CDATA[<p>最近在学习STM32，在参考手册上了解到关于“复用”和“重映射”这些概念，刚开始没搞懂，通过这几天在网上查找资料和看手册，弄清楚了，先与大家分享，希望能对跟我一样的新手有所帮助吧。</p>
-<p>为了优化64脚或100脚封装的外设数目，可以把一些复用功能重新映射到其他引脚上。设置复用<br>重映射和调试I/O配置寄存器(AFIO_MAPR)实现引脚的重新映射。这时，复用功能不再映射到它<br>们的原始分配上。  </p>
-<p>STM32上有很多I/O口，也有很多的内置外设，像I2C,ADC,ISP,USART等 ，为了节省引出管脚，这些内置外设基本上是与I/O口共用管脚的，也就是I/O管脚的复用功能。但是STM32还有一特别之处就是：很多内置外设的I/O复用引脚可以通过重映射功能，从不同的I/O管脚引出，即使用了复用功能的引脚是可通过程序改变的。 知道了这些我们就不难理解上面代码的意思了，程序中用到的USART2外设的TX，RX分别对应PA2，PA3，但是我的学习板上的PA2,PA3引脚接了其他设备，但是为了还要用USART2， “RCC_APB2Periph_GPIOD |RCC_APB2Periph_AFIO”就打开了GPIOD重映射功能，把USART2设备的TX，RX映射到PD5,PD6上，我们在这两个引脚上接上MAX232串口芯片就可以使用USART2串口通信了。 </p>
-<p>那各位各位该问：“USART2是不是可以映射到任意管脚呢？” 答案是否定的，它只能映射到固定的管脚，下图是USART2重映射表。</p>
-<p><img src="https://i.loli.net/2021/07/04/fwdWRCnV3kMA2um.png" alt="5PFEFD_5JJZ196ZHQTWG__9.png"></p>
-<p>其他外设的重映射可以参考STM3210x手册8.3节。</p>
-<p>不是说使用了IO的复用功能就一定要启动RCC_APB2Periph_AFIO的Clock的，只有使用了AFIO的事件控制寄存器（AFIO_EVCR）、AFIO的重映射功能(AFIO_MAPR)以及外部中断(AFIO_EXTICRx)控制寄存器才需要开启AFIO的时钟，STM32参考手册从来没说过使用IO的复用功能就一定要开启AFIO时钟。例如下面的，最常用的USART1，如果你的板子上，默认用的就是PA9和PA10这两个IO作为USART1的TX和RX，那么也就是没有重映射（No Remap）这种情况下根本不需要开启AFIO时钟，只要开启USART1的外设时钟并开启对应GPIO复用功能就行了。</p>
-<p>举例说明，默认复用功能只需开始对应外设时钟和对应GPIO复用功能即可，重映射功能除了上述之外，还需开启对应AFIO时钟。</p>
-<p><a href="https://imgtu.com/i/RfU7oF" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/04/RfU7oF.png" alt="RfU7oF.png"></a></p>
-<p>重映射步骤为:</p>
-<p> 1.打开重映射时钟和USART重映射后的I/O口引脚时钟,</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB|RCC_APB2Periph_AFIO,ENABLE); <span class="comment">//使能对应IO口的时钟，因为是复用功能所以还要使能AFIO时钟</span></span><br></pre></td></tr></table></figure>
-<p>2.I/O口重映射开启. </p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">GPIO_PinRemapConfig(GPIO_Remap_USART1,ENABLE);</span><br></pre></td></tr></table></figure>
-<p>3.配制重映射后的引脚： 这里只需配置重映射后的I/O（PB6,PB7）,原来的不需要去配置（PA9，PA10）。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6; </span><br><span class="line">GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;</span><br><span class="line">GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; </span><br><span class="line">GPIO_Init(GPIOB, &amp;GPIO_InitStructure); </span><br><span class="line"></span><br><span class="line">GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;</span><br><span class="line">GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING; </span><br><span class="line">GPIO_Init(GPIOB, &amp;GPIO_InitStructure);</span><br></pre></td></tr></table></figure>
-<p>简言之，若GPIO口使用了重映射栏中的外设功能，则需要开启AFIO时钟；只使用默认复用功能时，只开启相应外设时钟无需开启AFIO时钟。</p>
-]]></content>
-      <categories>
-        <category>开发</category>
-      </categories>
-      <tags>
-        <tag>开发</tag>
-        <tag>嵌入式</tag>
-        <tag>单片机</tag>
-        <tag>STM32</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>STM32基于FSMC的SRAM扩展</title>
-    <url>/STM32%E5%9F%BA%E4%BA%8EFSMC%E7%9A%84SRAM%E6%89%A9%E5%B1%95.html</url>
-    <content><![CDATA[<p>STM32F103ZET6属于STM32F103xE增强型系列,工作频率为72MHz,内置高速存储器(高达512K字节的闪存和64K字节的SRAM) ,丰富的外设资源足以满足大部分的一般应用,但对于一些需要采集处理较多数据.应用算法或使用GUI等场合,内置的SRAM就显得捉襟见肘了,这时就需要扩展SRAM了。</p>
-<p>IS61LV51216是ISSI公司生产的常用16位SRAM异步存储芯片,内部512k存储容量足以满足多数场合应用需求,存取时间8~12ns ,全静态操作,不需时钟或刷新,兼容TTL标准接口,具有高速,可靠、易操作.低功耗等优点。</p>
-<p>FSMC(灵活的静态存储器控制器)是STM32采用的一种新型存储器控制技术,包含四个主要模块:AHB接口.NOR闪存和PSRAM控制器、NAND闪存和PC卡控制器、外部设备接口。</p>
-<p>STM32F103系列中的64脚的STM32F103Rx系列没有FSMC功能,无法扩展SRAM;100脚的STM32F103Vx系列的FSMC在使用时需要管脚复用,不仅设置起来更复杂一些,而且还需增加锁存器,FSMC本身也占用大量管脚,在许多应用场合中造成管脚分配困难，但成本却与144脚的STM32F103Zx系列相差不大,因此在需要扩展SRAM时除非对成本要求特别严格或有其他要求,一般较少选用STM32F103Vx系列。</p>
-<p>硬件电路设计<br>STM32F103ZET6与IS61LV51216的硬件电路连接:管脚接法同时兼容容量较小但成本更低的IS61LV25616。由于篇幅原因,IS61LV51216芯片的A18-AO为地址线,在此没有用到的FSMC_A可以作为通用IO使用,I/O15-I/O0为数据线,CE为片选引脚,本例选择使用地址为bank1的第三个子区域,片选脚为FSMC_NE3,WE为写入使能引脚,控制存储器的写入和读取,DE为输出使能引脚。LB为低位控制脚,UB为高位控制脚,用于将32位数据分割为连续的16位数据进行操作。</p>
-<p>————————————————<br>版权声明：本文为CSDN博主「EVERSPIN」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br><a href="https://blog.csdn.net/EVERSPIN/article/details/110480180" target="_blank" rel="noopener">原文链接</a></p>
-]]></content>
-      <categories>
-        <category>开发</category>
-      </categories>
-      <tags>
-        <tag>开发</tag>
-        <tag>嵌入式</tag>
-        <tag>单片机</tag>
-        <tag>STM32</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>keil5(MDK版)开发STM32和STC89C52</title>
-    <url>/keil-anzhuang.html</url>
-    <content><![CDATA[<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>在安装keil之前，请下载安装工具包，我已全部整理好，链接如下：<br><a href="https://pan.baidu.com/s/1g3CVmU_jkbZVSMSAcNg0PQ" target="_blank" rel="noopener">安装工具包</a> 提取码: ttbt</p>
-<h3 id="安装MDK"><a href="#安装MDK" class="headerlink" title="安装MDK"></a>安装MDK</h3><p>双击安装包后如下图所示，选择Next即可<br><img src="https://i.loli.net/2020/05/13/2v1qJNYjab3wDf5.png" alt><br><img src="https://i.loli.net/2020/05/13/GPKoReNjE6t4nMx.png" alt></p>
-<p>勾选代表同意KEIL的协议，必须勾选，否则无法安装<br><img src="https://i.loli.net/2020/05/13/iMqrVvXKQeuT1BU.png" alt></p>
-<p>选择安装路径，建议装在D盘，方便管理<br><img src="https://i.loli.net/2020/05/13/vrWLCpAyMYb6fkG.png" alt></p>
-<p> 填写安装注册信息，随便填写即可<br><img src="https://i.loli.net/2020/05/13/aRpdtyWPZx35Y7w.png" alt></p>
-<p>等待安装完成即可<br><img src="https://i.loli.net/2020/05/13/ZUxuPzXwntpNkSF.png" alt></p>
-<p><img src="https://i.loli.net/2020/05/13/2kJUcZAmXjOHqir.png" alt></p>
-<p>注意：如果是第一次安装，可能会弹出界面让你安装下载器驱动，建议勾选并安装，这里因为我之前已经 安装了所以并没有提示安装下载器驱动<br>最后显示下图界面表示安装成功，点击 Finish 完成安装<br><img src="https://i.loli.net/2020/05/13/nhkdjMKQ43FGopz.png" alt></p>
-<h3 id="安装Keil4编译器"><a href="#安装Keil4编译器" class="headerlink" title="安装Keil4编译器"></a>安装Keil4编译器</h3><p>将我分享的文件夹里面的C51文件夹复制到安装路径目录下，如：我的安装路径为D:\Keil_v5<br><img src="https://i.loli.net/2020/05/13/sFeRzQfdx4lErG9.png" alt></p>
-<p>注意复制后C51的文件夹应该与ARM文件夹在同一目录下<br><img src="https://i.loli.net/2020/05/13/4jqmFQoA92BcVCM.png" alt></p>
-<p>然后还需修改配置文件，使其支持keil4<br>①用记事本打开安装目录下的 TOOLS.INI 配置文件，将我分享的文件夹里的 C51.txt 里的内容复制到 [ARM] 前面<br><img src="https://i.loli.net/2020/05/13/vkmsCdqcgUutpFi.png" alt><br><img src="https://i.loli.net/2020/05/13/BQskRHY2vfp8yTW.png" alt></p>
-<p>​ ②修改 [C51] 中的PATH为MDK安装目录下C51文件夹的路径，如：我的为D:\Keil_v5\C51<br>​ ③保存退出<br><img src="https://s1.ax1x.com/2020/07/04/NxfMY4.jpg" alt></p>
-<h3 id="安装芯片“支持包”"><a href="#安装芯片“支持包”" class="headerlink" title="安装芯片“支持包”"></a>安装芯片“支持包”</h3><p>①安装STM32的支持包<br>我已经整理好在文件夹里面了，无需重复下载<br>如果想安装其他型号的单片机支持包，可以到官网下载</p>
-<p>​下载链接：<a href="http://www.keil.com/dd2/pack/" target="_blank" rel="noopener">http://www.keil.com/dd2/pack/</a><br><img src="https://i.loli.net/2020/05/13/JQtPzmLc6rGy798.png" alt><br><img src="https://i.loli.net/2020/05/13/o5wXd8kGrEJjLuH.png" alt><br><img src="https://i.loli.net/2020/05/13/15SpKPwt2NHbW7O.png" alt></p>
-<p>②安装STC51单片机的支持包</p>
-<p>在我上传的文件夹中有一个 stc-isp-15xx-v6.86r.exe 的软件，其实就是STC的51单片机的下载软件，不需要安装，直接双击打开即可<br><img src="https://i.loli.net/2020/05/13/bVdhRkHjXWCBzGo.png" alt></p>
-<p>​点击右边的 Keil仿真设置–&gt;添加型号和头文件到Keil中<br><img src="https://i.loli.net/2020/05/13/TID1B86a4MEr3Ow.png" alt></p>
-<p>​选择之前我们复制过去的C51文件夹<br><img src="https://i.loli.net/2020/05/13/cOKQnkdwjevUV9S.png" alt></p>
-<p>显示下图，STC的芯片支持包就导入成功了<br><img src="https://i.loli.net/2020/05/13/Lg1BtVODf7s5okp.png" alt></p>
-<h3 id="破解MDK"><a href="#破解MDK" class="headerlink" title="破解MDK"></a>破解MDK</h3><p>keil5 MDK版 不破解，会有代码大小限制，非常不利于后续学习开发，我们这里破解一下，一劳永逸。</p>
-<p>首先回到桌面，已经创建了keil5的快捷方式，鼠标右键单击Keil5，以管理员身份运行，记住，一定要以管理员身份运行，不然会破解失败<br><img src="https://s1.ax1x.com/2020/05/13/YanB0U.png" alt></p>
-<p>​ 依次点击 File–&gt;License Management…<br><img src="https://s1.ax1x.com/2020/05/13/Yansk4.png" alt></p>
-<p>复制CID码<br><img src="https://s1.ax1x.com/2020/05/13/Yan0mT.png" alt></p>
-<p>下一步操作前，请先将禁音电脑，相信我！！！因为破解软件打开后会有噪音，禁音就完事了</p>
-<p>然后打开我分享的文件夹，解压keygen.zip<br><img src="https://s1.ax1x.com/2020/05/13/YanD7F.png" alt></p>
-<p>打开里面的软件（可能报毒，关掉杀毒软件重新解压打开即可）<br>按下图示操作<br><img src="https://s1.ax1x.com/2020/05/13/YanytJ.png" alt></p>
-<p>复制生成的注册码<br><img src="https://s1.ax1x.com/2020/05/13/YangpR.png" alt></p>
-<p>粘贴到选中框<br><img src="https://s1.ax1x.com/2020/05/13/Yan6h9.png" alt></p>
-<p>点击 Add LIC 注册成功<br><img src="https://s1.ax1x.com/2020/05/13/Yan211.png" alt></p>
-<p>这样就注册了C51的编译器，还有STM32的编译器需要注册，重复刚才的操作，只需要将 Target 改成 ARM ，在此不再赘述</p>
-<h3 id="检查功能"><a href="#检查功能" class="headerlink" title="检查功能"></a>检查功能</h3><p>​<br> 打开keil 5检查功能，选择 Project–&gt; New uVision Project…<br><img src="https://s1.ax1x.com/2020/05/13/YanR6x.png" alt></p>
-<p>随便找个地方放工程文件<br><img src="https://s1.ax1x.com/2020/05/13/YanWX6.png" alt></p>
-<p>看到这三个芯片“支持包”数据库就OK了<br><img src="https://s1.ax1x.com/2020/05/13/Yan57D.png" alt></p>
-<p>从上到下分别为STM32的支持包数据库、keil4自带的一些芯片支持、STC的支持包数据库</p>
-<p>STC89C51单片机<br><img src="https://s1.ax1x.com/2020/05/13/Yan40O.png" alt></p>
-<p>STM32单片机<br><img src="https://s1.ax1x.com/2020/05/13/YanhnK.png" alt></p>
-<h3 id="软件汉化"><a href="#软件汉化" class="headerlink" title="软件汉化"></a>软件汉化</h3><p>将我分享的文件夹里的UV4.exe移动到安装路径<br><img src="https://s1.ax1x.com/2020/05/13/YanTtH.png" alt></p>
-<p>替换目标中的文件即可<br><img src="https://s1.ax1x.com/2020/05/13/Yan7hd.png" alt></p>
-<h3 id="完成安装"><a href="#完成安装" class="headerlink" title="完成安装"></a>完成安装</h3><p><img src="https://s1.ax1x.com/2020/05/13/Yanb9A.png" alt></p>
-<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><pre><code>最新版本的KEIL5，并不是像原来的KEIL4一样，将89C51系列芯片放在Atmel里面，而是放在Microchip里面：
-</code></pre><p><img src="https://s1.ax1x.com/2020/05/14/Ywq0p9.png" alt></p>
-<p><img src="https://s1.ax1x.com/2020/05/14/YwqBlR.png" alt></p>
-]]></content>
-      <categories>
-        <category>教程</category>
-      </categories>
-      <tags>
-        <tag>开发</tag>
-        <tag>嵌入式</tag>
-        <tag>单片机</tag>
-        <tag>STM32</tag>
-        <tag>keil</tag>
-        <tag>软件</tag>
-        <tag>安装</tag>
-        <tag>uVision</tag>
-        <tag>STC89C51</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>初识STM32</title>
     <url>/%E5%88%9D%E8%AF%8632%E5%8D%95%E7%89%87%E6%9C%BA.html</url>
     <content><![CDATA[<h2 id="什么是STM32"><a href="#什么是STM32" class="headerlink" title="什么是STM32"></a>什么是STM32</h2><h3 id="STM32的字面含义"><a href="#STM32的字面含义" class="headerlink" title="STM32的字面含义"></a>STM32的字面含义</h3><p>1、ST——意法半导体，是一个公司名，即SOC厂商。STM32等系列芯片的内核由ARM公司生产（ARM是一个IP厂商，本身生产芯片，将内核授权给各大SOC厂商使用而盈利），ST公司则负责STM32外围电路的设计。</p>
@@ -718,6 +755,42 @@
         <tag>嵌入式</tag>
         <tag>单片机</tag>
         <tag>STM32</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>蓝牙模块选型及基础知识</title>
+    <url>/%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E9%80%89%E5%9E%8B%E5%8F%8A%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html</url>
+    <content><![CDATA[<p>本文将讲述关于蓝牙的基础知识和蓝牙模块的选型介绍。对于开始学习蓝牙或者要用蓝牙做项目的你有一定的帮助。</p>
+<h2 id="蓝牙基础知识"><a href="#蓝牙基础知识" class="headerlink" title="蓝牙基础知识"></a>蓝牙基础知识</h2><h3 id="蓝牙发展"><a href="#蓝牙发展" class="headerlink" title="蓝牙发展"></a>蓝牙发展</h3><p>自1998.10.19发布蓝牙0.7标准以来，目前蓝牙已经发展到5.0以上。蓝牙发展到3.0标准之后推出了蓝牙4.0BLE（BLE:全称为Bluetooth Low Energy）。可以看出蓝牙规范4.0最重要的一个特性就是低功耗。</p>
+<p>4.0BLE使得蓝牙设备可通过一粒纽扣电池供电以维持续工作数年之久，而且最大速率与3.0一样还是24Mbs。BLE的低功耗可以更好地配合单片机使用。所以大部分的蓝牙模块都是使用BLE。</p>
+<h3 id="苹果MFI认证"><a href="#苹果MFI认证" class="headerlink" title="苹果MFI认证"></a>苹果MFI认证</h3><p>蓝牙4.0之前，只有IOS设备和苹果认证的MFI蓝牙设备才可以被ios检索到，也就是说只有过了MFI的蓝牙设备，才能和ISO设备连接并建立数据通道，因此要想和ISO设备APP通讯，必须过MFI认证 。</p>
+<p>在蓝牙4.0出来以后，苹果开放了BLE通道，但硬件上要Iphone4s以上，系统要ios6 以上才支持4.0。另外受蓝牙4.0本身协议限制，BLE最大传输速率只能到8KB/S左右，而且应用方面会有限制。</p>
+<p>此处提一下安卓系统，安卓系统对于蓝牙的兼容性要比苹果好，市面上的蓝牙模块基本都是可以正常连接的，注意安卓4.3系统以上才开始全面支持BLE。</p>
+<h3 id="蓝牙协议"><a href="#蓝牙协议" class="headerlink" title="蓝牙协议"></a>蓝牙协议</h3><p>这部分内容只是简要提一下常用协议，仅供了解。<br>（1）核心协议：BaseBand、LMP、L2CAP、SDP；<br>（2）电缆替代协议：RFCOMM；<br>（3）电话传送控制协议：TCS-Binary、AT命令集；<br>（4）选用协议：PPP、UDP/TCP/IP、OBEX、WAP、vCard、vCal、IrMC、WAE。</p>
+<h3 id="蓝牙与单片机通信方式"><a href="#蓝牙与单片机通信方式" class="headerlink" title="蓝牙与单片机通信方式"></a>蓝牙与单片机通信方式</h3><p>蓝牙与单片机主要通过串口通信，蓝牙可以作为主机和从机。有些模块不支持主机，选择模块时要注意看是否支持主机。<br>连接时注意蓝牙的TXD接单片机RXD，蓝牙的RXD接单片机TXD。</p>
+<h3 id="蓝牙单模"><a href="#蓝牙单模" class="headerlink" title="蓝牙单模"></a>蓝牙单模</h3><p>所谓的蓝牙单模就是仅支持标准蓝牙版本或者BLE。两者仅支持其中一个。</p>
+<h3 id="蓝牙双模"><a href="#蓝牙双模" class="headerlink" title="蓝牙双模"></a>蓝牙双模</h3><p>蓝牙双模无疑是未来的主流。经典蓝牙功耗较大，而且上述也提到需要得到MFI认证才能连接苹果，4.0以后的蓝牙BLE功耗小，但不支持音频协议及受数据传输速度限制，蓝牙双模则是综合了两者的优缺点，既可以支持音频传输，同样可支持数据传输，功耗低，并且兼容性也是两者之和。</p>
+<h3 id="iBeacon"><a href="#iBeacon" class="headerlink" title="iBeacon"></a>iBeacon</h3><p>iBeacon是基于蓝牙4.0BLE由苹果推出的一项室内定位技术。<br>其工作方式是，向周围发送自己特有的ID，接收到该ID的应用软件会根据该ID采取一些行动。比如，在店铺里设置iBeacon通信模块的话，便可让iPhone和iPad上运行一资讯告知服务器，或者由服务器向顾客发送折扣券及进店积分。此外，还可以在家电发生故障或停止工作时使用iBeacon向应用软件发送资讯。说白了就是一种广播通信。</p>
+<h2 id="蓝牙模块选型"><a href="#蓝牙模块选型" class="headerlink" title="蓝牙模块选型"></a>蓝牙模块选型</h2><h3 id="HC蓝牙模块"><a href="#HC蓝牙模块" class="headerlink" title="HC蓝牙模块"></a>HC蓝牙模块</h3><p>HC公司蓝牙模块被广泛应用，从销量可以看出。本文针对HC公司的蓝牙模块进行介绍。</p>
+<h3 id="处于淘汰边缘的HC-05"><a href="#处于淘汰边缘的HC-05" class="headerlink" title="处于淘汰边缘的HC-05"></a>处于淘汰边缘的HC-05</h3><p>说起蓝牙模块，很多人都会联想到HC-05，确实HC-05很实用，但它已经处于淘汰边缘了。HC-05是蓝牙2.0的，与单片机通信没有任何问题，但是2.0已经非常落后了。可以说没什么学习价值，如果要做依赖蓝牙的项目，HC-05难以承担重任。<br>还有重要的一点，如果用苹果手机是没有办法做测试的，上文蓝牙基础知识中也有提到。</p>
+<h3 id="HC蓝牙模块选型"><a href="#HC蓝牙模块选型" class="headerlink" title="HC蓝牙模块选型"></a>HC蓝牙模块选型</h3><p>截至文章发布时间，下图是比较实用的HC蓝牙模块</p>
+<p><a href="https://imgtu.com/i/W3PfWq" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/18/W3PfWq.jpg" alt="W3PfWq.jpg"></a></p>
+<p>截至文章发布时间，图中价格是某宝中的价格。<br>从图中可以看出，如果只是作为从机使用，HC-04性价比是最高的。HC-04的双模是SPP2.1和BLE4.0。<br>如果要主从一体，推荐HC-42，HC-42支持蓝牙5.0BLE，还支持ibeacon（关于ibeacon上文有介绍），当然也可以考虑HC-08。<br>关于速度方面，从图中可以看出几个模块都是差不多的。<br>以上模块均支持苹果和安卓，苹果需要用支持BLE的软件。</p>
+<p>————————————————<br>版权声明：本文为CSDN博主「微光feng」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a href="https://blog.csdn.net/qq_46554815/article/details/113193127" target="_blank" rel="noopener">https://blog.csdn.net/qq_46554815/article/details/113193127</a></p>
+]]></content>
+      <categories>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>开发</tag>
+        <tag>嵌入式</tag>
+        <tag>单片机</tag>
+        <tag>无线</tag>
+        <tag>蓝牙</tag>
+        <tag>HC-05</tag>
+        <tag>BLE</tag>
+        <tag>MFI认证</tag>
+        <tag>蓝牙发展史</tag>
       </tags>
   </entry>
   <entry>
@@ -966,42 +1039,6 @@
         <tag>嵌入式</tag>
         <tag>单片机</tag>
         <tag>STC89C52</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>蓝牙模块选型及基础知识</title>
-    <url>/%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E9%80%89%E5%9E%8B%E5%8F%8A%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.html</url>
-    <content><![CDATA[<p>本文将讲述关于蓝牙的基础知识和蓝牙模块的选型介绍。对于开始学习蓝牙或者要用蓝牙做项目的你有一定的帮助。</p>
-<h2 id="蓝牙基础知识"><a href="#蓝牙基础知识" class="headerlink" title="蓝牙基础知识"></a>蓝牙基础知识</h2><h3 id="蓝牙发展"><a href="#蓝牙发展" class="headerlink" title="蓝牙发展"></a>蓝牙发展</h3><p>自1998.10.19发布蓝牙0.7标准以来，目前蓝牙已经发展到5.0以上。蓝牙发展到3.0标准之后推出了蓝牙4.0BLE（BLE:全称为Bluetooth Low Energy）。可以看出蓝牙规范4.0最重要的一个特性就是低功耗。</p>
-<p>4.0BLE使得蓝牙设备可通过一粒纽扣电池供电以维持续工作数年之久，而且最大速率与3.0一样还是24Mbs。BLE的低功耗可以更好地配合单片机使用。所以大部分的蓝牙模块都是使用BLE。</p>
-<h3 id="苹果MFI认证"><a href="#苹果MFI认证" class="headerlink" title="苹果MFI认证"></a>苹果MFI认证</h3><p>蓝牙4.0之前，只有IOS设备和苹果认证的MFI蓝牙设备才可以被ios检索到，也就是说只有过了MFI的蓝牙设备，才能和ISO设备连接并建立数据通道，因此要想和ISO设备APP通讯，必须过MFI认证 。</p>
-<p>在蓝牙4.0出来以后，苹果开放了BLE通道，但硬件上要Iphone4s以上，系统要ios6 以上才支持4.0。另外受蓝牙4.0本身协议限制，BLE最大传输速率只能到8KB/S左右，而且应用方面会有限制。</p>
-<p>此处提一下安卓系统，安卓系统对于蓝牙的兼容性要比苹果好，市面上的蓝牙模块基本都是可以正常连接的，注意安卓4.3系统以上才开始全面支持BLE。</p>
-<h3 id="蓝牙协议"><a href="#蓝牙协议" class="headerlink" title="蓝牙协议"></a>蓝牙协议</h3><p>这部分内容只是简要提一下常用协议，仅供了解。<br>（1）核心协议：BaseBand、LMP、L2CAP、SDP；<br>（2）电缆替代协议：RFCOMM；<br>（3）电话传送控制协议：TCS-Binary、AT命令集；<br>（4）选用协议：PPP、UDP/TCP/IP、OBEX、WAP、vCard、vCal、IrMC、WAE。</p>
-<h3 id="蓝牙与单片机通信方式"><a href="#蓝牙与单片机通信方式" class="headerlink" title="蓝牙与单片机通信方式"></a>蓝牙与单片机通信方式</h3><p>蓝牙与单片机主要通过串口通信，蓝牙可以作为主机和从机。有些模块不支持主机，选择模块时要注意看是否支持主机。<br>连接时注意蓝牙的TXD接单片机RXD，蓝牙的RXD接单片机TXD。</p>
-<h3 id="蓝牙单模"><a href="#蓝牙单模" class="headerlink" title="蓝牙单模"></a>蓝牙单模</h3><p>所谓的蓝牙单模就是仅支持标准蓝牙版本或者BLE。两者仅支持其中一个。</p>
-<h3 id="蓝牙双模"><a href="#蓝牙双模" class="headerlink" title="蓝牙双模"></a>蓝牙双模</h3><p>蓝牙双模无疑是未来的主流。经典蓝牙功耗较大，而且上述也提到需要得到MFI认证才能连接苹果，4.0以后的蓝牙BLE功耗小，但不支持音频协议及受数据传输速度限制，蓝牙双模则是综合了两者的优缺点，既可以支持音频传输，同样可支持数据传输，功耗低，并且兼容性也是两者之和。</p>
-<h3 id="iBeacon"><a href="#iBeacon" class="headerlink" title="iBeacon"></a>iBeacon</h3><p>iBeacon是基于蓝牙4.0BLE由苹果推出的一项室内定位技术。<br>其工作方式是，向周围发送自己特有的ID，接收到该ID的应用软件会根据该ID采取一些行动。比如，在店铺里设置iBeacon通信模块的话，便可让iPhone和iPad上运行一资讯告知服务器，或者由服务器向顾客发送折扣券及进店积分。此外，还可以在家电发生故障或停止工作时使用iBeacon向应用软件发送资讯。说白了就是一种广播通信。</p>
-<h2 id="蓝牙模块选型"><a href="#蓝牙模块选型" class="headerlink" title="蓝牙模块选型"></a>蓝牙模块选型</h2><h3 id="HC蓝牙模块"><a href="#HC蓝牙模块" class="headerlink" title="HC蓝牙模块"></a>HC蓝牙模块</h3><p>HC公司蓝牙模块被广泛应用，从销量可以看出。本文针对HC公司的蓝牙模块进行介绍。</p>
-<h3 id="处于淘汰边缘的HC-05"><a href="#处于淘汰边缘的HC-05" class="headerlink" title="处于淘汰边缘的HC-05"></a>处于淘汰边缘的HC-05</h3><p>说起蓝牙模块，很多人都会联想到HC-05，确实HC-05很实用，但它已经处于淘汰边缘了。HC-05是蓝牙2.0的，与单片机通信没有任何问题，但是2.0已经非常落后了。可以说没什么学习价值，如果要做依赖蓝牙的项目，HC-05难以承担重任。<br>还有重要的一点，如果用苹果手机是没有办法做测试的，上文蓝牙基础知识中也有提到。</p>
-<h3 id="HC蓝牙模块选型"><a href="#HC蓝牙模块选型" class="headerlink" title="HC蓝牙模块选型"></a>HC蓝牙模块选型</h3><p>截至文章发布时间，下图是比较实用的HC蓝牙模块</p>
-<p><a href="https://imgtu.com/i/W3PfWq" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/18/W3PfWq.jpg" alt="W3PfWq.jpg"></a></p>
-<p>截至文章发布时间，图中价格是某宝中的价格。<br>从图中可以看出，如果只是作为从机使用，HC-04性价比是最高的。HC-04的双模是SPP2.1和BLE4.0。<br>如果要主从一体，推荐HC-42，HC-42支持蓝牙5.0BLE，还支持ibeacon（关于ibeacon上文有介绍），当然也可以考虑HC-08。<br>关于速度方面，从图中可以看出几个模块都是差不多的。<br>以上模块均支持苹果和安卓，苹果需要用支持BLE的软件。</p>
-<p>————————————————<br>版权声明：本文为CSDN博主「微光feng」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a href="https://blog.csdn.net/qq_46554815/article/details/113193127" target="_blank" rel="noopener">https://blog.csdn.net/qq_46554815/article/details/113193127</a></p>
-]]></content>
-      <categories>
-        <category>开发</category>
-      </categories>
-      <tags>
-        <tag>开发</tag>
-        <tag>嵌入式</tag>
-        <tag>单片机</tag>
-        <tag>无线</tag>
-        <tag>蓝牙</tag>
-        <tag>HC-05</tag>
-        <tag>BLE</tag>
-        <tag>MFI认证</tag>
-        <tag>蓝牙发展史</tag>
       </tags>
   </entry>
 </search>
