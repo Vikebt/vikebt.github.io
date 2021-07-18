@@ -467,7 +467,8 @@
           串口、IIC总线、AD转换、DS18B20他们工作中或者时序中是先传高位还是低位？
 串口传输数据时先传送字符的低位，后传送字符的高位。即低位（LSB）在前，高位（MSB）在后。
 IIC总线传输数据时先传送字符的高位，后传送字符的低位。即高位（MSB）在前，低位（LSB）在后。
-AD转换先传送字符的高
+AD转换先传送字符的高位，后传送字符的低位。即高位（MSB）在前，低位（LSB）在后。
+DS18B20
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -677,7 +678,8 @@ AD转换先传送字符的高
       
         
           
-          STM32F103ZET6属于STM32F103xE增强型系列,工作频率为72MHz,内置高速存储器(高达512K字节的闪存和64K字节的SRAM) ,丰富的外设资源足以满足大部分的一般应用,但对于一些需要采集处理较多数据.应用算法或使用GUI等场合,内置的SRAM就显得捉襟见肘了,这时就需要扩展S
+          STM32F103ZET6属于STM32F103xE增强型系列,工作频率为72MHz,内置高速存储器(高达512K字节的闪存和64K字节的SRAM) ,丰富的外设资源足以满足大部分的一般应用,但对于一些需要采集处理较多数据.应用算法或使用GUI等场合,内置的SRAM就显得捉襟见肘了,这时就需要扩展SRAM了。
+IS61LV51216是ISSI公司生产的常用16位SRAM异步存储
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -888,7 +890,7 @@ AD转换先传送字符的高
         
           
           最近在学习STM32，在参考手册上了解到关于“复用”和“重映射”这些概念，刚开始没搞懂，通过这几天在网上查找资料和看手册，弄清楚了，先与大家分享，希望能对跟我一样的新手有所帮助吧。
-为了优化64脚或100脚封装的外设数目，可以把一些复用功能重新映射到其他引脚上。设置复用重映射和调试I/O配置寄存器(
+为了优化64脚或100脚封装的外设数目，可以把一些复用功能重新映射到其他引脚上。设置复用重映射和调试I/O配置寄存器(AFIO_MAPR)实现引脚的重新映射。这时，复用功能不再映射到它们的原始分配上
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1098,7 +1100,7 @@ AD转换先传送字符的高
       
         
           
-          ISP一键下载原理分析ISP一键下载原理分析ISP指电路板上的空白元器件可以编程写入最终用户代码， 而不需要从电路板上取下元器件。 已经编程的器件也可以用ISP方式擦除或再编程。使用ISP的时候需要用到自举程序（BootLoader） ， 自举程序存储在STM32器件的内部自举 ROM（系统存储器）
+          ISP一键下载原理分析ISP一键下载原理分析ISP指电路板上的空白元器件可以编程写入最终用户代码， 而不需要从电路板上取下元器件。 已经编程的器件也可以用ISP方式擦除或再编程。使用ISP的时候需要用到自举程序（BootLoader） ， 自举程序存储在STM32器件的内部自举 ROM（系统存储器） 中。 其主要任务是通过一种可用的串行外设（USART、 CAN、 USB、 I
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1308,7 +1310,7 @@ AD转换先传送字符的高
       
         
           
-          GPIO框图剖析GPIO是通用输入输出端口的简称，简单来说就是STM32可控制的引脚，STM32芯片的GPIO引脚与外部设备连接起来，从而实现与外部通讯、控制以及数据采集的功能。STM32芯片的GPIO被分成很多组，每组有16个引脚，如型号为STM32F103VET6型号的芯片有GPIOA、GPIO
+          GPIO框图剖析GPIO是通用输入输出端口的简称，简单来说就是STM32可控制的引脚，STM32芯片的GPIO引脚与外部设备连接起来，从而实现与外部通讯、控制以及数据采集的功能。STM32芯片的GPIO被分成很多组，每组有16个引脚，如型号为STM32F103VET6型号的芯片有GPIOA、GPIOB、GPIOC 至GPIOE 共5 组GPIO，芯片一共100 个引脚，其中GP
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1518,7 +1520,7 @@ AD转换先传送字符的高
       
         
           
-          PN结的反向击穿雪崩击穿和齐纳击穿雪崩击穿：当二极管掺杂浓度较低时，外加反向电压，PN结宽， PN结变成“粒子加速器”，一旦P端或N端有粒子通过漂移运动进入PN结时，瞬间被加速，撞到PN结中的共价键上，价电子变成自由电子，开始在PN结中四处碰撞，引起“雪崩反应”，导致PN结击穿。前提：PN结宽度足够
+          PN结的反向击穿雪崩击穿和齐纳击穿雪崩击穿：当二极管掺杂浓度较低时，外加反向电压，PN结宽， PN结变成“粒子加速器”，一旦P端或N端有粒子通过漂移运动进入PN结时，瞬间被加速，撞到PN结中的共价键上，价电子变成自由电子，开始在PN结中四处碰撞，引起“雪崩反应”，导致PN结击穿。前提：PN结宽度足够宽，能使粒子加速。温度越高，雪崩击穿所需要的击穿电压越高。齐纳击穿：当二极管掺杂
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -2286,7 +2288,7 @@ AD转换先传送字符的高
 
   
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
 </html>
 
 <!-- ҳ����С���� -->
