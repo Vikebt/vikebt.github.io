@@ -484,11 +484,11 @@
     
       <category term="OLED" scheme="http://baichufan.club/tags/OLED/"/>
     
-      <category term="MLX90614" scheme="http://baichufan.club/tags/MLX90614/"/>
-    
       <category term="温度传感器" scheme="http://baichufan.club/tags/%E6%B8%A9%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/"/>
     
       <category term="STC89C52" scheme="http://baichufan.club/tags/STC89C52/"/>
+    
+      <category term="MLX90614" scheme="http://baichufan.club/tags/MLX90614/"/>
     
   </entry>
   
@@ -522,11 +522,11 @@
     
       <category term="OLED" scheme="http://baichufan.club/tags/OLED/"/>
     
+      <category term="1602HWTW" scheme="http://baichufan.club/tags/1602HWTW/"/>
+    
       <category term="温度传感器" scheme="http://baichufan.club/tags/%E6%B8%A9%E5%BA%A6%E4%BC%A0%E6%84%9F%E5%99%A8/"/>
     
       <category term="STC89C52" scheme="http://baichufan.club/tags/STC89C52/"/>
-    
-      <category term="1602HWTW" scheme="http://baichufan.club/tags/1602HWTW/"/>
     
   </entry>
   
