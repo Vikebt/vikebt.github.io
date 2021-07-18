@@ -172,14 +172,14 @@
   </url>
   
   <url>
-    <loc>http://baichufan.club/tags/%E8%93%9D%E7%89%99/</loc>
+    <loc>http://baichufan.club/tags/WIFI/</loc>
     <lastmod>2021-07-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://baichufan.club/tags/HC-05/</loc>
+    <loc>http://baichufan.club/tags/ESP8266/</loc>
     <lastmod>2021-07-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -200,20 +200,6 @@
   </url>
   
   <url>
-    <loc>http://baichufan.club/tags/WIFI/</loc>
-    <lastmod>2021-07-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://baichufan.club/tags/ESP8266/</loc>
-    <lastmod>2021-07-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://baichufan.club/tags/MATLAB/</loc>
     <lastmod>2021-07-18</lastmod>
     <changefreq>daily</changefreq>
@@ -222,6 +208,20 @@
   
   <url>
     <loc>http://baichufan.club/tags/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/</loc>
+    <lastmod>2021-07-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://baichufan.club/tags/%E8%93%9D%E7%89%99/</loc>
+    <lastmod>2021-07-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://baichufan.club/tags/HC-05/</loc>
     <lastmod>2021-07-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -242,7 +242,7 @@
   </url>
   
   <url>
-    <loc>http://baichufan.club/tags/1602HWTW/</loc>
+    <loc>http://baichufan.club/tags/MLX90614/</loc>
     <lastmod>2021-07-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -263,7 +263,7 @@
   </url>
   
   <url>
-    <loc>http://baichufan.club/tags/MLX90614/</loc>
+    <loc>http://baichufan.club/tags/1602HWTW/</loc>
     <lastmod>2021-07-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -277,21 +277,14 @@
   </url>
   
   <url>
-    <loc>http://baichufan.club/tags/BLE/</loc>
+    <loc>http://baichufan.club/tags/AP/</loc>
     <lastmod>2021-07-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://baichufan.club/tags/MFI%E8%AE%A4%E8%AF%81/</loc>
-    <lastmod>2021-07-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://baichufan.club/tags/%E8%93%9D%E7%89%99%E5%8F%91%E5%B1%95%E5%8F%B2/</loc>
+    <loc>http://baichufan.club/tags/STA/</loc>
     <lastmod>2021-07-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -333,14 +326,21 @@
   </url>
   
   <url>
-    <loc>http://baichufan.club/tags/AP/</loc>
+    <loc>http://baichufan.club/tags/BLE/</loc>
     <lastmod>2021-07-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://baichufan.club/tags/STA/</loc>
+    <loc>http://baichufan.club/tags/MFI%E8%AE%A4%E8%AF%81/</loc>
+    <lastmod>2021-07-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://baichufan.club/tags/%E8%93%9D%E7%89%99%E5%8F%91%E5%B1%95%E5%8F%B2/</loc>
     <lastmod>2021-07-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
