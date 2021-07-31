@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://baichufan.club/"/>
-  <updated>2021-07-18T04:03:51.319Z</updated>
+  <updated>2021-07-31T06:37:01.511Z</updated>
   <id>http://baichufan.club/</id>
   
   <author>
@@ -15,6 +15,42 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>STM32固件库常见命名方式</title>
+    <link href="http://baichufan.club/STM32%E5%9B%BA%E4%BB%B6%E5%BA%93%E5%B8%B8%E8%A7%81%E5%91%BD%E5%90%8D%E6%96%B9%E5%BC%8F.html"/>
+    <id>http://baichufan.club/STM32%E5%9B%BA%E4%BB%B6%E5%BA%93%E5%B8%B8%E8%A7%81%E5%91%BD%E5%90%8D%E6%96%B9%E5%BC%8F.html</id>
+    <published>2021-07-31T06:35:28.413Z</published>
+    <updated>2021-07-31T06:37:01.511Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="STM32固件库常见命名方式"><a href="#STM32固件库常见命名方式" class="headerlink" title="STM32固件库常见命名方式"></a>STM32固件库常见命名方式</h1><div class="table-container"><table><thead><tr><th style="text-align:center">缩写</th><th style="text-align:center">外设/单元</th></tr></thead><tbody><tr><td style="text-align:center">ADC</td><td style="text-align:center">模数转换器</td></tr><tr><td style="text-align:center">BKP</td><td style="text-align:center">备份寄存器</td></tr><tr><td style="text-align:center">CAN</td><td style="text-align:center">控制器局域网模块</td></tr><tr><td style="text-align:center">DMA</td><td style="text-align:center">直接内存存取控制器</td></tr><tr><td style="text-align:center">EXTI</td><td style="text-align:center">外部中断事件控制器</td></tr><tr><td style="text-align:center">FLASH</td><td style="text-align:center">闪存存储器</td></tr><tr><td style="text-align:center">GPIO</td><td style="text-align:center">通用输入输出</td></tr><tr><td style="text-align:center">I2C</td><td style="text-align:center">内部集成电路</td></tr><tr><td style="text-align:center">IWDG</td><td style="text-align:center">独立看门狗</td></tr><tr><td style="text-align:center">NVIC</td><td style="text-align:center">嵌套中断向量列表控制器</td></tr><tr><td style="text-align:center">PWR</td><td style="text-align:center">电源/功耗控制</td></tr><tr><td style="text-align:center">RCC</td><td style="text-align:center">复位与时钟控制器</td></tr><tr><td style="text-align:center">RTC</td><td style="text-align:center">实时时钟</td></tr><tr><td style="text-align:center">SPI</td><td style="text-align:center">串行外设接口</td></tr><tr><td style="text-align:center">SysTick</td><td style="text-align:center">系统嘀嗒定时器</td></tr><tr><td style="text-align:center">TIM</td><td style="text-align:center">通用定时器</td></tr><tr><td style="text-align:center">TIM1</td><td style="text-align:center">高级控制定时器</td></tr><tr><td style="text-align:center">USART</td><td style="text-align:center">通用同步异步接收发射端</td></tr><tr><td style="text-align:center">WWDG</td><td style="text-align:center">窗口看门狗</td></tr></tbody></table></div><p><a href="https://imgtu.com/i/WhLplR" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/27/WhLplR.png" alt="WhLplR.png"></a></p><p><a href="https://imgtu.com/i/WhL961" target="_blank" rel="noopener"><img src="https://z3.ax1x.com/2021/07/27/WhL961.png" alt="WhL961.png"></a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;STM32固件库常见命名方式&quot;&gt;&lt;a href=&quot;#STM32固件库常见命名方式&quot; class=&quot;headerlink&quot; title=&quot;STM32固件库常见命名方式&quot;&gt;&lt;/a&gt;STM32固件库常见命名方式&lt;/h1&gt;&lt;div class=&quot;table-contain
+      
+    
+    </summary>
+    
+    
+      <category term="开发" scheme="http://baichufan.club/categories/%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="开发" scheme="http://baichufan.club/tags/%E5%BC%80%E5%8F%91/"/>
+    
+      <category term="嵌入式" scheme="http://baichufan.club/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/"/>
+    
+      <category term="单片机" scheme="http://baichufan.club/tags/%E5%8D%95%E7%89%87%E6%9C%BA/"/>
+    
+      <category term="STM32" scheme="http://baichufan.club/tags/STM32/"/>
+    
+      <category term="标准库" scheme="http://baichufan.club/tags/%E6%A0%87%E5%87%86%E5%BA%93/"/>
+    
+      <category term="函数命名" scheme="http://baichufan.club/tags/%E5%87%BD%E6%95%B0%E5%91%BD%E5%90%8D/"/>
+    
+  </entry>
   
   <entry>
     <title>Matlab入门01</title>
