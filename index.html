@@ -189,15 +189,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2024-06-16 10:20:27" itemprop="dateCreated datePublished" datetime="2024-06-16T10:20:27+08:00">2024-06-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-07-18 10:07:40" itemprop="dateModified" datetime="2021-07-18T10:07:40+08:00">2021-07-18</time>
+      <time title="创建时间：2024-06-16 10:20:27 / 修改时间：11:42:42" itemprop="dateCreated datePublished" datetime="2024-06-16T10:20:27+08:00">2024-06-16</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -220,23 +214,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>本文将讲述关于蓝牙的基础知识和蓝牙模块的选型介绍。对于开始学习蓝牙或者要用蓝牙做项目的你有一定的帮助。</p>
-<h2 id="蓝牙基础知识"><a href="#蓝牙基础知识" class="headerlink" title="蓝牙基础知识"></a>蓝牙基础知识</h2><h3 id="蓝牙发展"><a href="#蓝牙发展" class="headerlink" title="蓝牙发展"></a>蓝牙发展</h3><p>自1998.10.19发布蓝牙0.7标准以来，目前蓝牙已经发展到5.0以上。蓝牙发展到3.0标准之后推出了蓝牙4.0BLE（BLE:全称为Bluetooth Low Energy）。可以看出蓝牙规范4.0最重要的一个特性就是低功耗。</p>
-<p>4.0BLE使得蓝牙设备可通过一粒纽扣电池供电以维持续工作数年之久，而且最大速率与3.0一样还是24Mbs。BLE的低功耗可以更好地配合单片机使用。所以大部分的蓝牙模块都是使用BLE。</p>
-<h3 id="苹果MFI认证"><a href="#苹果MFI认证" class="headerlink" title="苹果MFI认证"></a>苹果MFI认证</h3><p>蓝牙4.0之前，只有IOS设备和苹果认证的MFI蓝牙设备才可以被ios检索到，也就是说只有过了MFI的蓝牙设备，才能和ISO设备连接并建立数据通道，因此要想和ISO设备APP通讯，必须过MFI认证 。</p>
-<p>在蓝牙4.0出来以后，苹果开放了BLE通道，但硬件上要Iphone4s以上，系统要ios6 以上才支持4.0。另外受蓝牙4.0本身协议限制，BLE最大传输速率只能到8KB&#x2F;S左右，而且应用方面会有限制。</p>
-<p>此处提一下安卓系统，安卓系统对于蓝牙的兼容性要比苹果好，市面上的蓝牙模块基本都是可以正常连接的，注意安卓4.3系统以上才开始全面支持BLE。</p>
-<h3 id="蓝牙协议"><a href="#蓝牙协议" class="headerlink" title="蓝牙协议"></a>蓝牙协议</h3><p>这部分内容只是简要提一下常用协议，仅供了解。<br>（1）核心协议：BaseBand、LMP、L2CAP、SDP；<br>（2）电缆替代协议：RFCOMM；<br>（3）电话传送控制协议：TCS-Binary、AT命令集；<br>（4）选用协议：PPP、UDP&#x2F;TCP&#x2F;IP、OBEX、WAP、vCard、vCal、IrMC、WAE。</p>
-<h3 id="蓝牙与单片机通信方式"><a href="#蓝牙与单片机通信方式" class="headerlink" title="蓝牙与单片机通信方式"></a>蓝牙与单片机通信方式</h3><p>蓝牙与单片机主要通过串口通信，蓝牙可以作为主机和从机。有些模块不支持主机，选择模块时要注意看是否支持主机。<br>连接时注意蓝牙的TXD接单片机RXD，蓝牙的RXD接单片机TXD。</p>
-<h3 id="蓝牙单模"><a href="#蓝牙单模" class="headerlink" title="蓝牙单模"></a>蓝牙单模</h3><p>所谓的蓝牙单模就是仅支持标准蓝牙版本或者BLE。两者仅支持其中一个。</p>
-<h3 id="蓝牙双模"><a href="#蓝牙双模" class="headerlink" title="蓝牙双模"></a>蓝牙双模</h3><p>蓝牙双模无疑是未来的主流。经典蓝牙功耗较大，而且上述也提到需要得到MFI认证才能连接苹果，4.0以后的蓝牙BLE功耗小，但不支持音频协议及受数据传输速度限制，蓝牙双模则是综合了两者的优缺点，既可以支持音频传输，同样可支持数据传输，功耗低，并且兼容性也是两者之和。</p>
-<h3 id="iBeacon"><a href="#iBeacon" class="headerlink" title="iBeacon"></a>iBeacon</h3><p>iBeacon是基于蓝牙4.0BLE由苹果推出的一项室内定位技术。<br>其工作方式是，向周围发送自己特有的ID，接收到该ID的应用软件会根据该ID采取一些行动。比如，在店铺里设置iBeacon通信模块的话，便可让iPhone和iPad上运行一资讯告知服务器，或者由服务器向顾客发送折扣券及进店积分。此外，还可以在家电发生故障或停止工作时使用iBeacon向应用软件发送资讯。说白了就是一种广播通信。</p>
-<h2 id="蓝牙模块选型"><a href="#蓝牙模块选型" class="headerlink" title="蓝牙模块选型"></a>蓝牙模块选型</h2><h3 id="HC蓝牙模块"><a href="#HC蓝牙模块" class="headerlink" title="HC蓝牙模块"></a>HC蓝牙模块</h3><p>HC公司蓝牙模块被广泛应用，从销量可以看出。本文针对HC公司的蓝牙模块进行介绍。</p>
-<h3 id="处于淘汰边缘的HC-05"><a href="#处于淘汰边缘的HC-05" class="headerlink" title="处于淘汰边缘的HC-05"></a>处于淘汰边缘的HC-05</h3><p>说起蓝牙模块，很多人都会联想到HC-05，确实HC-05很实用，但它已经处于淘汰边缘了。HC-05是蓝牙2.0的，与单片机通信没有任何问题，但是2.0已经非常落后了。可以说没什么学习价值，如果要做依赖蓝牙的项目，HC-05难以承担重任。<br>还有重要的一点，如果用苹果手机是没有办法做测试的，上文蓝牙基础知识中也有提到。</p>
-<h3 id="HC蓝牙模块选型"><a href="#HC蓝牙模块选型" class="headerlink" title="HC蓝牙模块选型"></a>HC蓝牙模块选型</h3><p>截至文章发布时间，下图是比较实用的HC蓝牙模块</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W3PfWq"><img src="https://z3.ax1x.com/2021/07/18/W3PfWq.jpg" alt="W3PfWq.jpg"></a></p>
-<p>截至文章发布时间，图中价格是某宝中的价格。<br>从图中可以看出，如果只是作为从机使用，HC-04性价比是最高的。HC-04的双模是SPP2.1和BLE4.0。<br>如果要主从一体，推荐HC-42，HC-42支持蓝牙5.0BLE，还支持ibeacon（关于ibeacon上文有介绍），当然也可以考虑HC-08。<br>关于速度方面，从图中可以看出几个模块都是差不多的。<br>以上模块均支持苹果和安卓，苹果需要用支持BLE的软件。</p>
-<p>————————————————<br>版权声明：本文为CSDN博主「微光feng」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_46554815/article/details/113193127">https://blog.csdn.net/qq_46554815/article/details/113193127</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/06/16/%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E9%80%89%E5%9E%8B%E5%8F%8A%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
