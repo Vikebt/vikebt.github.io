@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhoucong.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="ESP8266 模块简介​ESP8266 系列模组是深圳市安信可科技有限公司开发的一系列基于乐鑫 ESP8266EX 的超低功耗的 UART-WiFi 芯片的模组，可以方便地进行二次开发，接入云端服务，实现手机 3&#x2F;4G 全球随时随地的控制，加速产品原型设计。模块核心处理器 ESP8266 在较小尺寸封装中集成了业界领先的 Tensilica L106 超低功耗 32 位微型 MCU，带">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESP8266-WIFI模块开发学习">
+<meta property="og:url" content="http://zhoucong.top/2024/06/16/ESP8266-WIFI%E6%A8%A1%E5%9D%97%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Vikebt&#39;s blog">
+<meta property="og:description" content="ESP8266 模块简介​ESP8266 系列模组是深圳市安信可科技有限公司开发的一系列基于乐鑫 ESP8266EX 的超低功耗的 UART-WiFi 芯片的模组，可以方便地进行二次开发，接入云端服务，实现手机 3&#x2F;4G 全球随时随地的控制，加速产品原型设计。模块核心处理器 ESP8266 在较小尺寸封装中集成了业界领先的 Tensilica L106 超低功耗 32 位微型 MCU，带">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQ9HRU.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQ9TiV.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQ9fqs.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQ9Wrj.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQ9RMQ.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQ94Zn.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQ95aq.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQ9II0.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQFafP.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQFJwd.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQFNFI.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/22/W0an91.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQFUYt.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/WQyqLq.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/22/W0aN9I.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQFYTA.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQFwSf.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQF0l8.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQFB6S.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQFDOg.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQFsmQ.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQFafP.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQFJwd.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQFNFI.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQAbz6.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQAHRx.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQA7J1.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQAIo9.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQATiR.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQALQK.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/WQc9N8.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/WQcpAf.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQAOsO.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQAXLD.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQVDCn.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQVUHg.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQVdEQ.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQV04s.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQVwNj.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQVr3q.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQeeTe.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQeKfA.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQeZwD.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQeuYd.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/16/WQeQSI.png">
+<meta property="article:published_time" content="2024-06-16T02:20:27.799Z">
+<meta property="article:modified_time" content="2021-07-22T05:04:55.725Z">
+<meta property="article:author" content="Vikebt">
+<meta property="article:tag" content="开发">
+<meta property="article:tag" content="嵌入式">
+<meta property="article:tag" content="单片机">
+<meta property="article:tag" content="WIFI">
+<meta property="article:tag" content="ESP8266">
+<meta property="article:tag" content="AT指令">
+<meta property="article:tag" content="无线">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://z3.ax1x.com/2021/07/16/WQ9HRU.png">
+
+
+<link rel="canonical" href="http://zhoucong.top/2024/06/16/ESP8266-WIFI%E6%A8%A1%E5%9D%97%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhoucong.top/2024/06/16/ESP8266-WIFI%E6%A8%A1%E5%9D%97%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0/","path":"2024/06/16/ESP8266-WIFI模块开发学习/","title":"ESP8266-WIFI模块开发学习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ESP8266-WIFI模块开发学习 | Vikebt's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Vikebt's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">人生在勤，不索何获</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ESP8266-%E6%A8%A1%E5%9D%97%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">ESP8266 模块简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ESP8266-%E6%A8%A1%E5%9D%97%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">ESP8266 模块使用说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E7%A1%AC%E4%BB%B6%E8%BF%9E%E6%8E%A5"><span class="nav-number">2.1.</span> <span class="nav-text">模块硬件连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95"><span class="nav-number">2.2.</span> <span class="nav-text">模块软件调试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E5%B8%B8%E8%A7%81%E7%A4%BA%E4%BE%8B%E5%BA%94%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">模块常见示例应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-Client-%E9%80%8F%E4%BC%A0%E6%A8%A1%E5%BC%8F-STA-%E6%A8%A1%E5%BC%8F%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">TCP  Client 透传模式 (STA 模式）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E8%BF%9E%E6%8E%A5-server-STA-%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">多连接 server (STA 模式)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%A8%A1%E5%BC%8F-AP%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.3.</span> <span class="nav-text">服务器模式 (AP模式)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Vikebt</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/vikebt" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;vikebt" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2674761561@qq.com" title="E-Mail → mailto:2674761561@qq.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://plus.google.com/oracleboxman" title="Google → https:&#x2F;&#x2F;plus.google.com&#x2F;oracleboxman" rel="noopener me" target="_blank"><i class="google fa-fw"></i>Google</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhoucong.top/2024/06/16/ESP8266-WIFI%E6%A8%A1%E5%9D%97%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vikebt">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vikebt's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="ESP8266-WIFI模块开发学习 | Vikebt's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ESP8266-WIFI模块开发学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-06-16 10:20:27" itemprop="dateCreated datePublished" datetime="2024-06-16T10:20:27+08:00">2024-06-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-07-22 13:04:55" itemprop="dateModified" datetime="2021-07-22T13:04:55+08:00">2021-07-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">开发</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="ESP8266-模块简介"><a href="#ESP8266-模块简介" class="headerlink" title="ESP8266 模块简介"></a>ESP8266 模块简介</h2><p>​ESP8266 系列模组是深圳市安信可科技有限公司开发的一系列基于乐鑫 ESP8266EX 的超低功耗的 UART-WiFi 芯片的模组，可以方便地进行二次开发，接入云端服务，实现手机 3&#x2F;4G 全球随时随地的控制，加速产品原型设计。模块核心处理器 ESP8266 在较小尺寸封装中集成了业界领先的 Tensilica L106 超低功耗 32 位微型 MCU，带有 16 位精简模式，主频支持 80 MHz 和 160 MHz，支持 RTOS，集成 Wi-FiMAC&#x2F;BB&#x2F;RF&#x2F;PA&#x2F;LNA，板载天线。支持标准的 IEEE802.11 b&#x2F;g&#x2F;n 协议，完整的 TCP&#x2F;IP协议栈。用户可以使用该模块为现有的设备添加联网功能，也可以构建独立的网络控制器。<br>​ESP8266 是高性能无线 SOC，以最低成本提供最大实用性，为 WiFi 功能嵌入其他系统提供无限可能，特点：</p>
+<ul>
+<li><p>802.11 b&#x2F;g&#x2F;n</p>
+</li>
+<li><p>内置 Tensilica L106 超低功耗 32 位微型 MCU，主频支持 80 MHz 和 160 MHz，支持 RTOS</p>
+</li>
+<li><p>内置 10 bit 高精度 ADC</p>
+</li>
+<li><p>内置 TCP&#x2F;IP 协议栈</p>
+</li>
+<li><p>内置 TR 开关、balun、LNA、功率放大器和匹配网络</p>
+</li>
+<li><p>内置 PLL、稳压器和电源管理组件，802.11b 模式下+20 dBm 的输出功率</p>
+</li>
+<li><p>A-MPDU 、 A-MSDU 的聚合和 0.4 s 的保护间隔</p>
+</li>
+<li><p>WiFi @ 2.4 GHz，支持 WPA&#x2F;WPA2 安全模式</p>
+</li>
+<li><p>支持 AT 远程升级及云端 OTA 升级</p>
+</li>
+<li><p>支持 STA&#x2F;AP&#x2F;STA+AP 工作模式</p>
+</li>
+<li><p>支持 Smart Config 功能（包括 Android 和 iOS 设备）</p>
+</li>
+<li><p>HSPI 、UART、I2C、I2S、IR Remote Control、PWM、GPIO</p>
+</li>
+<li><p>深度睡眠保持电流为 10 uA，关断电流小于 5 uA</p>
+</li>
+<li><p>2 ms 之内唤醒、连接并传递数据包</p>
+</li>
+<li><p>待机状态消耗功率小于 1.0 mW (DTIM3)</p>
+</li>
+<li><p>工作温度范围：-20℃- 85℃</p>
+</li>
+</ul>
+<h2 id="ESP8266-模块使用说明"><a href="#ESP8266-模块使用说明" class="headerlink" title="ESP8266 模块使用说明"></a>ESP8266 模块使用说明</h2><h3 id="模块硬件连接"><a href="#模块硬件连接" class="headerlink" title="模块硬件连接"></a>模块硬件连接</h3><p>​ESP8266 本身就是一个 mcu，所以它可以有两种用途：<br>​1.当成一个普通的 wifi 模块，用官方集成的 AT 指令集进行开发，即 ESP8266 为一个串口 wifi 模块，主控 MCU通过串口方式发 AT 指令到 ESP8266，设置该模块的功能和通信；<br>​2.当成一个集成了 wifi 功能的 mcu，用安信可或其他平台提供的 sdk 进行深度开发，编译后烧写进 ESP8266 芯片中。  </p>
+<p>​    在后续的开发学习中，我们主要是采用第一种用途，本文也主要基于此进行分享，另一种在将来的深度开发中才会涉及到。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQ9HRU"><img src="https://z3.ax1x.com/2021/07/16/WQ9HRU.png" alt="WQ9HRU.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQ9TiV"><img src="https://z3.ax1x.com/2021/07/16/WQ9TiV.png" alt="WQ9TiV.png"></a></p>
+<p>​连接方面不再做过多赘述，此处强调一点，针对ATK-ESP8266，请注意第六脚（IO_O）用于默认模式是高电平，也就是悬空，但用于固件烧写模式下，请与GND连接。另外固件烧写具体步骤请参考安可信提供的说明书。</p>
+<h3 id="模块软件调试"><a href="#模块软件调试" class="headerlink" title="模块软件调试"></a>模块软件调试</h3><p>​将 usb 转 ttl 模块插入电脑 USB 槽中，电脑上打开串口调试助手 XCOM V2.0，模块默认是 AT 指令状态，模块波特率： 115200（8 位数据位， 1 位停止位），设置如下：</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQ9fqs"><img src="https://z3.ax1x.com/2021/07/16/WQ9fqs.png" alt="WQ9fqs.png"></a></p>
+<p>​串口打开后，通过串口发送AT 指令到 ESP8266 模块后，返回 ok 表示通信成功，此处注意要选择正确的COM号，波特率设置正确（默认情况下是115200），务必勾选发送新行。如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQ9Wrj"><img src="https://z3.ax1x.com/2021/07/16/WQ9Wrj.png" alt="WQ9Wrj.png"></a></p>
+<p>​ESP8266 模块默认波特率是 115200，但是这个波特率有点大，实际使用中修改为 9600 或者 4800 通讯效果会好很多。为了使通讯效果提升，我们需要在发送框中输入 AT+CIOBAUD&#x3D;9600，按发送按钮，在黑色框中出现 AT+CIOBAUD&#x3D;9600 OK，则已经将模块通信的波特率设置为 9600 了，然后关闭串口，重新设置图 5 中波特率为 9600，其他参数不变。重启模块即可生效。然而实际上在修改波特率的过程中，  这一步骤可能会返回AT+CIOBAUD&#x3D;9600 ERROR，原因是因为ATK-ESP8266的出厂固件程序不支持波特率修改，需要自行参考安可信固件烧写说明书进行固件的升级。如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQ9RMQ"><img src="https://z3.ax1x.com/2021/07/16/WQ9RMQ.png" alt="WQ9RMQ.png"></a></p>
+<p>​AT+CWMODE&#x3D; X 指令用于设置工作模式指令，<X>可以是 1、2、3。如图 8 所示。具体如下：<br>​X 为 1 时：STA 模式，ESP8266 模块通过路由器连接互联网，手机或电脑通过互联网实现对设备的远程控制。<br>​X 为 2 时：AP 模式，ESP8266 模块作为热点，实现手机或电脑直接与模块通信，实现局域网无线控制。<br>​X 为 3 时：STA+AP 模式，两种模式的共存模式，即可以通过互联网控制可实现无缝切换，方便操作。  </p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQ94Zn"><img src="https://z3.ax1x.com/2021/07/16/WQ94Zn.png" alt="WQ94Zn.png"></a></p>
+<p>​AT+RST 为重启指令，设置工作模式后重启模块才能生效。发送完这条指令后再发送其它指令可能会显示串口无效，需要退出串口调试助手再重新进入。如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQ95aq"><img src="https://z3.ax1x.com/2021/07/16/WQ95aq.png" alt="WQ95aq.png"></a></p>
+<p>​AT+CWSAP&#x3D; &lt;\ssid&gt; ,&lt;\pwd&gt;,&lt;\ch&gt;,&lt;\ecn&gt;指令为设置 AP 模式下的参数，即设置热点的名字、密码、通道、加密方式参数。例如 AT+CWSAP&#x3D;”VIKEBT”,”147258369”,2,0 指令。如下图所示： 	</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQ9II0"><img src="https://z3.ax1x.com/2021/07/16/WQ9II0.png" alt="WQ9II0.png"></a></p>
+<h2 id="模块常见示例应用"><a href="#模块常见示例应用" class="headerlink" title="模块常见示例应用"></a>模块常见示例应用</h2><h3 id="TCP-Client-透传模式-STA-模式）"><a href="#TCP-Client-透传模式-STA-模式）" class="headerlink" title="TCP  Client 透传模式 (STA 模式）"></a>TCP  Client 透传模式 (STA 模式）</h3><p>Client 和 Server 之间能自由传输数据，不会受到格式的约束。</p>
+<p>注：ATK_ESP8266 模块仅在 TCP Client 和 UDP， 支持透传模式，在TCP Server模式下不支持透传。  </p>
+<p>1）设置 WIFI 模式<br>​		AT+CWMODE&#x3D;1					&#x2F;&#x2F;设置为 STA 模式<br>​		响应:OK </p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQFafP"><img src="https://z3.ax1x.com/2021/07/16/WQFafP.png" alt="WQFafP.png"></a></p>
+<p>2）重启生效<br>​		AT+RST<br>​		响应:OK</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQFJwd"><img src="https://z3.ax1x.com/2021/07/16/WQFJwd.png" alt="WQFJwd.png"></a></p>
+<p>3） 连接路由器<br>​		AT+CWJAP&#x3D;”ASCII”,”ASCII534856” &#x2F;&#x2F;连接外部路由器的 ssid 和 password<br>​		响应:OK</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQFNFI"><img src="https://z3.ax1x.com/2021/07/16/WQFNFI.png" alt="WQFNFI.png"></a></p>
+<p>或 3） 连接手机热点<br>​		AT+CWJAP&#x3D;”PARKING”,”147258369” &#x2F;&#x2F;连接手机的 ssid 和 password<br>​		响应:OK</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W0an91"><img src="https://z3.ax1x.com/2021/07/22/W0an91.jpg" alt="W0an91.jpg"></a></p>
+<p>4） PC 与 ESP8266 连接同⼀个路由，在 PC 上使⽤网络调试助手，创建⼀个 TCP 服务器  ，如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQFUYt"><img src="https://z3.ax1x.com/2021/07/16/WQFUYt.png" alt="WQFUYt.png"></a></p>
+<p>在此处，我遇到了问题，首先第一个问题是接口8080被占用，然后按百度提供的方法发现是Multisim后台运行占用了8080端口，然后此时没有解决不能连接的问题，仍然会出现下图所示的报错，最后仔细检查后发现是本地IP地址有误，改正后就能很快连接上了。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQyqLq"><img src="https://z3.ax1x.com/2021/07/17/WQyqLq.png" alt="WQyqLq.png"></a></p>
+<p>或 4） 手机端打开网络调试助手，开启8080端口</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W0aN9I"><img src="https://z3.ax1x.com/2021/07/22/W0aN9I.jpg" alt="W0aN9I.jpg"></a></p>
+<p>5） 模块作为 TCP client 连接 TCP server<br>        AT+CIPSTART&#x3D;”TCP”,”192.168.1.105”,8080<br>        响应:CONNECT<br>        OK</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQFYTA"><img src="https://z3.ax1x.com/2021/07/16/WQFYTA.png" alt="WQFYTA.png"></a></p>
+<p>或 5） 模块作为 TCP client 连接手机端 TCP server<br>        AT+CIPSTART&#x3D;”TCP”,”10.125.141.55”,8080<br>        响应:CONNECT<br>        OK</p>
+<p>6） 开启透传模式<br>        AT+CIPMODE&#x3D;1<br>        响应:OK  </p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQFwSf"><img src="https://z3.ax1x.com/2021/07/16/WQFwSf.png" alt="WQFwSf.png"></a></p>
+<p>7） 开始透传<br>        AT+CIPSEND<br>        响应:OK</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQF0l8"><img src="https://z3.ax1x.com/2021/07/16/WQF0l8.png" alt="WQF0l8.png"></a></p>
+<p>现在就可以相互发数据了</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQFB6S"><img src="https://z3.ax1x.com/2021/07/16/WQFB6S.png" alt="WQFB6S.png"></a></p>
+<p>8） 退出透传模式<br>在透传模式中，若识别到单独的一包数据“ +++”，则退出透传模式，主要此时不要勾选发送新行，否则会退出失败。  </p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQFDOg"><img src="https://z3.ax1x.com/2021/07/16/WQFDOg.png" alt="WQFDOg.png"></a></p>
+<p>9） 断开TCP连接<br>​		AT+CIPSEND<br>​		响应:OK</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQFsmQ"><img src="https://z3.ax1x.com/2021/07/16/WQFsmQ.png" alt="WQFsmQ.png"></a></p>
+<p>注意： 如果客户需要模块上电自动连接到某个 IP 并进入透传模式，这个时候客户需要在模块连接到路 wifi 热点之后，发送AT+SAVETRANSLINK&#x3D;1,”192.168.1.xxx”,8086,”TCP”，设置模块为上电自动连接到 TCP Server： 192.168.1.xxx， 8086，并进入透传模式。  取消上电透传发送AT+SAVETRANSLINK&#x3D;1。</p>
+<h3 id="多连接-server-STA-模式"><a href="#多连接-server-STA-模式" class="headerlink" title="多连接 server (STA 模式)"></a>多连接 server (STA 模式)</h3><p>目前 ATK_ESP8266 模块作为 server，需建立多连接，即可以连接多个 client。<br>以下为 ATK_ESP8266 作为 STA 模式建立 TCP SERVER 的设置。</p>
+<p>1）设置 WIFI 模式<br>​		AT+CWMODE&#x3D;1					&#x2F;&#x2F;设置为 STA 模式<br>​		响应:OK<br>[<img src="https://z3.ax1x.com/2021/07/16/WQFafP.png" alt="WQFafP.png"></p>
+<p>2）重启生效<br>​		AT+RST<br>​		响应:OK<br>[<img src="https://z3.ax1x.com/2021/07/16/WQFJwd.png" alt="WQFJwd.png"></p>
+<p>3） 连接路由器<br>​   AT+CWJAP&#x3D;”ASCII”,”ASCII534856” &#x2F;&#x2F;连接外部路由器的 ssid 和 password<br>​		响应:OK<br>[<img src="https://z3.ax1x.com/2021/07/16/WQFNFI.png" alt="WQFNFI.png"></p>
+<p>4） 启动多链接<br>        AT+CIPMUX&#x3D;1<br>        响应:OK</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQAbz6"><img src="https://z3.ax1x.com/2021/07/16/WQAbz6.png" alt="WQAbz6.png"></a></p>
+<p>5） 建立 server<br>        AT+CIPSERVER&#x3D;1,8080 &#x2F;&#x2F;设置端口号为 8080</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQAHRx"><img src="https://z3.ax1x.com/2021/07/16/WQAHRx.png" alt="WQAHRx.png"></a></p>
+<p>注意: ESP8266 作为 TCP server 有超时机制，如果连接建立后，一段时间内无数据来往， ESP8266 TCP server 会将 TCP client 踢掉。请在 PC 网络工具连上 ESP8266 后建立一个 2s 的循环数据发送，用于保持连接。</p>
+<p>6） 获取模块 IP 地址<br>        AT+CIFSR<br>        响应:OK<br>        IP &#x2F;&#x2F;IP 地址<br>        MAC &#x2F;&#x2F;MAC 地址</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQA7J1"><img src="https://z3.ax1x.com/2021/07/16/WQA7J1.png" alt="WQA7J1.png"></a></p>
+<p>7）电脑或者手机连接到 server，电脑或手机作为 client。请记住所有设备都是在同一局域网下，即都连接在ASCII上，如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQAIo9"><img src="https://z3.ax1x.com/2021/07/16/WQAIo9.png" alt="WQAIo9.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQATiR"><img src="https://z3.ax1x.com/2021/07/16/WQATiR.jpg" alt="WQATiR.jpg"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQALQK"><img src="https://z3.ax1x.com/2021/07/16/WQALQK.png" alt="WQALQK.png"></a></p>
+<p>对于网络调试助手如NetAssist等连接不上服务器且左下角显示“1035未知错误”的问题，如下图所示，</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQc9N8"><img src="https://z3.ax1x.com/2021/07/17/WQc9N8.png" alt="WQc9N8.png"></a></p>
+<p>本人困惑许久，参考了网上的多种解决方法，最后发现是虚拟机中的网络连接影响到了网络调试助手无法正常使用，原因在与虚拟机的网络与电脑的以太网或WIFI网络不是同一个网络，所以网络调试助手无法辨别到底是那个本地IP需要与服务器连接，所以就会左下角显示“ 1035 未知错误”，而虚拟机中的网络适配器设置改不改成非桥接模式不影响网络调试助手报错，我们需要把红色方框中的两个网络禁用，即把跟虚拟机(VMware)相连的两个网络禁用,选中这两个网络右击后再点击禁用，然后，我们再重新打开网络调试助手，输入好服务器IP地址和端口号后，点击连接，发现可以成功连接了。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQcpAf"><img src="https://z3.ax1x.com/2021/07/17/WQcpAf.png" alt="WQcpAf.png"></a></p>
+<p>8）模块向指定通道发送数据<br>​		AT+CIPSEND&#x3D;id,size &#x2F;&#x2F;id:client 通道号， size:要发送的数据长度<br>​		响应:OK</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQAOsO"><img src="https://z3.ax1x.com/2021/07/16/WQAOsO.png" alt="WQAOsO.png"></a></p>
+<p>9）接收数据<br>        +IPD,id,size: &#x2F;&#x2F;id:收到数据的 client 通道号， size:接收到的数据长度</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQAXLD"><img src="https://z3.ax1x.com/2021/07/16/WQAXLD.png" alt="WQAXLD.png"></a></p>
+<h3 id="服务器模式-AP模式"><a href="#服务器模式-AP模式" class="headerlink" title="服务器模式 (AP模式)"></a>服务器模式 (AP模式)</h3><p> ATK_ESP8266 模块开启AP模式，然后开启一个热点，其他设备通过tcp连接上这个网络后，就变成了一个独立的无线通信系统。</p>
+<p>1）设置 WIFI 模式<br>​		AT+CWMODE&#x3D;2					&#x2F;&#x2F;设置为 AP 模式<br>​		响应:OK </p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQVDCn"><img src="https://z3.ax1x.com/2021/07/16/WQVDCn.png" alt="WQVDCn.png"></a></p>
+<p>2）重启生效<br>​		AT+RST<br>​		响应:OK</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQVUHg"><img src="https://z3.ax1x.com/2021/07/16/WQVUHg.png" alt="WQVUHg.png"></a></p>
+<p>3） 配置热点<br>​		AT+CWSAP&#x3D;”VIKEBT”,”147258369”,1,3 &#x2F;&#x2F;设置热点的名字、密码、通道、加密方式<br>​		响应:OK</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQVdEQ"><img src="https://z3.ax1x.com/2021/07/16/WQVdEQ.png" alt="WQVdEQ.png"></a></p>
+<p>4） 启动多链接<br>        AT+CIPMUX&#x3D;1<br>        响应:OK</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQV04s"><img src="https://z3.ax1x.com/2021/07/16/WQV04s.png" alt="WQV04s.png"></a></p>
+<p>5） 建立 server<br>        AT+CIPSERVER&#x3D;1,8080 &#x2F;&#x2F;设置端口号为 8080<br>​		响应:OK</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQVwNj"><img src="https://z3.ax1x.com/2021/07/16/WQVwNj.png" alt="WQVwNj.png"></a></p>
+<p>6） 获取本地 IP 地址<br>        AT+CIFSR<br>        响应:+CIFSR:APIP,<IP address> +CIFSR:APMAC,<MAC address></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQVr3q"><img src="https://z3.ax1x.com/2021/07/16/WQVr3q.png" alt="WQVr3q.png"></a></p>
+<p>配置完之后可以连接了，这里我使用的是笔记本和手机连接模块发射出的热点。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQeeTe"><img src="https://z3.ax1x.com/2021/07/16/WQeeTe.png" alt="WQeeTe.png"></a></p>
+<p>打开网络调试助手，采用客户端模式，连接到刚刚配置好wifi的ip和端口号，即可通信。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQeKfA"><img src="https://z3.ax1x.com/2021/07/16/WQeKfA.jpg" alt="WQeKfA.jpg"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQeZwD"><img src="https://z3.ax1x.com/2021/07/16/WQeZwD.png" alt="WQeZwD.png"></a></p>
+<p>通信时服务器是不能直接发送数据给客户端的，需要发送at指令，来说明要发送给谁，发多长数据。如图，0表示发送到电脑，1表示发送到手机。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQeuYd"><img src="https://z3.ax1x.com/2021/07/16/WQeuYd.jpg" alt="WQeuYd.jpg"></a></p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/WQeQSI"><img src="https://z3.ax1x.com/2021/07/16/WQeQSI.png" alt="WQeQSI.png"></a></p>
+<p>当然如果这种方式不符合你的要求的话，你可以将模块配置成为透传模式。但是别忘记了ESP8266只能当做客户端去连接服务器，才能实现透传，所以这就是AP模式的特点。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36347513/article/details/115863228?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-0&spm=1001.2101.3001.4242">https://blog.csdn.net/qq_36347513/article/details/115863228?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-0&amp;spm=1001.2101.3001.4242</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_37603131/article/details/103919186">https://blog.csdn.net/qq_37603131/article/details/103919186</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/whalefall/article/details/80909889">https://blog.csdn.net/whalefall/article/details/80909889</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/little-kwy/p/12161464.html">https://www.cnblogs.com/little-kwy/p/12161464.html</a><br>ATK-ESP8266 WiFi用户手册_V1.01</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <span class="social-link">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </span>
+
+          <img class="social-item-img" src="https://s1.ax1x.com/2020/05/10/Y3dt3j.jpg">
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%BC%80%E5%8F%91/" rel="tag"># 开发</a>
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
+              <a href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag"># 单片机</a>
+              <a href="/tags/WIFI/" rel="tag"># WIFI</a>
+              <a href="/tags/ESP8266/" rel="tag"># ESP8266</a>
+              <a href="/tags/AT%E6%8C%87%E4%BB%A4/" rel="tag"># AT指令</a>
+              <a href="/tags/%E6%97%A0%E7%BA%BF/" rel="tag"># 无线</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/18/PN%E7%BB%93%E7%9A%84%E7%89%B9%E6%80%A7/" rel="prev" title="PN结的特性">
+                  <i class="fa fa-angle-left"></i> PN结的特性
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/06/16/HC-05%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%BC%80%E5%8F%91/" rel="next" title="HC-05蓝牙模块的学习开发">
+                  HC-05蓝牙模块的学习开发 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Vikebt</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

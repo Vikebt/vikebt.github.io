@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhoucong.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="模块介绍特点简介HC-05 蓝牙串口通信模块，是基于 Bluetooth Specification V2.0 带 EDR 蓝牙协议的数传模块。无线工作频段为 2.4GHz ISM，调制方式是 GFSK。模块最大发射功率为 4dBm，接收灵敏度-85dBm，板载 PCB 天线，可以实现 10 米距离通信。 模块采用邮票孔封装方式，模块大小 27mm×13mm×2mm，方便客户嵌入应用系统之内，自带">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HC-05蓝牙模块的学习开发">
+<meta property="og:url" content="http://zhoucong.top/2024/06/16/HC-05%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%BC%80%E5%8F%91/index.html">
+<meta property="og:site_name" content="Vikebt&#39;s blog">
+<meta property="og:description" content="模块介绍特点简介HC-05 蓝牙串口通信模块，是基于 Bluetooth Specification V2.0 带 EDR 蓝牙协议的数传模块。无线工作频段为 2.4GHz ISM，调制方式是 GFSK。模块最大发射功率为 4dBm，接收灵敏度-85dBm，板载 PCB 天线，可以实现 10 米距离通信。 模块采用邮票孔封装方式，模块大小 27mm×13mm×2mm，方便客户嵌入应用系统之内，自带">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W1ayfs.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W1auy6.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W1aKOK.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W1amS1.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W1anQx.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W10lwT.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W1yUZq.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W1ydoV.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W1yad0.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W1ytLn.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W1yYss.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W1y0iT.jpg">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W1gRwn.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W1gWoq.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W1g4YV.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/07/17/W1ghF0.png">
+<meta property="article:published_time" content="2024-06-16T02:20:27.808Z">
+<meta property="article:modified_time" content="2021-07-17T14:52:07.208Z">
+<meta property="article:author" content="Vikebt">
+<meta property="article:tag" content="开发">
+<meta property="article:tag" content="嵌入式">
+<meta property="article:tag" content="单片机">
+<meta property="article:tag" content="AT指令">
+<meta property="article:tag" content="无线">
+<meta property="article:tag" content="蓝牙">
+<meta property="article:tag" content="HC-05">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://z3.ax1x.com/2021/07/17/W1ayfs.png">
+
+
+<link rel="canonical" href="http://zhoucong.top/2024/06/16/HC-05%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%BC%80%E5%8F%91/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhoucong.top/2024/06/16/HC-05%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%BC%80%E5%8F%91/","path":"2024/06/16/HC-05蓝牙模块的学习开发/","title":"HC-05蓝牙模块的学习开发"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>HC-05蓝牙模块的学习开发 | Vikebt's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Vikebt's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">人生在勤，不索何获</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">模块介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E7%82%B9%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">特点简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8F%82%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">基本参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E8%AF%B4%E6%98%8E"><span class="nav-number">2.</span> <span class="nav-text">连接说明</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E4%B8%8E%E5%8D%95%E7%89%87%E6%9C%BA-MCU-%E7%AD%89%E8%AE%BE%E5%A4%87%E7%9A%84%E8%BF%9E%E6%8E%A5"><span class="nav-number">2.1.</span> <span class="nav-text">模块与单片机 MCU 等设备的连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BF%9E%E6%8E%A5%E9%80%9A%E8%AE%AF"><span class="nav-number">2.2.</span> <span class="nav-text">模块之间的连接通讯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E4%B8%8E%E6%89%8B%E6%9C%BA%E7%9A%84%E8%BF%9E%E6%8E%A5%E9%80%9A%E8%AE%AF"><span class="nav-number">2.3.</span> <span class="nav-text">模块与手机的连接通讯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E4%B8%8E-PC-%E7%9A%84%E8%BF%9E%E6%8E%A5%E9%80%9A%E8%AE%AF"><span class="nav-number">2.4.</span> <span class="nav-text">模块与 PC 的连接通讯</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E5%BC%80%E5%8F%91"><span class="nav-number">3.</span> <span class="nav-text">实例开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">3.1.</span> <span class="nav-text">准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.1.1.</span> <span class="nav-text">两种工作模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E5%85%A5%E5%91%BD%E4%BB%A4%E5%93%8D%E5%BA%94%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.1.2.</span> <span class="nav-text">进入命令响应工作模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8C%BA%E5%88%86%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.1.3.</span> <span class="nav-text">区分工作模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E8%BF%9E%E7%BA%BF%E5%BC%95%E8%84%9A%E5%9B%BE"><span class="nav-number">3.1.4.</span> <span class="nav-text">模块连线引脚图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8AT%E5%91%BD%E4%BB%A4"><span class="nav-number">3.2.</span> <span class="nav-text">常用AT命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E5%AF%B9%E6%8C%87%E4%BB%A4"><span class="nav-number">3.3.</span> <span class="nav-text">配对指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E4%B8%8E%E6%89%8B%E6%9C%BA%E7%9A%84%E8%BF%9E%E6%8E%A5%E9%80%9A%E8%AE%AF-1"><span class="nav-number">3.4.</span> <span class="nav-text">模块与手机的连接通讯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E4%B8%8E-PC-%E7%9A%84%E8%BF%9E%E6%8E%A5%E9%80%9A%E8%AE%AF-1"><span class="nav-number">3.5.</span> <span class="nav-text">模块与 PC 的连接通讯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BF%9E%E6%8E%A5%E9%80%9A%E8%AE%AF-1"><span class="nav-number">3.6.</span> <span class="nav-text">模块之间的连接通讯</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Vikebt</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/vikebt" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;vikebt" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2674761561@qq.com" title="E-Mail → mailto:2674761561@qq.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://plus.google.com/oracleboxman" title="Google → https:&#x2F;&#x2F;plus.google.com&#x2F;oracleboxman" rel="noopener me" target="_blank"><i class="google fa-fw"></i>Google</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhoucong.top/2024/06/16/HC-05%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E7%9A%84%E5%AD%A6%E4%B9%A0%E5%BC%80%E5%8F%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vikebt">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vikebt's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="HC-05蓝牙模块的学习开发 | Vikebt's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HC-05蓝牙模块的学习开发
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-06-16 10:20:27" itemprop="dateCreated datePublished" datetime="2024-06-16T10:20:27+08:00">2024-06-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-07-17 22:52:07" itemprop="dateModified" datetime="2021-07-17T22:52:07+08:00">2021-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">开发</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h2><h3 id="特点简介"><a href="#特点简介" class="headerlink" title="特点简介"></a>特点简介</h3><p>HC-05 蓝牙串口通信模块，是基于 Bluetooth Specification V2.0 带 EDR 蓝牙协议的数传模块。无线工作频段为 2.4GHz ISM，调制方式是 GFSK。模块最大发射功率为 4dBm，接收灵敏度-85dBm，板载 PCB 天线，可以实现 10 米距离通信。</p>
+<p>模块采用邮票孔封装方式，模块大小 27mm×13mm×2mm，方便客户嵌入应用系统之内，自带 LED 灯，可直观判断蓝牙的连接状态。</p>
+<p>模块采用 CSR 的 BC417 芯片，支持 AT 指令，用户可根据需要更改角色（主、从模式）以及串口波特率、设备名称等参数，使用灵活。  </p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1ayfs"><img src="https://z3.ax1x.com/2021/07/17/W1ayfs.png" alt="W1ayfs.png"></a></p>
+<h3 id="基本参数"><a href="#基本参数" class="headerlink" title="基本参数"></a>基本参数</h3><table>
+<thead>
+<tr>
+<th align="center">参数名称</th>
+<th align="center">参数值</th>
+<th align="center">参数名称</th>
+<th align="center">参数值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">型号</td>
+<td align="center">HC-05</td>
+<td align="center">模块尺寸</td>
+<td align="center">27*13*2mm</td>
+</tr>
+<tr>
+<td align="center">工作频段</td>
+<td align="center">2.4G</td>
+<td align="center">空中速率</td>
+<td align="center">2Mbps</td>
+</tr>
+<tr>
+<td align="center">通讯接口</td>
+<td align="center">UART3.3VTTL电平</td>
+<td align="center">天线接口</td>
+<td align="center">内置PCB天线</td>
+</tr>
+<tr>
+<td align="center">工作电压</td>
+<td align="center">3.0V~3.6V</td>
+<td align="center">通信电流</td>
+<td align="center">40mA</td>
+</tr>
+<tr>
+<td align="center">RSSI支持</td>
+<td align="center">不支持</td>
+<td align="center">接收灵敏度</td>
+<td align="center">-85dBm@2Mbps</td>
+</tr>
+<tr>
+<td align="center">通信电平</td>
+<td align="center">3.3V</td>
+<td align="center">工作湿度</td>
+<td align="center">10%~90%</td>
+</tr>
+<tr>
+<td align="center">发射功率</td>
+<td align="center">4dBm（最大）</td>
+<td align="center">存储温度</td>
+<td align="center">-40°C~+85°C</td>
+</tr>
+<tr>
+<td align="center">参考距离</td>
+<td align="center">10m</td>
+<td align="center">工作温度</td>
+<td align="center">-25°C~+75°C</td>
+</tr>
+</tbody></table>
+<h2 id="连接说明"><a href="#连接说明" class="headerlink" title="连接说明"></a>连接说明</h2><h3 id="模块与单片机-MCU-等设备的连接"><a href="#模块与单片机-MCU-等设备的连接" class="headerlink" title="模块与单片机 MCU 等设备的连接"></a>模块与单片机 MCU 等设备的连接</h3><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1auy6"><img src="https://z3.ax1x.com/2021/07/17/W1auy6.png" alt="W1auy6.png"></a></p>
+<p>①：模块与供电系统为 3.3V 的 MCU 连接时，串口交叉连接即可。（模块的 RX 接 MCU 的 TX、模块的 TX 接 MCU的 RX） </p>
+<p>②：模块与供电系统为 5V 的 MCU 连接时，可在模块的 RX 端串接一个 220R~1K 电阻再接 MCU 的 TX，模块的TX 直接接 MCU 的 RX，无需串接电阻。（注：请先确认所使用的 MCU 把 3.0V 或以上电压认定为高电平，否则需加上 3.3V&#x2F;5V 电平转换电路）</p>
+<p><strong>注：模块的电源为 3.3V，不能接 5V， 5V 的电源必须通过 LDO 降压到 3.3V 后再给模块供电。</strong></p>
+<h3 id="模块之间的连接通讯"><a href="#模块之间的连接通讯" class="headerlink" title="模块之间的连接通讯"></a>模块之间的连接通讯</h3><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1aKOK"><img src="https://z3.ax1x.com/2021/07/17/W1aKOK.png" alt="W1aKOK.png"></a></p>
+<p>设置一个为主机，一个为从机，配对码一致（默认均为 1234），波特率一致，上电即可自动连接。<br>HC-05 支持一对一连接。<br>在连接模式 CMODE 为 0 时，主机第一次连接后，会自动记忆配对对象，如需连接其他模块， 必须先清除配对记忆。在连接模式 CMODE 为 1 时，主机则不受绑定指令设置地址的约束，可以与其他从机模块连接。  </p>
+<p>**注：HC-05-USB 默认为主机，HC-05 默认为从机。 **</p>
+<h3 id="模块与手机的连接通讯"><a href="#模块与手机的连接通讯" class="headerlink" title="模块与手机的连接通讯"></a>模块与手机的连接通讯</h3><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1amS1"><img src="https://z3.ax1x.com/2021/07/17/W1amS1.png" alt="W1amS1.png"></a></p>
+<p>HC-05 可以与安卓手机自带蓝牙连接，通讯测试可以使用安卓串口助手软件。</p>
+<h3 id="模块与-PC-的连接通讯"><a href="#模块与-PC-的连接通讯" class="headerlink" title="模块与 PC 的连接通讯"></a>模块与 PC 的连接通讯</h3><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1anQx"><img src="https://z3.ax1x.com/2021/07/17/W1anQx.png" alt="W1anQx.png"></a></p>
+<p>HC-05 直接连接电脑需借助 HC-05-USB 蓝牙虚拟串口与电脑相连。<br>HC-05 可直接连接电脑的自带蓝牙设备进行通讯。  </p>
+<h2 id="实例开发"><a href="#实例开发" class="headerlink" title="实例开发"></a>实例开发</h2><h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><h4 id="两种工作模式"><a href="#两种工作模式" class="headerlink" title="两种工作模式"></a>两种工作模式</h4><p>首先，我们应该了解到HC-05蓝牙串口通讯模块具有两种工作模式：命令响应工作模式和自动连接工作模式。在自动连接工作模式下模块又可分为主（Master）、从（Slave）和回环（Loopback）三种工作角色。</p>
+<ul>
+<li>当模块处于自动连接工作模式时，将自动根据事先设定的方式连接的数据传输；</li>
+<li>当模块处于命令响应工作模式时，能执行AT命令，用户可向模块发送各种AT 指令，为模块设定控制参数或发布控制命令。</li>
+</ul>
+<h4 id="进入命令响应工作模式"><a href="#进入命令响应工作模式" class="headerlink" title="进入命令响应工作模式"></a>进入命令响应工作模式</h4><p>那么，如何进入命令响应工作模式呢？</p>
+<p>进入命令响应工作模式有两种方法：</p>
+<ul>
+<li><p>模块上电，未配对情况下就是AT模式，波特率为模块本身的波特率，默认：9600，发送一次AT指令时需要置高一次PIO11，也就是每发送一次AT指令按一下蓝牙模块上的按键；</p>
+</li>
+<li><p>PIO11 置高电平后（长按按键的过程中上电或者直接将PIO11接到VCC，之后就无需再管了），再给模块上电，此时模块进入AT 模式，波特率固定为：38400，可以直接发送AT指令。</p>
+</li>
+</ul>
+<p>  本次的开发采取第二种方法，下文中有说明。</p>
+<h4 id="区分工作模式"><a href="#区分工作模式" class="headerlink" title="区分工作模式"></a>区分工作模式</h4><p>怎么区分进了命令响应工作模式呢？</p>
+<p>在蓝牙模块上有灯，当灯快闪的时候，就是自动连接工作模式；当灯慢闪的时候，就是命令响应工作模式。</p>
+<h4 id="模块连线引脚图"><a href="#模块连线引脚图" class="headerlink" title="模块连线引脚图"></a>模块连线引脚图</h4><p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W10lwT"><img src="https://z3.ax1x.com/2021/07/17/W10lwT.jpg" alt="W10lwT.jpg"></a></p>
+<p>在自动连接工作模式下直接四根线串行通信即可，而在命令响应工作模式下还需要将KEY（PIO11）进行如上说明处理，图中为黄线。</p>
+<h3 id="常用AT命令"><a href="#常用AT命令" class="headerlink" title="常用AT命令"></a>常用AT命令</h3><p>AT 指令不区分大小写，均以回车、换行结尾，部分 AT 指令需要对模块 34 脚 PIO11 一直置高电平才有效  。</p>
+<table>
+<thead>
+<tr>
+<th align="center">AT</th>
+<th align="center">测试指令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">AT+RESET</td>
+<td align="center">HC-05复位</td>
+</tr>
+<tr>
+<td align="center">AT+VERSION?</td>
+<td align="center">返回HC-05的软件版本号</td>
+</tr>
+<tr>
+<td align="center">AT+ADDR?</td>
+<td align="center">获得蓝牙模块地址</td>
+</tr>
+<tr>
+<td align="center">AT+ORGL</td>
+<td align="center">恢复出厂默认设置</td>
+</tr>
+<tr>
+<td align="center">AT+NAME&#x3D;BLUE</td>
+<td align="center">修改蓝牙模块的名字为BLUE</td>
+</tr>
+<tr>
+<td align="center">AT+NAME？</td>
+<td align="center">返回HC-05的名字</td>
+</tr>
+<tr>
+<td align="center">AT+PSWD&#x3D;”1234”</td>
+<td align="center">设置密码1234</td>
+</tr>
+<tr>
+<td align="center">AT+PSWD？</td>
+<td align="center">查询配对密码</td>
+</tr>
+<tr>
+<td align="center">AT+UART&#x3D;115200,1,2</td>
+<td align="center">设置串口波特率115200,2位停止位，偶校验</td>
+</tr>
+<tr>
+<td align="center">AT+UART?</td>
+<td align="center">返回蓝牙波特率</td>
+</tr>
+<tr>
+<td align="center">AT+ROLE?<br />AT+ROLE&#x3D;1</td>
+<td align="center">？: 查询主从状态<br />&#x3D;1：设置成主<br />&#x3D;0：设置成从<br />&#x3D;2：设置成回环</td>
+</tr>
+</tbody></table>
+<p>波特率设置的规则如下：</p>
+<p>AT+UART&#x3D;<param1>,<param2>,<param3></p>
+<p>param1: 波特率，可选2400、4800、9600、19200、38400、5760、115200、230400、460800、921600、1382400。</p>
+<p>param2: 停止位， 0&#x3D;1位，1&#x3D;2位</p>
+<p>param3: 校验位， 0&#x3D;无校验，1&#x3D;奇校验，2&#x3D;偶校验</p>
+<p>默认设置为9600,0,0</p>
+<p><strong>注：此时配置的波特率9600为自动连接工作模式的波特率，命令响应工作模式始终为38400。</strong></p>
+<h3 id="配对指令"><a href="#配对指令" class="headerlink" title="配对指令"></a>配对指令</h3><table>
+<thead>
+<tr>
+<th>主机AT指令</th>
+<th>从机AT指令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AT(测试指令，正常返回OK)</td>
+<td>AT(测试指令，正常返回OK)</td>
+</tr>
+<tr>
+<td>AT+ORGL(可选操作，恢复默认状态)</td>
+<td>AT+ORGL(可选操作，恢复默认状态)</td>
+</tr>
+<tr>
+<td>AT+NAME&#x3D;Master（主机名称，可自定义）</td>
+<td>AT+NAME&#x3D;Slaver（从机名称，可自定义）</td>
+</tr>
+<tr>
+<td>AT+ROLE&#x3D;1(蓝牙模式为主模式)</td>
+<td>AT+ROLE&#x3D;0(蓝牙模式为从模式)</td>
+</tr>
+<tr>
+<td>AT+CMODE&#x3D;1(蓝牙连接地址为任意地址)</td>
+<td>AT+CMODE&#x3D;1(蓝牙连接地址为任意地址)</td>
+</tr>
+<tr>
+<td>AT+PSWD&#x3D;12345(蓝牙配对密码，可自定义，需与从机相同)</td>
+<td>AT+PSWD&#x3D;12345(蓝牙配对密码，可自定义，需与主机相同)</td>
+</tr>
+<tr>
+<td>AT+UART&#x3D;115200,0,0(蓝牙通信串口波特率，停止位1位，无校检位，可根据需要自主配置，要求与主从机相同)</td>
+<td>AT+UART&#x3D;115200,0,0</td>
+</tr>
+<tr>
+<td>AT+RMAAD（清空配对列表）</td>
+<td>AT+RMAAD（清空配对列表）</td>
+</tr>
+</tbody></table>
+<h3 id="模块与手机的连接通讯-1"><a href="#模块与手机的连接通讯-1" class="headerlink" title="模块与手机的连接通讯"></a>模块与手机的连接通讯</h3><p>1）将PIO11置为高电平，蓝牙模块与USB-TTL转换模块连接，再连接到电脑上，进入命令响应工作模式。</p>
+<p>2）打开串口调试助手，如图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1yUZq"><img src="https://z3.ax1x.com/2021/07/17/W1yUZq.png" alt="W1yUZq.png"></a></p>
+<p>3）按图中所示，将蓝牙模块配置为从机模式，在此处，建议配置波特率为115200，因为大部分手机蓝牙串口软件常采用115200波特率。然后，将蓝牙模块断电，使PIO11悬空，重新上电，让蓝牙模块进入自动连接工作模式。（此步可忽略，默认情况下蓝牙模块为从机模式）</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1ydoV"><img src="https://z3.ax1x.com/2021/07/17/W1ydoV.png" alt="W1ydoV.png"></a></p>
+<p>4）手机下载蓝牙串口助手，我推荐<a target="_blank" rel="noopener" href="https://appgallery.cloud.huawei.com/ag/n/app/C100997833?locale=zh_CN&source=appshare&subsource=C100997833&shareTo=com.tencent.mobileqq&shareFrom=appmarket">蓝牙调试器</a>，这是我用过手机端最方便的蓝牙调试软件。打开调试软件，连接蓝牙，传输过程如下图所示：</p>
+<p>手机已经与蓝牙模块配对成功</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1yad0"><img src="https://z3.ax1x.com/2021/07/17/W1yad0.jpg" alt="W1yad0.jpg"></a></p>
+<p>手机通过调试软件发送数据到蓝牙模块，经PC端串口通信接收。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1ytLn"><img src="https://z3.ax1x.com/2021/07/17/W1ytLn.png" alt="W1ytLn.png"></a></p>
+<p>同样地，手机也能收到蓝牙模块发送的数据。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1yYss"><img src="https://z3.ax1x.com/2021/07/17/W1yYss.jpg" alt="W1yYss.jpg"></a></p>
+<p>注：手机端调试软件字符编码格式应选择GBK，否则会出现乱码。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1y0iT"><img src="https://z3.ax1x.com/2021/07/17/W1y0iT.jpg" alt="W1y0iT.jpg"></a></p>
+<h3 id="模块与-PC-的连接通讯-1"><a href="#模块与-PC-的连接通讯-1" class="headerlink" title="模块与 PC 的连接通讯"></a>模块与 PC 的连接通讯</h3><p>前三步和模块与手机的连接通讯相同，唯独注意一下，配置自动连接工作模式的波特率为38400，否则会乱码。</p>
+<p>4）电脑连接此蓝牙模块，此时再打开一个串口调试助手。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1gRwn"><img src="https://z3.ax1x.com/2021/07/17/W1gRwn.png" alt="W1gRwn.png"></a></p>
+<p>此时，会出现两个虚拟串口，其中只有一个能真正连接到蓝牙模块，试一试就好了。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1gWoq"><img src="https://z3.ax1x.com/2021/07/17/W1gWoq.png" alt="W1gWoq.png"></a></p>
+<p>配置完后如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1g4YV"><img src="https://z3.ax1x.com/2021/07/17/W1g4YV.png" alt="W1g4YV.png"></a></p>
+<p>接下来，蓝牙模块就能与 PC 的互相发送数据了。</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/W1ghF0"><img src="https://z3.ax1x.com/2021/07/17/W1ghF0.png" alt="W1ghF0.png"></a></p>
+<h3 id="模块之间的连接通讯-1"><a href="#模块之间的连接通讯-1" class="headerlink" title="模块之间的连接通讯"></a>模块之间的连接通讯</h3><p>按照上表配对指令，分别将两个蓝牙模块配置为主机、从机。</p>
+<p>主机名称和从机名称，可自定义，蓝牙配对密码，可自定义，主从机相同，蓝牙通信串口波特率，可根据需要自主配置，要求与主从机相同。总体比较简单，不再演示说明。</p>
+<p>配对成功指示灯说明：</p>
+<p>模块配对成功，此时STA双闪（一次闪2下，2秒闪一次）</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43824231/article/details/95166456?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_baidulandingword-0&spm=1001.2101.3001.4242">https://blog.csdn.net/weixin_43824231/article/details/95166456?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_baidulandingword-0&amp;spm=1001.2101.3001.4242</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_29339467/article/details/95459177">https://blog.csdn.net/qq_29339467/article/details/95459177</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u011878611/article/details/109895812">https://blog.csdn.net/u011878611/article/details/109895812</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012933659/article/details/89152934">https://blog.csdn.net/u012933659/article/details/89152934</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <span class="social-link">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </span>
+
+          <img class="social-item-img" src="https://s1.ax1x.com/2020/05/10/Y3dt3j.jpg">
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%BC%80%E5%8F%91/" rel="tag"># 开发</a>
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
+              <a href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag"># 单片机</a>
+              <a href="/tags/AT%E6%8C%87%E4%BB%A4/" rel="tag"># AT指令</a>
+              <a href="/tags/%E6%97%A0%E7%BA%BF/" rel="tag"># 无线</a>
+              <a href="/tags/%E8%93%9D%E7%89%99/" rel="tag"># 蓝牙</a>
+              <a href="/tags/HC-05/" rel="tag"># HC-05</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/06/16/ESP8266-WIFI%E6%A8%A1%E5%9D%97%E5%BC%80%E5%8F%91%E5%AD%A6%E4%B9%A0/" rel="prev" title="ESP8266-WIFI模块开发学习">
+                  <i class="fa fa-angle-left"></i> ESP8266-WIFI模块开发学习
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/06/16/ISP%E4%B8%80%E9%94%AE%E4%B8%8B%E8%BD%BD%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/" rel="next" title="ISP一键下载原理分析">
+                  ISP一键下载原理分析 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Vikebt</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

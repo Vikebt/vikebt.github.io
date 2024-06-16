@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhoucong.top","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="什么是STM32STM32的字面含义1、ST——意法半导体，是一个公司名，即SOC厂商。STM32等系列芯片的内核由ARM公司生产（ARM是一个IP厂商，本身生产芯片，将内核授权给各大SOC厂商使用而盈利），ST公司则负责STM32外围电路的设计。 2、M— Microelectronics的缩写，表示微控制器，大家注意微控制器（无MMU，主频较低，速度较慢）和微处理器（有MMU,主频较高，可跑L">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识STM32">
+<meta property="og:url" content="http://zhoucong.top/2024/06/16/%E5%88%9D%E8%AF%8632%E5%8D%95%E7%89%87%E6%9C%BA/index.html">
+<meta property="og:site_name" content="Vikebt&#39;s blog">
+<meta property="og:description" content="什么是STM32STM32的字面含义1、ST——意法半导体，是一个公司名，即SOC厂商。STM32等系列芯片的内核由ARM公司生产（ARM是一个IP厂商，本身生产芯片，将内核授权给各大SOC厂商使用而盈利），ST公司则负责STM32外围电路的设计。 2、M— Microelectronics的缩写，表示微控制器，大家注意微控制器（无MMU，主频较低，速度较慢）和微处理器（有MMU,主频较高，可跑L">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/10/31/x5dv6JXP1oqCrYh.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/31/PY1nF7Kvm9gIsD3.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/31/GNgvuF413hOmLdi.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/31/kPChVvqt1KfiUAl.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/31/QtpzF8uBf1n293c.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/31/ex1uyaGVtIjsCJ3.png">
+<meta property="og:image" content="https://i.loli.net/2020/10/31/zPxakTuUyVeF3ol.png">
+<meta property="article:published_time" content="2024-06-16T02:20:27.840Z">
+<meta property="article:modified_time" content="2020-10-31T14:03:13.000Z">
+<meta property="article:author" content="Vikebt">
+<meta property="article:tag" content="开发">
+<meta property="article:tag" content="嵌入式">
+<meta property="article:tag" content="单片机">
+<meta property="article:tag" content="STM32">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/10/31/x5dv6JXP1oqCrYh.png">
+
+
+<link rel="canonical" href="http://zhoucong.top/2024/06/16/%E5%88%9D%E8%AF%8632%E5%8D%95%E7%89%87%E6%9C%BA/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhoucong.top/2024/06/16/%E5%88%9D%E8%AF%8632%E5%8D%95%E7%89%87%E6%9C%BA/","path":"2024/06/16/初识32单片机/","title":"初识STM32"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>初识STM32 | Vikebt's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Vikebt's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">人生在勤，不索何获</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSTM32"><span class="nav-number">1.</span> <span class="nav-text">什么是STM32</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#STM32%E7%9A%84%E5%AD%97%E9%9D%A2%E5%90%AB%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">STM32的字面含义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STM32%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88"><span class="nav-number">2.</span> <span class="nav-text">STM32能做什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#STM32%E6%80%8E%E4%B9%88%E9%80%89%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">STM32怎么选型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#STM32%E5%88%86%E7%B1%BB"><span class="nav-number">3.1.</span> <span class="nav-text">STM32分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#STM32%E7%9A%84%E5%91%BD%E5%90%8D%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">STM32的命名方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%88%86%E9%85%8D%E5%8E%9F%E7%90%86%E5%9B%BE%E5%BC%95%E8%84%9A"><span class="nav-number">3.3.</span> <span class="nav-text">如何分配原理图引脚</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AF%BB%E6%89%BE%E5%BC%95%E8%84%9A%E7%9A%84%E5%8A%9F%E8%83%BD%E8%AF%B4%E6%98%8E"><span class="nav-number">3.4.</span> <span class="nav-text">如何寻找引脚的功能说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C%E4%B8%AD%E5%AF%B9%E5%BC%95%E8%84%9A%E7%9A%84%E5%8A%9F%E8%83%BD%E5%AE%9A%E4%B9%89"><span class="nav-number">3.5.</span> <span class="nav-text">数据手册中对引脚的功能定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E8%84%9A%E7%9A%84%E5%8A%9F%E8%83%BD%E5%AE%9A%E4%B9%89%E8%A7%A3%E8%AF%BB"><span class="nav-number">3.6.</span> <span class="nav-text">引脚的功能定义解读</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Vikebt</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/vikebt" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;vikebt" rel="noopener me" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2674761561@qq.com" title="E-Mail → mailto:2674761561@qq.com" rel="noopener me" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://plus.google.com/oracleboxman" title="Google → https:&#x2F;&#x2F;plus.google.com&#x2F;oracleboxman" rel="noopener me" target="_blank"><i class="google fa-fw"></i>Google</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhoucong.top/2024/06/16/%E5%88%9D%E8%AF%8632%E5%8D%95%E7%89%87%E6%9C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vikebt">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vikebt's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="初识STM32 | Vikebt's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          初识STM32
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-06-16 10:20:27" itemprop="dateCreated datePublished" datetime="2024-06-16T10:20:27+08:00">2024-06-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-10-31 22:03:13" itemprop="dateModified" datetime="2020-10-31T22:03:13+08:00">2020-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">开发</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="什么是STM32"><a href="#什么是STM32" class="headerlink" title="什么是STM32"></a>什么是STM32</h2><h3 id="STM32的字面含义"><a href="#STM32的字面含义" class="headerlink" title="STM32的字面含义"></a>STM32的字面含义</h3><p>1、ST——意法半导体，是一个公司名，即SOC厂商。STM32等系列芯片的内核由ARM公司生产（ARM是一个IP厂商，本身生产芯片，将内核授权给各大SOC厂商使用而盈利），ST公司则负责STM32外围电路的设计。</p>
+<p>2、M— Microelectronics的缩写，表示微控制器，大家注意微控制器（无MMU，主频较低，速度较慢）和微处理器（有MMU,主频较高，可跑Linux）的区别。<br><em>MMU:内存处理单元</em></p>
+<p>3、32— 32bit的意思，表示这是一个32bit的微控制器</p>
+<h2 id="STM32能做什么"><a href="#STM32能做什么" class="headerlink" title="STM32能做什么"></a>STM32能做什么</h2><p>1、串口—USART，用于跟跟串口接口的设备通信，比如：USB转串口模块、ESP8266 WIFI、GPS模块，GSM 模块，串口屏、指纹识别模块</p>
+<p>2、内部集成电路—I2C，用于跟I2C接口的设备通信，比如：EEPROM、电容屏、陀螺仪MPU6050、0.96寸OLED模块</p>
+<p>3、串行通信接口—SPI，用于跟SPI接口的设备通信，比如：串行FLASH、以太网W5500、音频模块VS1053</p>
+<p>4、SDIO、FSMC的超级、I2S、ADC、GPIO</p>
+<h2 id="STM32怎么选型"><a href="#STM32怎么选型" class="headerlink" title="STM32怎么选型"></a>STM32怎么选型</h2><h3 id="STM32分类"><a href="#STM32分类" class="headerlink" title="STM32分类"></a>STM32分类</h3><p><img src="https://i.loli.net/2020/10/31/x5dv6JXP1oqCrYh.png" alt="1.png"></p>
+<h3 id="STM32的命名方法"><a href="#STM32的命名方法" class="headerlink" title="STM32的命名方法"></a>STM32的命名方法</h3><p><img src="https://i.loli.net/2020/10/31/PY1nF7Kvm9gIsD3.png" alt="2.png"></p>
+<p><img src="https://i.loli.net/2020/10/31/GNgvuF413hOmLdi.png" alt="3.png"></p>
+<h3 id="如何分配原理图引脚"><a href="#如何分配原理图引脚" class="headerlink" title="如何分配原理图引脚"></a>如何分配原理图引脚</h3><p><img src="https://i.loli.net/2020/10/31/kPChVvqt1KfiUAl.png" alt="4.png"></p>
+<h3 id="如何寻找引脚的功能说明"><a href="#如何寻找引脚的功能说明" class="headerlink" title="如何寻找引脚的功能说明"></a>如何寻找引脚的功能说明</h3><p><img src="https://i.loli.net/2020/10/31/QtpzF8uBf1n293c.png" alt="5.png"></p>
+<h3 id="数据手册中对引脚的功能定义"><a href="#数据手册中对引脚的功能定义" class="headerlink" title="数据手册中对引脚的功能定义"></a>数据手册中对引脚的功能定义</h3><p><img src="https://i.loli.net/2020/10/31/ex1uyaGVtIjsCJ3.png" alt="6.png"></p>
+<h3 id="引脚的功能定义解读"><a href="#引脚的功能定义解读" class="headerlink" title="引脚的功能定义解读"></a>引脚的功能定义解读</h3><p><img src="https://i.loli.net/2020/10/31/zPxakTuUyVeF3ol.png" alt="7.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <span class="social-link">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </span>
+
+          <img class="social-item-img" src="https://s1.ax1x.com/2020/05/10/Y3dt3j.jpg">
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%BC%80%E5%8F%91/" rel="tag"># 开发</a>
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
+              <a href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag"># 单片机</a>
+              <a href="/tags/STM32/" rel="tag"># STM32</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/06/16/WiFi%E7%9A%84STA%E5%92%8CAP%E6%A8%A1%E5%BC%8F/" rel="prev" title="WIFI的STA和AP模式">
+                  <i class="fa fa-angle-left"></i> WIFI的STA和AP模式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/06/16/%E5%B8%B8%E7%94%A8%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F%E6%98%AF%E9%AB%98%E4%BD%8E%E4%BD%8D%E9%A1%BA%E5%BA%8F/" rel="next" title="常用数据传输方式是高低位顺序">
+                  常用数据传输方式是高低位顺序 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Vikebt</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
