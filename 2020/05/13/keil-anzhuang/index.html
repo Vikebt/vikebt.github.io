@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"zhoucong.top","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="准备工作在安装keil之前，请下载安装工具包，我已全部整理好，链接如下：安装工具包 提取码: ttbt 安装MDK双击安装包后如下图所示，选择Next即可 勾选代表同意KEIL的协议，必须勾选，否则无法安装 选择安装路径，建议装在D盘，方便管理  填写安装注册信息，随便填写即可 等待安装完成即可  注意：如果是第一次安装，可能会弹出界面让你安装下载器驱动，建议勾选并安装，这里因为我之前已经 安装了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="keil5(MDK版)开发STM32和STC89C52">
+<meta property="og:url" content="http://zhoucong.top/2020/05/13/keil-anzhuang/index.html">
+<meta property="og:site_name" content="Vikebt&#39;s blog">
+<meta property="og:description" content="准备工作在安装keil之前，请下载安装工具包，我已全部整理好，链接如下：安装工具包 提取码: ttbt 安装MDK双击安装包后如下图所示，选择Next即可 勾选代表同意KEIL的协议，必须勾选，否则无法安装 选择安装路径，建议装在D盘，方便管理  填写安装注册信息，随便填写即可 等待安装完成即可  注意：如果是第一次安装，可能会弹出界面让你安装下载器驱动，建议勾选并安装，这里因为我之前已经 安装了">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/2v1qJNYjab3wDf5.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/GPKoReNjE6t4nMx.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/iMqrVvXKQeuT1BU.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/vrWLCpAyMYb6fkG.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/aRpdtyWPZx35Y7w.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/ZUxuPzXwntpNkSF.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/2kJUcZAmXjOHqir.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/nhkdjMKQ43FGopz.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/sFeRzQfdx4lErG9.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/4jqmFQoA92BcVCM.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/vkmsCdqcgUutpFi.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/BQskRHY2vfp8yTW.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/07/04/NxfMY4.jpg">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/JQtPzmLc6rGy798.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/o5wXd8kGrEJjLuH.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/15SpKPwt2NHbW7O.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/bVdhRkHjXWCBzGo.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/TID1B86a4MEr3Ow.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/cOKQnkdwjevUV9S.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/Lg1BtVODf7s5okp.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YanB0U.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/Yansk4.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/Yan0mT.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YanD7F.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YanytJ.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YangpR.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/Yan6h9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/Yan211.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YanR6x.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YanWX6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/Yan57D.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/Yan40O.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YanhnK.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/YanTtH.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/Yan7hd.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/13/Yanb9A.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/14/Ywq0p9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/05/14/YwqBlR.png">
+<meta property="article:published_time" content="2020-05-13T05:23:20.000Z">
+<meta property="article:modified_time" content="2020-10-31T14:17:31.775Z">
+<meta property="article:author" content="Vikebt">
+<meta property="article:tag" content="keil">
+<meta property="article:tag" content="软件">
+<meta property="article:tag" content="安装">
+<meta property="article:tag" content="开发">
+<meta property="article:tag" content="uVision">
+<meta property="article:tag" content="嵌入式">
+<meta property="article:tag" content="单片机">
+<meta property="article:tag" content="STC89C51">
+<meta property="article:tag" content="STM32">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/13/2v1qJNYjab3wDf5.png">
+
+
+<link rel="canonical" href="http://zhoucong.top/2020/05/13/keil-anzhuang/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://zhoucong.top/2020/05/13/keil-anzhuang/","path":"2020/05/13/keil-anzhuang/","title":"keil5(MDK版)开发STM32和STC89C52"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>keil5(MDK版)开发STM32和STC89C52 | Vikebt's blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Vikebt's blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">人生在勤，不索何获</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85MDK"><span class="nav-number">2.</span> <span class="nav-text">安装MDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Keil4%E7%BC%96%E8%AF%91%E5%99%A8"><span class="nav-number">3.</span> <span class="nav-text">安装Keil4编译器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E8%8A%AF%E7%89%87%E2%80%9C%E6%94%AF%E6%8C%81%E5%8C%85%E2%80%9D"><span class="nav-number">4.</span> <span class="nav-text">安装芯片“支持包”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3MDK"><span class="nav-number">5.</span> <span class="nav-text">破解MDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E5%8A%9F%E8%83%BD"><span class="nav-number">6.</span> <span class="nav-text">检查功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E6%B1%89%E5%8C%96"><span class="nav-number">7.</span> <span class="nav-text">软件汉化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%88%90%E5%AE%89%E8%A3%85"><span class="nav-number">8.</span> <span class="nav-text">完成安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-number">9.</span> <span class="nav-text">注意</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Vikebt</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhoucong.top/2020/05/13/keil-anzhuang/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Vikebt">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vikebt's blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="keil5(MDK版)开发STM32和STC89C52 | Vikebt's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          keil5(MDK版)开发STM32和STC89C52
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-05-13 13:23:20" itemprop="dateCreated datePublished" datetime="2020-05-13T13:23:20+08:00">2020-05-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-10-31 22:17:31" itemprop="dateModified" datetime="2020-10-31T22:17:31+08:00">2020-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">教程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>在安装keil之前，请下载安装工具包，我已全部整理好，链接如下：<br><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1g3CVmU_jkbZVSMSAcNg0PQ">安装工具包</a> 提取码: ttbt</p>
+<h3 id="安装MDK"><a href="#安装MDK" class="headerlink" title="安装MDK"></a>安装MDK</h3><p>双击安装包后如下图所示，选择Next即可<br><img src="https://i.loli.net/2020/05/13/2v1qJNYjab3wDf5.png"><br><img src="https://i.loli.net/2020/05/13/GPKoReNjE6t4nMx.png"></p>
+<p>勾选代表同意KEIL的协议，必须勾选，否则无法安装<br><img src="https://i.loli.net/2020/05/13/iMqrVvXKQeuT1BU.png"></p>
+<p>选择安装路径，建议装在D盘，方便管理<br><img src="https://i.loli.net/2020/05/13/vrWLCpAyMYb6fkG.png"></p>
+<p> 填写安装注册信息，随便填写即可<br><img src="https://i.loli.net/2020/05/13/aRpdtyWPZx35Y7w.png"></p>
+<p>等待安装完成即可<br><img src="https://i.loli.net/2020/05/13/ZUxuPzXwntpNkSF.png"></p>
+<p><img src="https://i.loli.net/2020/05/13/2kJUcZAmXjOHqir.png"></p>
+<p>注意：如果是第一次安装，可能会弹出界面让你安装下载器驱动，建议勾选并安装，这里因为我之前已经 安装了所以并没有提示安装下载器驱动<br>最后显示下图界面表示安装成功，点击 Finish 完成安装<br><img src="https://i.loli.net/2020/05/13/nhkdjMKQ43FGopz.png"></p>
+<h3 id="安装Keil4编译器"><a href="#安装Keil4编译器" class="headerlink" title="安装Keil4编译器"></a>安装Keil4编译器</h3><p>将我分享的文件夹里面的C51文件夹复制到安装路径目录下，如：我的安装路径为D:\Keil_v5<br><img src="https://i.loli.net/2020/05/13/sFeRzQfdx4lErG9.png"></p>
+<p>注意复制后C51的文件夹应该与ARM文件夹在同一目录下<br><img src="https://i.loli.net/2020/05/13/4jqmFQoA92BcVCM.png"></p>
+<p>然后还需修改配置文件，使其支持keil4<br>①用记事本打开安装目录下的 TOOLS.INI 配置文件，将我分享的文件夹里的 C51.txt 里的内容复制到 [ARM] 前面<br><img src="https://i.loli.net/2020/05/13/vkmsCdqcgUutpFi.png"><br><img src="https://i.loli.net/2020/05/13/BQskRHY2vfp8yTW.png"></p>
+<p>​ ②修改 [C51] 中的PATH为MDK安装目录下C51文件夹的路径，如：我的为D:\Keil_v5\C51<br>​ ③保存退出<br><img src="https://s1.ax1x.com/2020/07/04/NxfMY4.jpg"></p>
+<h3 id="安装芯片“支持包”"><a href="#安装芯片“支持包”" class="headerlink" title="安装芯片“支持包”"></a>安装芯片“支持包”</h3><p>①安装STM32的支持包<br>我已经整理好在文件夹里面了，无需重复下载<br>如果想安装其他型号的单片机支持包，可以到官网下载</p>
+<p>​下载链接：<a target="_blank" rel="noopener" href="http://www.keil.com/dd2/pack/">http://www.keil.com/dd2/pack/</a><br><img src="https://i.loli.net/2020/05/13/JQtPzmLc6rGy798.png"><br><img src="https://i.loli.net/2020/05/13/o5wXd8kGrEJjLuH.png"><br><img src="https://i.loli.net/2020/05/13/15SpKPwt2NHbW7O.png"></p>
+<p>②安装STC51单片机的支持包</p>
+<p>在我上传的文件夹中有一个 stc-isp-15xx-v6.86r.exe 的软件，其实就是STC的51单片机的下载软件，不需要安装，直接双击打开即可<br><img src="https://i.loli.net/2020/05/13/bVdhRkHjXWCBzGo.png"></p>
+<p>​点击右边的 Keil仿真设置–&gt;添加型号和头文件到Keil中<br><img src="https://i.loli.net/2020/05/13/TID1B86a4MEr3Ow.png"></p>
+<p>​选择之前我们复制过去的C51文件夹<br><img src="https://i.loli.net/2020/05/13/cOKQnkdwjevUV9S.png"></p>
+<p>显示下图，STC的芯片支持包就导入成功了<br><img src="https://i.loli.net/2020/05/13/Lg1BtVODf7s5okp.png"></p>
+<h3 id="破解MDK"><a href="#破解MDK" class="headerlink" title="破解MDK"></a>破解MDK</h3><p>keil5 MDK版 不破解，会有代码大小限制，非常不利于后续学习开发，我们这里破解一下，一劳永逸。</p>
+<p>首先回到桌面，已经创建了keil5的快捷方式，鼠标右键单击Keil5，以管理员身份运行，记住，一定要以管理员身份运行，不然会破解失败<br><img src="https://s1.ax1x.com/2020/05/13/YanB0U.png"></p>
+<p>​ 依次点击 File–&gt;License Management…<br><img src="https://s1.ax1x.com/2020/05/13/Yansk4.png"></p>
+<p>复制CID码<br><img src="https://s1.ax1x.com/2020/05/13/Yan0mT.png"></p>
+<p>下一步操作前，请先将禁音电脑，相信我！！！因为破解软件打开后会有噪音，禁音就完事了</p>
+<p>然后打开我分享的文件夹，解压keygen.zip<br><img src="https://s1.ax1x.com/2020/05/13/YanD7F.png"></p>
+<p>打开里面的软件（可能报毒，关掉杀毒软件重新解压打开即可）<br>按下图示操作<br><img src="https://s1.ax1x.com/2020/05/13/YanytJ.png"></p>
+<p>复制生成的注册码<br><img src="https://s1.ax1x.com/2020/05/13/YangpR.png"></p>
+<p>粘贴到选中框<br><img src="https://s1.ax1x.com/2020/05/13/Yan6h9.png"></p>
+<p>点击 Add LIC 注册成功<br><img src="https://s1.ax1x.com/2020/05/13/Yan211.png"></p>
+<p>这样就注册了C51的编译器，还有STM32的编译器需要注册，重复刚才的操作，只需要将 Target 改成 ARM ，在此不再赘述</p>
+<h3 id="检查功能"><a href="#检查功能" class="headerlink" title="检查功能"></a>检查功能</h3><p>​<br> 打开keil 5检查功能，选择 Project–&gt; New uVision Project…<br><img src="https://s1.ax1x.com/2020/05/13/YanR6x.png"></p>
+<p>随便找个地方放工程文件<br><img src="https://s1.ax1x.com/2020/05/13/YanWX6.png"></p>
+<p>看到这三个芯片“支持包”数据库就OK了<br><img src="https://s1.ax1x.com/2020/05/13/Yan57D.png"></p>
+<p>从上到下分别为STM32的支持包数据库、keil4自带的一些芯片支持、STC的支持包数据库</p>
+<p>STC89C51单片机<br><img src="https://s1.ax1x.com/2020/05/13/Yan40O.png"></p>
+<p>STM32单片机<br><img src="https://s1.ax1x.com/2020/05/13/YanhnK.png"></p>
+<h3 id="软件汉化"><a href="#软件汉化" class="headerlink" title="软件汉化"></a>软件汉化</h3><p>将我分享的文件夹里的UV4.exe移动到安装路径<br><img src="https://s1.ax1x.com/2020/05/13/YanTtH.png"></p>
+<p>替换目标中的文件即可<br><img src="https://s1.ax1x.com/2020/05/13/Yan7hd.png"></p>
+<h3 id="完成安装"><a href="#完成安装" class="headerlink" title="完成安装"></a>完成安装</h3><p><img src="https://s1.ax1x.com/2020/05/13/Yanb9A.png"></p>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><pre><code>最新版本的KEIL5，并不是像原来的KEIL4一样，将89C51系列芯片放在Atmel里面，而是放在Microchip里面：
+</code></pre>
+<p><img src="https://s1.ax1x.com/2020/05/14/Ywq0p9.png"></p>
+<p><img src="https://s1.ax1x.com/2020/05/14/YwqBlR.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/keil/" rel="tag"># keil</a>
+              <a href="/tags/%E8%BD%AF%E4%BB%B6/" rel="tag"># 软件</a>
+              <a href="/tags/%E5%AE%89%E8%A3%85/" rel="tag"># 安装</a>
+              <a href="/tags/%E5%BC%80%E5%8F%91/" rel="tag"># 开发</a>
+              <a href="/tags/uVision/" rel="tag"># uVision</a>
+              <a href="/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/" rel="tag"># 嵌入式</a>
+              <a href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag"># 单片机</a>
+              <a href="/tags/STC89C51/" rel="tag"># STC89C51</a>
+              <a href="/tags/STM32/" rel="tag"># STM32</a>
+          </div>
+
+        
+
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Vikebt</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
